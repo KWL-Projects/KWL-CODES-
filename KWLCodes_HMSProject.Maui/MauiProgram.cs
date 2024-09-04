@@ -21,8 +21,5 @@ namespace KWLCodes_HMSProject.Maui
 
             return builder.Build();
         }
-        //Kayla Test
-        //Waldo Test
-        //Luhan Test
     }
 }
