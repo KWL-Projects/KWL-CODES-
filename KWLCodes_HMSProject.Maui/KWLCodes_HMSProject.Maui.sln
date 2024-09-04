@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
+<<<<<<< HEAD
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KWLCodes_HMSProject.Maui", "KWLCodes_HMSProject.Maui.csproj", "{7F63BF3D-EFBF-4A20-A788-F2E18D16A300}"
+=======
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KWLCodes_HMSProject.Maui", "KWLCodes_HMSProject.Maui.csproj", "{ADAB4602-BBAE-400E-832A-AAC0FB629689}"
+>>>>>>> main
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,17 +15,30 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+<<<<<<< HEAD
+		{7F63BF3D-EFBF-4A20-A788-F2E18D16A300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F63BF3D-EFBF-4A20-A788-F2E18D16A300}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F63BF3D-EFBF-4A20-A788-F2E18D16A300}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7F63BF3D-EFBF-4A20-A788-F2E18D16A300}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F63BF3D-EFBF-4A20-A788-F2E18D16A300}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F63BF3D-EFBF-4A20-A788-F2E18D16A300}.Release|Any CPU.Deploy.0 = Release|Any CPU
+=======
 		{ADAB4602-BBAE-400E-832A-AAC0FB629689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ADAB4602-BBAE-400E-832A-AAC0FB629689}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADAB4602-BBAE-400E-832A-AAC0FB629689}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{ADAB4602-BBAE-400E-832A-AAC0FB629689}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADAB4602-BBAE-400E-832A-AAC0FB629689}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ADAB4602-BBAE-400E-832A-AAC0FB629689}.Release|Any CPU.Deploy.0 = Release|Any CPU
+>>>>>>> main
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+<<<<<<< HEAD
+		SolutionGuid = {F3E95248-90CB-4C34-AC54-852144864440}
+=======
 		SolutionGuid = {E7B83516-5054-4447-9FF3-EB4D173E4189}
+>>>>>>> main
 	EndGlobalSection
 EndGlobal
