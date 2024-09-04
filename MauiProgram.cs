@@ -23,6 +23,11 @@ namespace KWLCodes_HMSProject.Maui
         }
         //Testing 1
 
+<<<<<<< Updated upstream
         //Waldo test
     }
+=======
+        //Luhan
+    }//Waldo
+>>>>>>> Stashed changes
 }
