@@ -21,5 +21,7 @@ namespace KWLCodes_HMSProject.Maui
 
             return builder.Build();
         }
+
+        //Het video gekyk op azure en op azure gewerk. Sukkel steeds na ek die hele video gekyk het op documentation van MAUI.
     }
 }
