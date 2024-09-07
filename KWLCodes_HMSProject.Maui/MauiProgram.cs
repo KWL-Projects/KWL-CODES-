@@ -28,6 +28,7 @@ namespace KWLCodes_HMSProject.Maui
             return builder.Build();
         }
     }
+    //need to take this code out or edit, we do not need the initial hello world
 
     class Programs
     {
