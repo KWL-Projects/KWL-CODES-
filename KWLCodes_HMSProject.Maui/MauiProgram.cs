@@ -12,16 +12,31 @@ class Program
         { "user1", HashPassword("password123") },  // username: user1, password: password123
         { "user2", HashPassword("mypassword") }    // username: user2, password: mypassword
     };
-
     static void Main(string[] args)
     {
         // Secure login flow
         Console.WriteLine("Please log in.");
         Console.Write("Username: ");
         string username = Console.ReadLine();
+
+        // Validate if the username is not empty
+        if (string.IsNullOrEmpty(username))
+        {
+            Console.WriteLine("Username cannot be empty.");
+            return;  // Exit if the username is empty
+        }
+
         Console.Write("Password: ");
         string password = Console.ReadLine();
 
+        // Validate if the password is not empty
+        if (string.IsNullOrEmpty(password))
+        {
+            Console.WriteLine("Password cannot be empty.");
+            return;  // Exit if the password is empty
+        }
+
+        // Proceed with login logic if both username and password are valid
         if (Login(username, password))
         {
             Console.WriteLine("Login successful!");
@@ -37,41 +52,42 @@ class Program
         }
 
         // Display menu options to the user
-        Console.WriteLine("\nChoose an option:");
-        Console.WriteLine("1. Create Assignment");
-        Console.WriteLine("2. View Assignment");
-        Console.WriteLine("3. View Submissions");
-        Console.WriteLine("4. Browse Your Own Submissions");
-        Console.WriteLine("5. View Feedback on Your Submissions");
+        while (true)
+        {
+            Console.WriteLine("\nChoose an option:");
+            Console.WriteLine("1. Create Assignment");
+            Console.WriteLine("2. View Assignment");
+            Console.WriteLine("3. View Submissions");
+            Console.WriteLine("4. Browse Your Own Submissions");
+            Console.WriteLine("5. View Feedback on Your Submissions");
+            Console.WriteLine("Enter 'exit' to quit.");
 
-        // Read the user's choice
-        string choice = Console.ReadLine();
+            string choice = Console.ReadLine(); // Read the user's choice
 
-        // Process the user's choice
-        if (choice == "1")
-        {
-            CreateAssignment(); // Handle assignment creation
-        }
-        else if (choice == "2")
-        {
-            ViewAssignment(); // Handle viewing an assignment
-        }
-        else if (choice == "3")
-        {
-            ViewSubmissions(); // Handle viewing submissions
-        }
-        else if (choice == "4")
-        {
-            BrowseOwnSubmissions(); // Handle browsing own submissions
-        }
-        else if (choice == "5")
-        {
-            ViewFeedback(); // Handle viewing feedback
-        }
-        else
-        {
-            // Inform the user of an invalid choice
-            Console.WriteLine("Invalid choice.");
+            if (choice == "exit")
+                break;
+
+            switch (choice) // Process the user's choice
+            {
+                case "1":
+                    CreateAssignment();
+                    break;
+                case "2":
+                    ViewAssignment();
+                    break;
+                case "3":
+                    ViewSubmissions();
+                    break;
+                case "4":
+                    BrowseOwnSubmissions();
+                    break;
+                case "5":
+                    ViewFeedback();
+                    break;
+                default:
+                    Console.WriteLine("Invalid choice.");
+                    break;
+            }
         }
     }
 
@@ -110,11 +126,10 @@ class Program
             return builder.ToString();
         }
     }
-
     static string GenerateToken(string username)
     {
-        // Generate a simple token using the username and current time
-        string token = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{DateTime.Now}"));
+        string token = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{DateTime.UtcNow}"));
+        token = token.Replace(":", "-");  // Replace colons to avoid issues in URLs
         return token;
     }
 
@@ -366,16 +381,22 @@ class Program
         }
         return new List<Feedback>(); // Return an empty list if no feedback found
     }
-
     static void LogToFile(string message)
     {
-        // Append a log message to the log file
-        string logFilePath = "log.txt";
-        using (StreamWriter writer = new StreamWriter(logFilePath, true))
+        try
         {
-            writer.WriteLine($"{DateTime.Now}: {message}");
+            string logFilePath = "log.txt";
+            using (StreamWriter writer = new StreamWriter(logFilePath, true))
+            {
+                writer.WriteLine($"{DateTime.Now}: {message}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error logging message: {ex.Message}");
         }
     }
+
 }
 
 // Supporting classes for assignments, submissions, and feedback
