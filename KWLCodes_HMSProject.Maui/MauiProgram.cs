@@ -175,6 +175,98 @@ namespace Test_Waldo.MAUI
             }
         }
     }
+    namespace VideoStreamer
+    {
+        public partial class MainPage : ContentPage
+        {
+            private const string ServerUrl = "https://yourserver.com/api/videostream"; // Replace with your server URL
+            private const string LogFilePath = "stream_log.txt";
+
+            public object VideoWebView { get; private set; }
+
+            /*public MainPage()
+            {
+                InitializeComponent();
+            }*/
+
+            private async void OnSelectVideoButtonClicked(object sender, EventArgs e)
+            {
+                try
+                {
+                    var videoFile = await PickVideoFileAsync();
+                    if (videoFile != null)
+                    {
+                        await StreamVideoAsync(videoFile);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await LogAsync($"Failure: {ex.Message}");
+                    await DisplayAlert("Error", "Failed to stream video.", "OK");
+                }
+            }
+
+            private async Task<FileResult> PickVideoFileAsync()
+            {
+                try
+                {
+                    var options = new PickOptions
+                    {
+                        FileTypes = FilePickerFileType.Videos,
+                        PickerTitle = "Select a video file to stream"
+                    };
+
+                    return await FilePicker.Default.PickAsync(options);
+                }
+                catch (Exception ex)
+                {
+                    await LogAsync($"Failure picking video: {ex.Message}");
+                    return null;
+                }
+            }
+
+            private async Task StreamVideoAsync(FileResult videoFile)
+            {
+                try
+                {
+                    using var httpClient = new HttpClient();
+                    using var content = new MultipartFormDataContent();
+                    using var fileStream = await videoFile.OpenReadAsync();
+                    using var streamContent = new StreamContent(fileStream);
+
+                    content.Add(streamContent, "video", videoFile.FileName);
+
+                    var response = await httpClient.PostAsync(ServerUrl, content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string videoUrl = await response.Content.ReadAsStringAsync();
+
+                        //ERROT MOET NOG FIX
+                        //VideoWebView.Source = videoUrl;
+
+                        await LogAsync("Success: Video streamed successfully.");
+                    }
+                    else
+                    {
+                        string error = await response.Content.ReadAsStringAsync();
+                        throw new Exception($"Server error: {error}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await LogAsync($"Failure streaming video: {ex.Message}");
+                    throw;
+                }
+            }
+
+            private async Task LogAsync(string message)
+            {
+                var logMessage = $"{DateTime.Now}: {message}\n";
+                string fullPath = Path.Combine(FileSystem.AppDataDirectory, LogFilePath);
+                await File.AppendAllTextAsync(fullPath, logMessage);
+            }
+        }
+    }
 
     public class UserAdministration
     {
