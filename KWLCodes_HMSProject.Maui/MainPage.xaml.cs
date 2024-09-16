@@ -1,25 +1,34 @@
-﻿namespace KWLCodes_HMSProject.Maui
+﻿using System;
+using Microsoft.Maui.Controls;
+using KWLCodes_HMSProject.Maui.Services;
+
+namespace KWLCodes_HMSProject.Maui
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
+        private readonly VideoRecorderService _videoRecorderService;
 
         public MainPage()
         {
             InitializeComponent();
+            _videoRecorderService = new VideoRecorderService();
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        private async void OnRecordVideoClicked(object sender, EventArgs e)
         {
-            count++;
+            var result = await _videoRecorderService.RecordVideoAsync();
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
+            if (result.Success)
+            {
+                StatusLabel.Text = $"Success: {result.Message}\nFile Path: {result.FilePath}";
+            }
             else
-                CounterBtn.Text = $"Clicked {count} times";
+            {
+                StatusLabel.Text = $"Failure: {result.Message}";
+            }
 
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            // Log entry (optional)
+            System.Diagnostics.Debug.WriteLine($"Log Entry: {result.Message}");
         }
     }
-
 }
