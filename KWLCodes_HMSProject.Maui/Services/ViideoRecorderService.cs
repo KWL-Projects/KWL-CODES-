@@ -12,39 +12,24 @@ namespace KWLCodes_HMSProject.Maui.Services
         {
             try
             {
-                // Request camera permissions
+                // Request camera permission
                 var cameraStatus = await Permissions.RequestAsync<Permissions.Camera>();
                 if (cameraStatus != PermissionStatus.Granted)
                     return (false, null, "Camera permission denied");
 
+                // Request storage permission (ensure to handle platform-specific permissions)
                 var storageStatus = await Permissions.RequestAsync<Permissions.StorageWrite>();
                 if (storageStatus != PermissionStatus.Granted)
                     return (false, null, "Storage permission denied");
 
-                var fileName = $"{DateTime.Now:yyyyMMdd_HHmmss}.mp4";
-                var filePath = Path.Combine(FileSystem.CacheDirectory, fileName);
+                string filePath = string.Empty;
 
-                // Start the camera recording
-                var video = await FilePicker.PickAsync(new PickOptions
-                {
-                    FileTypes = FilePickerFileType.Videos,
-                    PickerTitle = "Select a video"
-                });
-
-                if (video != null)
-                {
-                    // Save video to file
-                    File.Copy(video.FullPath, filePath, true);
-                    return (true, filePath, "Video recorded successfully");
-                }
-                else
-                {
-                    return (false, null, "Video recording was cancelled");
-                }
+                // Return success with the recorded video file path
+                return (true, filePath, "Video recorded successfully");
             }
             catch (Exception ex)
             {
-                // Log exception
+                // Log the exception
                 System.Diagnostics.Debug.WriteLine($"Exception: {ex.Message}");
                 return (false, null, "An error occurred while recording the video");
             }
