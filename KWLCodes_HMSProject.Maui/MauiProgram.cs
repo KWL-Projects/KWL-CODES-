@@ -41,10 +41,10 @@ namespace Test_Waldo.MAUI
     {
         public partial class MainPage : ContentPage
         {
-            /*public MainPage()
+            public MainPage()
             {
                 object value = InitializeComponent();
-            }*/
+            }
 
             private async void OnPickVideoButtonClicked(object sender, EventArgs e)
             {
@@ -114,10 +114,7 @@ namespace Test_Waldo.MAUI
                 string logFilePath = Path.Combine(FileSystem.AppDataDirectory, "log.txt");
                 File.AppendAllText(logFilePath, $"{DateTime.Now}: {message}\n");
             }
-        }
-    }
-    namespace YourAppNamespace
-    {
+        
         public class VideoUploader
         {
             private readonly HttpClient _httpClient;
@@ -227,6 +224,11 @@ namespace Test_Waldo.MAUI
 
             private async Task StreamVideoAsync(FileResult videoFile)
             {
+                if (videoFile is null)
+                {
+                    throw new ArgumentNullException(nameof(videoFile));
+                }
+
                 try
                 {
                     using var httpClient = new HttpClient();
