@@ -65,4 +65,10 @@
 		<PackageReference Include="Moq" Version="4.20.72" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="Pages\ViewFeedback.xaml.cs">
+	    <DependentUpon>ViewFeedback.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
 </Project>
