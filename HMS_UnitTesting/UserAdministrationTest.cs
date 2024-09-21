@@ -2,6 +2,7 @@
 using System.IO;
 using Xunit;
 using Moq;
+using Xunit.Abstractions;
 
 public class UserAdministrationTest
 {
@@ -63,6 +64,14 @@ public class UserAdministrationTest
         }
     }
 
+    // Inject the output helper to capture test output.
+    private readonly ITestOutputHelper _output;
+
+    public UserAdministrationTest(ITestOutputHelper output)
+    {
+        _output = output;
+    }
+
     // xUnit test for successful user information update.
     [Fact]
     public void UpdateUserInformation_Success_ReturnsSuccessMessage()
@@ -75,6 +84,9 @@ public class UserAdministrationTest
         // Act
         var result = mockUserAdmin.Object.UpdateUserInformation(userInfo);
 
+        // Output test details
+        _output.WriteLine($"Test UpdateUserInformation_Success: Result = {result}");
+
         // Assert
         Assert.Equal("User information updated successfully.", result);
         mockUserAdmin.Verify(x => x.LogMessage("User information for JohnDoe updated successfully."), Times.Once);
@@ -82,7 +94,8 @@ public class UserAdministrationTest
 
     // xUnit test for failure in updating user information.
     [Fact]
-    public void UpdateUserInformation_Failure_ReturnsFailureMessage()   {
+    public void UpdateUserInformation_Failure_ReturnsFailureMessage()
+    {
         // Arrange
         var userInfo = new UserInfo { UserName = "JohnDoe" };
         var mockUserAdmin = new Mock<UserAdministrations>();
@@ -90,6 +103,9 @@ public class UserAdministrationTest
 
         // Act
         var result = mockUserAdmin.Object.UpdateUserInformation(userInfo);
+
+        // Output test details
+        _output.WriteLine($"Test UpdateUserInformation_Failure: Result = {result}");
 
         // Assert
         Assert.Equal("Failed to update user information.", result);
@@ -108,9 +124,11 @@ public class UserAdministrationTest
         // Act
         var result = mockUserAdmin.Object.UpdateUserInformation(userInfo);
 
+        // Output test details
+        _output.WriteLine($"Test UpdateUserInformation_Exception: Result = {result}");
+
         // Assert
         Assert.Equal("An error occurred while updating user information.", result);
         mockUserAdmin.Verify(x => x.LogMessage("Exception occurred while updating user information: Database error"), Times.Once);
     }
 }
-
