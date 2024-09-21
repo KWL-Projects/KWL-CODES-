@@ -8,24 +8,16 @@ public partial class UserAdministration : ContentPage
     public UserAdministration()
     {
         InitializeComponent();
-    }
 
+    }
     public class UserAdministrations
     {
         private string logFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "app-log.txt");
 
         public string UpdateUserInformation(UserInfo userInfo)
         {
-            if (userInfo == null)
-            {
-                LogMessage("UserInfo object is null.");
-                return "User information is null.";
-            }
-
             try
             {
-                LogMessage("Starting update process for user: " + userInfo.UserName);
-
                 // Simulate updating user information in the database or other storage.
                 bool updateSuccessful = UpdateUserInDatabase(userInfo);
 
@@ -91,5 +83,5 @@ public partial class UserAdministration : ContentPage
         // Add other user-related properties as needed
     }
 }
-    
+
 
