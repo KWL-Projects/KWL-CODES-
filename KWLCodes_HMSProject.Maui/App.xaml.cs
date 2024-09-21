@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.Controls;
+using KWLCodes_HMSProject.Maui.Pages;
 
 namespace KWLCodes_HMSProject.Maui
 {
@@ -8,7 +9,7 @@ namespace KWLCodes_HMSProject.Maui
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MainPage());
+            MainPage = new AppShell();
         }
     }
 }

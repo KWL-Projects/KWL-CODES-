@@ -2,11 +2,7 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KWLCodes_HMSProject.Maui.App">
-    <Application.MainPage>
-        <NavigationPage>
-            <x:Arguments>
-                <MainPage />
-            </x:Arguments>
-        </NavigationPage>
-    </Application.MainPage>
+    <Application.Resources>
+        <!-- Application resource dictionary can be defined here -->
+    </Application.Resources>
 </Application>
