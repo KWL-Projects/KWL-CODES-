@@ -1,27 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="KWLCodes_HMSProject.Maui.MainPage"
-             Title="Welcome">
-    <StackLayout 
-        VerticalOptions="CenterAndExpand" 
-        HorizontalOptions="CenterAndExpand"
-        Padding="20">
+             x:Class="KWLCodes_HMSProject.Maui.MainPage">
 
-        <Label 
-            Text="Welcome to the HMS App!" 
-            FontSize="32" 
-            HorizontalOptions="Center" />
-
-        <Button 
-            Text="Login" 
-            FontSize="20" 
-            Margin="0,20,0,0" 
-            Clicked="OnLoginClicked"/>
-
-        <Button 
-            Text="Sign Up" 
-            FontSize="20" 
-            Clicked="OnSignUpClicked"/>
+    <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
+        <Button Text="Login"
+                Clicked="OnLoginButtonClicked"/>
+        <Button Text="User Administration"
+                Clicked="OnUserAdminButtonClicked"/>
+        <Button Text="List Assignments"
+                Clicked="OnListAssignmentsButtonClicked"/>
+        <Button Text="Create Assignment"
+                Clicked="OnCreateAssignmentButtonClicked"/>
     </StackLayout>
 </ContentPage>

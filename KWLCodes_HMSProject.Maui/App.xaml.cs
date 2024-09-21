@@ -1,17 +1,14 @@
-﻿
-using KWLCodes_HMSProject.Maui;
+﻿using Microsoft.Maui.Controls;
 
-public partial class App : Application
+namespace KWLCodes_HMSProject.Maui
 {
-    public App()
+    public partial class App : Application
     {
-        InitializeComponent();
+        public App()
+        {
+            InitializeComponent();
 
-        MainPage = new AppShell();
-    }
-
-    private void InitializeComponent()
-    {
-        throw new NotImplementedException();
+            MainPage = new NavigationPage(new MainPage());
+        }
     }
 }
