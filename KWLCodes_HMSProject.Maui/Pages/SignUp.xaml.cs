@@ -1,8 +1,8 @@
 namespace KWLCodes_HMSProject.Maui.Pages;
 
-public partial class LandingPage : ContentPage
+public partial class SignUp : ContentPage
 {
-	public LandingPage()
+	public SignUp()
 	{
 		InitializeComponent();
 	}

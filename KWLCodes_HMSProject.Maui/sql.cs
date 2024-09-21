@@ -24,4 +24,5 @@ namespace KWLCodes_HMSProject.Maui
             // Do some work with the connection// ...// Close the connection
             connection.Close();
         }
+    }
 }

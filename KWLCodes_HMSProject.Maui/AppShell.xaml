@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Shell
-    x:Class="KWLCodes_HMSProject.Maui.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:KWLCodes_HMSProject.Maui"
-    Shell.FlyoutBehavior="Disabled"
-    Title="KWLCodes_HMSProject.Maui">
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       x:Class="KWLCodes_HMSProject.Maui.AppShell">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <ShellContent Route="LandingPage" ContentTemplate="{DataTemplate local:LandingPage}" />
+    <ShellContent Route="Login" ContentTemplate="{DataTemplate local:Login}" />
+    <ShellContent Route="SignUp" ContentTemplate="{DataTemplate local:SignUp}" />
 
 </Shell>
+
+
