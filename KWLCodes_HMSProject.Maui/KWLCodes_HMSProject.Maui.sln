@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KWLCodes_HMSProject.Maui", "KWLCodes_HMSProject.Maui.csproj", "{0A1666D0-BB0E-436F-925B-ECB082E641D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMS_UnitTesting", "..\HMS_UnitTesting\HMS_UnitTesting.csproj", "{0D41637F-1800-4C1A-A1DE-DD191CDA8079}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMS_UnitTesting", "..\HMS_UnitTesting\HMS_UnitTesting.csproj", "{0D41637F-1800-4C1A-A1DE-DD191CDA8079}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
