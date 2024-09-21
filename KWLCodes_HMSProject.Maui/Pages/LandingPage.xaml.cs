@@ -1,8 +1,8 @@
-namespace KWLCodes_HMSProject.Maui.FunctionalRequirements;
+namespace KWLCodes_HMSProject.Maui.Pages;
 
-public partial class Landing_Page : ContentPage
+public partial class LandingPage : ContentPage
 {
-	public Landing_Page()
+	public LandingPage()
 	{
 		InitializeComponent();
 	}
