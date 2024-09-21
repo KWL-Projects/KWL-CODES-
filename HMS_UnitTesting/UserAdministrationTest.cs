@@ -9,7 +9,7 @@ using KWLCodes_HMSProject.Maui.Pages;
 
 namespace HMS_UnitTesting
 {
-    public class UserAdministrationsTests
+    public class UserAdministrationTest
     {
         [Fact]
         public void UpdateUserInformation_SuccessfulUpdate_ReturnsSuccessMessage()
@@ -30,9 +30,6 @@ namespace HMS_UnitTesting
         {
             // Arrange
             var userInfo = new UserAdministration.UserInfo { UserName = "testuser", Email = "testuser@example.com" };
-            var userAdmin = new UserAdministration.UserAdministrations();
-
-            // Simulate a failure in the UpdateUserInDatabase method
             var userAdminMock = new Mock<UserAdministration.UserAdministrations>();
             userAdminMock.Setup(u => u.UpdateUserInDatabase(It.IsAny<UserAdministration.UserInfo>())).Returns(false);
 
@@ -48,9 +45,6 @@ namespace HMS_UnitTesting
         {
             // Arrange
             var userInfo = new UserAdministration.UserInfo { UserName = "testuser", Email = "testuser@example.com" };
-            var userAdmin = new UserAdministration.UserAdministrations();
-
-            // Simulate an exception in the UpdateUserInDatabase method
             var userAdminMock = new Mock<UserAdministration.UserAdministrations>();
             userAdminMock.Setup(u => u.UpdateUserInDatabase(It.IsAny<UserAdministration.UserInfo>())).Throws(new Exception("Database error"));
 
@@ -60,8 +54,5 @@ namespace HMS_UnitTesting
             // Assert
             Assert.Equal("An error occurred while updating user information.", result);
         }
-    }
-    internal class UserAdministrationTest
-    {
     }
 }
