@@ -1,34 +1,25 @@
-﻿using System;
-using Microsoft.Maui.Controls;
-using KWLCodes_HMSProject.Maui.Pages;
-
-namespace KWLCodes_HMSProject.Maui
+﻿namespace KWLCodes_HMSProject.Maui
 {
     public partial class MainPage : ContentPage
     {
+        int count = 0;
+
         public MainPage()
         {
             InitializeComponent();
         }
 
-        private async void OnLoginButtonClicked(object sender, EventArgs e)
+        private void OnCounterClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Login());
-        }
+            count++;
 
-        private async void OnUserAdminButtonClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new UserAdmin());
-        }
+            if (count == 1)
+                CounterBtn.Text = $"Clicked {count} time";
+            else
+                CounterBtn.Text = $"Clicked {count} times";
 
-        private async void OnListAssignmentsButtonClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new AssignmentList());
-        }
-
-        private async void OnCreateAssignmentButtonClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new AssignmentCreate());
+            SemanticScreenReader.Announce(CounterBtn.Text);
         }
     }
+
 }

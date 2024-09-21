@@ -1,15 +1,11 @@
-﻿using Microsoft.Maui.Controls;
-using KWLCodes_HMSProject.Maui.Pages;
+﻿namespace KWLCodes_HMSProject.Maui;
 
-namespace KWLCodes_HMSProject.Maui
+public partial class App : Application
 {
-    public partial class App : Application
+    public App()
     {
-        public App()
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            MainPage = new AppShell();
-        }
+        MainPage = new AppShell();
     }
 }

@@ -1,6 +1,4 @@
-﻿using Microsoft.Maui.Controls;
-
-namespace KWLCodes_HMSProject.Maui
+﻿namespace KWLCodes_HMSProject.Maui
 {
     public partial class AppShell : Shell
     {
