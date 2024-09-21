@@ -1,8 +1,8 @@
 namespace KWLCodes_HMSProject.Maui.Pages;
 
-public partial class UserAdmin : ContentPage
+public partial class UploadVideo : ContentPage
 {
-	public UserAdmin()
+	public UploadVideo()
 	{
 		InitializeComponent();
 	}
