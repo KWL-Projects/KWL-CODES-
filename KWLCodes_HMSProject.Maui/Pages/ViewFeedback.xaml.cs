@@ -1,8 +1,8 @@
-namespace KWLCodes_HMSProject.Maui.FunctionalRequirements;
+namespace KWLCodes_HMSProject.Maui.Pages;
 
-public partial class ViewVideoFeedback : ContentPage
+public partial class ViewFeedback : ContentPage
 {
-	public ViewVideoFeedback()
+	public ViewFeedback()
 	{
 		InitializeComponent();
 	}

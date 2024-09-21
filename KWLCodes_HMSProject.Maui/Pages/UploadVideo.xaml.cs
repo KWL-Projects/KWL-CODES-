@@ -1,4 +1,4 @@
-namespace KWLCodes_HMSProject.Maui.FunctionalRequirements;
+namespace KWLCodes_HMSProject.Maui.Pages;
 
 public partial class UploadVideo : ContentPage
 {

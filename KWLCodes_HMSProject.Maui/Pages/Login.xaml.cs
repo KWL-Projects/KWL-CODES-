@@ -1,8 +1,8 @@
 namespace KWLCodes_HMSProject.Maui.Pages;
 
-public partial class ViewAssignments : ContentPage
+public partial class Login : ContentPage
 {
-	public ViewAssignments()
+	public Login()
 	{
 		InitializeComponent();
 	}

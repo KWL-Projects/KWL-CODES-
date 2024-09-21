@@ -66,9 +66,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Pages\ViewFeedback.xaml.cs">
-	    <DependentUpon>ViewFeedback.xaml</DependentUpon>
-	  </Compile>
+	  <MauiXaml Update="Pages\LandingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Login.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\UploadVideo.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\ViewAssignments.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\ViewFeedback.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
