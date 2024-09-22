@@ -5,8 +5,6 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KWLCodes_HMSProject.Maui", "KWLCodes_HMSProject.Maui.csproj", "{0A1666D0-BB0E-436F-925B-ECB082E641D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMSUnitTesting", "..\HMSUnitTesting\HMSUnitTesting.csproj", "{F74B6526-3142-4C8C-BC57-7781F110A4AF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,10 +17,6 @@ Global
 		{0A1666D0-BB0E-436F-925B-ECB082E641D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A1666D0-BB0E-436F-925B-ECB082E641D9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0A1666D0-BB0E-436F-925B-ECB082E641D9}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{F74B6526-3142-4C8C-BC57-7781F110A4AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F74B6526-3142-4C8C-BC57-7781F110A4AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F74B6526-3142-4C8C-BC57-7781F110A4AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F74B6526-3142-4C8C-BC57-7781F110A4AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
