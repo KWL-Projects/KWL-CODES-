@@ -67,7 +67,7 @@ public class UserAdminTest
     // Inject the output helper to capture test output.
     private readonly ITestOutputHelper _output;
 
-    public UserAdministrationTest(ITestOutputHelper output)
+    public UserAdminTest(ITestOutputHelper output)
     {
         _output = output;
     }
