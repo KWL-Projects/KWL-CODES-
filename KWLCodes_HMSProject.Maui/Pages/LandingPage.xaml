@@ -4,34 +4,19 @@
              x:Class="KWLCodes_HMSProject.Maui.Pages.LandingPage"
              Title="Home">
 
-    <VerticalStackLayout Padding="40" Spacing="30"
-                         VerticalOptions="Center"
+    <VerticalStackLayout Padding="20" Spacing="20"
+                         VerticalOptions="Center" 
                          HorizontalOptions="Center">
 
-        <Label Text="Welcome to HMS Project"
-               FontSize="32"
-               FontAttributes="Bold"
-               TextColor="#2A2A2A"
+        <Label Text="Welcome to HMS Project" 
+               FontSize="24" 
                HorizontalOptions="Center" />
 
-        <Button x:Name="LoginButton"
-                Text="Login"
-                BackgroundColor="#4CAF50"
-                TextColor="White"
-                FontAttributes="Bold"
-                CornerRadius="15"
-                Padding="10"
+        <Button Text="Login"
                 Clicked="OnLoginClicked"
                 HorizontalOptions="FillAndExpand" />
 
-        <Button x:Name="ViewAssignmentsButton"
-                Text="View Assignments"
-                IsVisible="False"
-            BackgroundColor="#2196F3"
-                TextColor="White"
-                FontAttributes="Bold"
-                CornerRadius="15"
-                Padding="10"
+        <Button Text="View Assignments"
                 Clicked="OnViewAssignmentsClicked"
                 HorizontalOptions="FillAndExpand" />
 

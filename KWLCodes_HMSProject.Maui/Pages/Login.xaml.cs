@@ -1,6 +1,5 @@
 using System;
 using Microsoft.Maui.Controls;
-using Microsoft.Maui.Storage;
 
 namespace KWLCodes_HMSProject.Maui.Pages
 {
@@ -11,37 +10,26 @@ namespace KWLCodes_HMSProject.Maui.Pages
             InitializeComponent();
         }
 
+        // Handler for the Login Button Click
         private async void OnLoginClicked(object sender, EventArgs e)
         {
-            var button = (Button)sender;
-            await button.ScaleTo(1.1, 100);
-            await button.ScaleTo(1.0, 100);
-
             string username = UsernameEntry.Text;
             string password = PasswordEntry.Text;
 
+            // Simple validation - Replace this with real authentication logic later
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
                 await DisplayAlert("Error", "Please enter both username and password", "OK");
                 return;
             }
 
-            // Simulate a successful login
-            Preferences.Set("IsLoggedIn", true); // Set login state using Preferences
-
-            // Navigate to LandingPage
+            // Navigate to LandingPage (assuming login is successful)
             await Navigation.PushAsync(new LandingPage());
         }
 
-        // Handler for the Cancel Button Click (go back to Landing Page)
+        // Handler for the Cancel Button Click (goes back to Landing Page)
         private async void OnCancelClicked(object sender, EventArgs e)
         {
-            var button = (Button)sender;
-            // Button animation (scale up and down)
-            await button.ScaleTo(1.1, 100);  // Slightly enlarge button
-            await button.ScaleTo(1.0, 100);  // Return to normal size
-
-            // Go back to Landing Page
             await Navigation.PushAsync(new LandingPage());
         }
     }
