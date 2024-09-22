@@ -8,8 +8,22 @@
     Title="KWLCodes_HMSProject.Maui">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Title="Landing Page"
+        ContentTemplate="{DataTemplate local:Pages.LandingPage}"
+        Route="LandingPage" />
 
+    <ShellContent
+        Title="View Assignments"
+        ContentTemplate="{DataTemplate local:Pages.ViewAssignments}"
+        Route="ViewAssignments" />
+
+    <ShellContent
+        Title="Upload Video"
+        ContentTemplate="{DataTemplate local:Pages.UploadVideo}"
+        Route="UploadVideo" />
+
+    <ShellContent
+        Title="View Video Feedback"
+        ContentTemplate="{DataTemplate local:Pages.ViewVideoFeedback}"
+        Route="ViewVideoFeedback" />
 </Shell>
