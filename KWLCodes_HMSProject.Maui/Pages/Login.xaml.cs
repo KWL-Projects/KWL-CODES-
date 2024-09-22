@@ -1,6 +1,6 @@
 using System;
 using Microsoft.Maui.Controls;
-using Microsoft.Maui.Storage;
+using Microsoft.Maui.Storage; // Add this namespace for Preferences
 
 namespace KWLCodes_HMSProject.Maui.Pages
 {
@@ -11,15 +11,18 @@ namespace KWLCodes_HMSProject.Maui.Pages
             InitializeComponent();
         }
 
+        // Handler for the Login Button Click
         private async void OnLoginClicked(object sender, EventArgs e)
         {
             var button = (Button)sender;
-            await button.ScaleTo(1.1, 100);
-            await button.ScaleTo(1.0, 100);
+            // Button animation (scale up and down)
+            await button.ScaleTo(1.1, 100);  // Slightly enlarge button
+            await button.ScaleTo(1.0, 100);  // Return to normal size
 
             string username = UsernameEntry.Text;
             string password = PasswordEntry.Text;
 
+            // Simple validation (replace with actual authentication logic)
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
                 await DisplayAlert("Error", "Please enter both username and password", "OK");
