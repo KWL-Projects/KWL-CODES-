@@ -5,7 +5,9 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KWLCodes_HMSProject.Maui", "KWLCodes_HMSProject.Maui.csproj", "{0A1666D0-BB0E-436F-925B-ECB082E641D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMS_Testing", "..\HMS_Testing\HMS_Testing.csproj", "{F682B101-1A36-4CE0-A039-62AF7FF1F6D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMS_Testing", "..\HMS_Testing\HMS_Testing.csproj", "{F682B101-1A36-4CE0-A039-62AF7FF1F6D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KWLCodesAPI", "..\KWLCodesAPI\KWLCodesAPI.csproj", "{C9F1516C-C8E1-41AA-A95F-2A905C898C3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{F682B101-1A36-4CE0-A039-62AF7FF1F6D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F682B101-1A36-4CE0-A039-62AF7FF1F6D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F682B101-1A36-4CE0-A039-62AF7FF1F6D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9F1516C-C8E1-41AA-A95F-2A905C898C3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9F1516C-C8E1-41AA-A95F-2A905C898C3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9F1516C-C8E1-41AA-A95F-2A905C898C3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9F1516C-C8E1-41AA-A95F-2A905C898C3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
