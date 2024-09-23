@@ -1,7 +1,10 @@
-﻿namespace KWLCodesAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace KWLCodesAPI.Models
 {
     public class User
     {
+        [Key]
         public int user_id { get; set; }
         public int login_id {  get; set; }
         public string user_firstname { get; set; }
