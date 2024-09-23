@@ -3,6 +3,8 @@ using KWLCodesAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//DotNetEnv.Env.Load(builder);
+
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
 
