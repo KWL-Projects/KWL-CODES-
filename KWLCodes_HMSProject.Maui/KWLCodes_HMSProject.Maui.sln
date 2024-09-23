@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KWL_HMSWeb.Server", "..\KWL
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "kwl_hmsweb.client", "..\KWL_HMSWeb\kwl_hmsweb.client\kwl_hmsweb.client.esproj", "{C486C23D-6EC7-4D5B-B386-BFBFDA8BB65E}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "KWL_HMSWebApp", "..\KWL_HMSWebApp\KWL_HMSWebApp.esproj", "{9DF78D7C-13BA-477F-BCE2-BF4B5481CD71}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,12 +43,6 @@ Global
 		{C486C23D-6EC7-4D5B-B386-BFBFDA8BB65E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C486C23D-6EC7-4D5B-B386-BFBFDA8BB65E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C486C23D-6EC7-4D5B-B386-BFBFDA8BB65E}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{9DF78D7C-13BA-477F-BCE2-BF4B5481CD71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9DF78D7C-13BA-477F-BCE2-BF4B5481CD71}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9DF78D7C-13BA-477F-BCE2-BF4B5481CD71}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{9DF78D7C-13BA-477F-BCE2-BF4B5481CD71}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9DF78D7C-13BA-477F-BCE2-BF4B5481CD71}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9DF78D7C-13BA-477F-BCE2-BF4B5481CD71}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
