@@ -1,7 +1,9 @@
-﻿namespace KWLCodesAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+namespace KWLCodesAPI.Models
 {
     public class Feedback
     {
+        [Key]
         public int feedback_id { get; set; }
         public int submission_id { get; set; }
         public int user_id { get; set; }

@@ -1,7 +1,9 @@
-﻿namespace KWLCodesAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+namespace KWLCodesAPI.Models
 {
     public class Assignment
     {
+        [Key]
         public int assignment_id {  get; set; }
         public int subject_id { get; set; }
         public int user_id { get; set; }
