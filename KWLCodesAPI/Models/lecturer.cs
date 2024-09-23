@@ -1,6 +1,6 @@
 ﻿namespace KWLCodesAPI.Models
 {
-    public class lecturer
+    public class Lecturer
     {
         public int user_id { get; set; }
         public int subject_id { get; set; }

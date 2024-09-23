@@ -1,6 +1,6 @@
 ﻿namespace KWLCodesAPI.Models
 {
-    public class user
+    public class User
     {
         public int user_id { get; set; }
         public int login_id {  get; set; }

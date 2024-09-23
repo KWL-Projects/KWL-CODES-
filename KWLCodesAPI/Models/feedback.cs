@@ -1,6 +1,6 @@
 ﻿namespace KWLCodesAPI.Models
 {
-    public class feedback
+    public class Feedback
     {
         public int feedback_id { get; set; }
         public int submission_id { get; set; }

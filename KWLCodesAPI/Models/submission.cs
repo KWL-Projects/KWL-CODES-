@@ -1,6 +1,6 @@
 ﻿namespace KWLCodesAPI.Models
 {
-    public class submission
+    public class Submission
     {
         public int submission_id {  get; set; }
         public int assignment_id { get; set; }

@@ -11,15 +11,15 @@ namespace KWLCodesAPI.Models
         {
         }
 
-        public DbSet<login> Login { get; set; }
-        public DbSet<user> User { get; set; }
-        public DbSet<assignment> Assignment { get; set; }
-        public DbSet<feedback> Feedback { get; set; }
-        public DbSet<lecturer> Lecturer { get; set; }
-        public DbSet<student> Student { get; set; }
-        public DbSet<admin> Admin { get; set; }
-        public DbSet<enrollment> Enrollment { get; set; }
-        public DbSet<subject> Subject { get; set; }
-        public DbSet<submission> Submission { get; set; }
+        public DbSet<Login> Login { get; set; } = null!;
+        public DbSet<User> User { get; set; } = null!;
+        public DbSet<Assignment> Assignment { get; set; } = null!;
+        public DbSet<Feedback> Feedback { get; set; } = null!; 
+        public DbSet<Lecturer> Lecturer { get; set; } = null!;
+        public DbSet<Student> Student { get; set; } = null!;
+        public DbSet<Admin> Admin { get; set; } = null!;
+        public DbSet<Enrollment> Enrollment { get; set; } = null!;
+        public DbSet<Subject> Subject { get; set; } = null!;
+        public DbSet<Submission> Submission { get; set; } = null!;
     }
 }
