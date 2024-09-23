@@ -1,0 +1,6 @@
+@KWL_HMSWeb.Server_HostAddress = http://localhost:5142
+
+GET {{KWL_HMSWeb.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
