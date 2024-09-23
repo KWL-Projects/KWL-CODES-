@@ -1,0 +1,6 @@
+@KWLCodesAPI_HostAddress = http://localhost:5182
+
+GET {{KWLCodesAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
