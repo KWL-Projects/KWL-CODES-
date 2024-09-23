@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "kwl_hmsweb.client": {
+    "KWL_HMSWebApp": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/kwl_hmsweb.client",
+            "outputPath": "dist/kwl-hmsweb-app",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -69,16 +69,13 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "kwl_hmsweb.client:build:production"
+              "buildTarget": "KWL_HMSWebApp:build:production"
             },
             "development": {
-              "buildTarget": "kwl_hmsweb.client:build:development"
+              "buildTarget": "KWL_HMSWebApp:build:development"
             }
           },
-          "defaultConfiguration": "development",
-          "options": {
-            "proxyConfig": "src/proxy.conf.js"
-          }
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
@@ -106,8 +103,5 @@
         }
       }
     }
-  },
-  "cli": {
-    "analytics": "1cf83279-8459-4dec-b515-9397fc909ba0"
   }
 }
