@@ -2,9 +2,9 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-user-admin',
-  templateUrl: './user-admin.component.html',
-  styleUrls: ['./user-admin.component.css']
+  selector: 'app-user-administration',
+  templateUrl: './user-administration.component.html',
+  styleUrls: ['./user-administration.component.css']
 })
 export class UserAdminComponent implements OnInit {
   users = [
