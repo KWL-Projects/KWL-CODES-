@@ -1,6 +1,9 @@
 using Microsoft.Maui.Media;
 using Microsoft.Maui.Storage;
 using System;
+using System.IO;
+using System.Threading.Tasks;
+using Xabe.FFmpeg;
 
 namespace KWLCodes_HMSProject.Maui.Pages
 {
@@ -13,6 +16,9 @@ namespace KWLCodes_HMSProject.Maui.Pages
 
         private async void OnSelectVideoClicked(object sender, EventArgs e)
         {
+            var button = (Button)sender;
+            await AnimateButton(button);
+
             try
             {
                 var result = await FilePicker.PickAsync(new PickOptions
@@ -25,76 +31,104 @@ namespace KWLCodes_HMSProject.Maui.Pages
                 {
                     string filePath = result.FullPath;
 
-                    // Display success message
-                    StatusLabel.Text = $"Success: Video selected from {filePath}";
-                    LogFileEntry($"Success: Video selected: {filePath}");
+                    // Verify file type (optional, as FilePickerFileType.Videos already filters video files)
+                    if (IsValidVideoFile(filePath))
+                    {
+                        // Display success message
+                        StatusLabel.Text = $"Success: Video selected from {filePath}";
+                        LogEntry("Success", $"Video selected: {filePath}");
 
-                    // Here you can implement logic to use the selected video using filePath
+                        // Compress the video
+                        await CompressVideo(filePath);
+                    }
+                    else
+                    {
+                        StatusLabel.Text = "Failure: Invalid video file type.";
+                        LogEntry("Failure", "Invalid video file type selected.");
+                    }
                 }
             }
             catch (Exception ex)
             {
                 // Display failure message
                 StatusLabel.Text = "Failure: Could not select video.";
-                LogFileEntry($"Failure: {ex.Message}");
+                LogEntry("Failure", ex.Message);
             }
         }
 
         private async void OnRecordVideoClicked(object sender, EventArgs e)
         {
+            var button = (Button)sender;
+            await AnimateButton(button);
+
             try
             {
-                // Check and request camera permission
-                var cameraStatus = await Permissions.CheckStatusAsync<Permissions.Camera>();
-                if (cameraStatus != PermissionStatus.Granted)
+                if (MediaPicker.Default.IsCaptureSupported)
                 {
-                    cameraStatus = await Permissions.RequestAsync<Permissions.Camera>();
-                }
-
-                // Check and request storage permission (for saving video)
-                var storageStatus = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
-                if (storageStatus != PermissionStatus.Granted)
-                {
-                    storageStatus = await Permissions.RequestAsync<Permissions.StorageWrite>();
-                }
-
-                // If permissions are granted, proceed with video recording
-                if (cameraStatus == PermissionStatus.Granted && storageStatus == PermissionStatus.Granted)
-                {
-                    var result = await MediaPicker.CaptureVideoAsync(new MediaPickerOptions
+                    var video = await MediaPicker.Default.CaptureVideoAsync();
+                    if (video != null)
                     {
-                        Title = "Record a Video"
-                    });
-
-                    if (result != null)
-                    {
-                        string filePath = result.FullPath;
-
-                        // Display success message
-                        StatusLabel.Text = $"Success: Video recorded at {filePath}";
-                        LogFileEntry($"Success: Video recorded: {filePath}");
-
-                        // Here you can implement logic to use the recorded video using filePath
+                        var filePath = video.FullPath;
+                        // Handle the captured video file
+                        StatusLabel.Text = "Status: Video recorded successfully!";
+                        LogEntry("Success", $"Video recorded: {filePath}");
                     }
                 }
                 else
                 {
-                    // Display permission denial message
-                    StatusLabel.Text = "Permission denied to access camera or storage.";
+                    StatusLabel.Text = "Status: Video capture not supported on this device.";
+                    LogEntry("Failure", "Video capture not supported.");
                 }
             }
             catch (Exception ex)
             {
-                // Display failure message
-                StatusLabel.Text = "Failure: Could not record video.";
-                LogFileEntry($"Failure: {ex.Message}");
+                StatusLabel.Text = $"Status: An error occurred: {ex.Message}";
+                LogEntry("Failure", ex.Message);
             }
         }
 
-        private void LogFileEntry(string message)
+        private async Task CompressVideo(string filePath)
         {
-            // Implement logging logic here (e.g., write to a file, database, etc.)
-            Console.WriteLine(message);
+            try
+            {
+                string outputFilePath = Path.Combine(Path.GetDirectoryName(filePath), "compressed_" + Path.GetFileName(filePath));
+
+                // Set the FFmpeg path
+                FFmpeg.SetExecutablesPath("path_to_ffmpeg");
+
+                // Compress the video
+                var conversion = await FFmpeg.Conversions.FromSnippet.Convert(filePath, outputFilePath);
+                await conversion.Start();
+
+                // Display success message
+                StatusLabel.Text = $"Success: Video compressed and saved to {outputFilePath}";
+                LogEntry("Success", $"Video compressed: {outputFilePath}");
+            }
+            catch (Exception ex)
+            {
+                // Display failure message
+                StatusLabel.Text = $"Failure: Could not compress video. {ex.Message}";
+                LogEntry("Failure", ex.Message);
+            }
+        }
+
+        private bool IsValidVideoFile(string filePath)
+        {
+            var validExtensions = new[] { ".mp4", ".mov", ".avi" };
+            return validExtensions.Contains(Path.GetExtension(filePath).ToLower());
+        }
+
+        private async Task AnimateButton(Button button)
+        {
+            await button.ScaleTo(1.1, 100);  // Slightly enlarge button
+            await button.ScaleTo(1.0, 100);  // Return to normal size
+        }
+
+        private void LogEntry(string status, string message)
+        {
+            var logMessage = $"{DateTime.Now}: {status} - {message}";
+            // Save logMessage to a log file or database
+            Console.WriteLine(logMessage);
         }
     }
 }
