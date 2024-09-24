@@ -12,12 +12,35 @@ namespace KWLCodes_HMSProject.Maui.Pages
             CheckLoginState();
         }
 
-        private void CheckLoginState()
+        private async void CheckLoginState()
         {
             bool isLoggedIn = Preferences.Get("IsLoggedIn", false);
-            LoginButton.IsVisible = !isLoggedIn;
-            ViewAssignmentsButton.IsVisible = isLoggedIn;
-            LogoutButton.IsVisible = isLoggedIn;
+            if (isLoggedIn)
+            {
+                string username = await SecureStorage.GetAsync("username");
+                string password = await SecureStorage.GetAsync("password");
+
+                if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+                {
+                    // Automatically log the user in
+                    LoginButton.IsVisible = false;
+                    ViewAssignmentsButton.IsVisible = true;
+                    LogoutButton.IsVisible = true;
+                }
+                else
+                {
+                    // Show login button if credentials are not found
+                    LoginButton.IsVisible = true;
+                    ViewAssignmentsButton.IsVisible = false;
+                    LogoutButton.IsVisible = false;
+                }
+            }
+            else
+            {
+                LoginButton.IsVisible = true;
+                ViewAssignmentsButton.IsVisible = false;
+                LogoutButton.IsVisible = false;
+            }
         }
 
         private async void OnLoginClicked(object sender, EventArgs e)
@@ -41,6 +64,8 @@ namespace KWLCodes_HMSProject.Maui.Pages
 
             // Clear login state
             Preferences.Set("IsLoggedIn", false);
+            SecureStorage.Remove("username");
+            SecureStorage.Remove("password");
 
             // Update UI
             CheckLoginState();

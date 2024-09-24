@@ -25,17 +25,38 @@ namespace KWLCodes_HMSProject.Maui.Pages
                 return;
             }
 
-            Preferences.Set("IsLoggedIn", true);
+            // Retrieve stored credentials
+            string storedUsername = await SecureStorage.GetAsync("username");
+            string storedPassword = await SecureStorage.GetAsync("password");
 
-            await Navigation.PushAsync(new LandingPage());
+            // Debugging: Display stored credentials
+            Console.WriteLine($"Stored Username: {storedUsername}");
+            Console.WriteLine($"Stored Password: {storedPassword}");
+
+            // Validate credentials
+            if (username == storedUsername && password == storedPassword)
+            {
+                Preferences.Set("IsLoggedIn", true);
+                await Navigation.PushAsync(new LandingPage());
+            }
+            else
+            {
+                await DisplayAlert("Error", "Invalid username or password", "OK");
+            }
         }
 
         private async void OnCancelClicked(object sender, EventArgs e)
         {
             var button = (Button)sender;
             await AnimateButton(button);
-
             await Navigation.PushAsync(new LandingPage());
+        }
+
+        private async void OnSignUpClicked(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            await AnimateButton(button);
+            await Navigation.PushAsync(new SignUp());
         }
 
         private async Task AnimateButton(Button button)

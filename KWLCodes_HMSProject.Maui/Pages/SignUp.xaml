@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="KWLCodes_HMSProject.Maui.Pages.Login"
-             Title="Login">
+             x:Class="KWLCodes_HMSProject.Maui.Pages.SignUp"
+             Title="Sign Up">
     <VerticalStackLayout Padding="40" Spacing="30"
                          VerticalOptions="Center"
                          HorizontalOptions="Center">
+
+        <Label Text="Create an Account"
+               FontSize="24"
+               FontAttributes="Bold"
+               TextColor="#2A2A2A"
+               HorizontalOptions="Center" />
 
         <Label Text="Username" 
                FontSize="16"
@@ -26,32 +32,6 @@
                IsPassword="True"
                Keyboard="Default"
                HorizontalOptions="FillAndExpand" />
-
-        <Button x:Name="LoginButton"
-                Text="Login"
-                BackgroundColor="#4CAF50"
-                TextColor="White"
-                FontAttributes="Bold"
-                CornerRadius="15"
-                Padding="10"
-                Clicked="OnLoginClicked"
-                HorizontalOptions="FillAndExpand" />
-
-        <Button x:Name="CancelButton"
-                Text="Cancel"
-                BackgroundColor="#2196F3"
-                TextColor="White"
-                FontAttributes="Bold"
-                CornerRadius="15"
-                Padding="10"
-                Clicked="OnCancelClicked"
-                HorizontalOptions="FillAndExpand" />
-
-        <Label Text="Don't have an account?"
-               FontSize="14"
-               TextColor="#2A2A2A"
-               HorizontalOptions="Center"
-               Margin="20,10,20,0" />
 
         <Button x:Name="SignUpButton"
                 Text="Sign Up"
