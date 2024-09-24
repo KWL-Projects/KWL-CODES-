@@ -7,6 +7,7 @@ import { UserAdminComponent } from './components/user-administration/user-admini
 import { ListAssignmentsComponent } from './components/list-assignments/list-assignments.component';
 import { CreateAssignmentComponent } from './components/create-assignment/create-assignment.component';
 import { ListAssignmentVideosComponent } from './components/list-assignment-videos/list-assignment-videos.component';
+import { ProvideFeedbackComponent } from './components/provide-feedback/provide-feedback.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -23,6 +24,10 @@ const routes: Routes = [
   { path: '', redirectTo: '/create-assignment', pathMatch: 'full' },
   { path: 'list-assignment-videos', component: ListAssignmentVideosComponent },
   { path: '', redirectTo: '/list-assignment-videos', pathMatch: 'full' },
+  { path: 'provide-feedback', component: ProvideFeedbackComponent },
+  { path: '', redirectTo: '/provide-feedback', pathMatch: 'full' },
+
+  
 ];
 
 @NgModule({
