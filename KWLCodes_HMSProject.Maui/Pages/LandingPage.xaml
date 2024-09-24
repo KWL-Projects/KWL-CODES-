@@ -34,5 +34,16 @@
                 Clicked="OnViewAssignmentsClicked"
                 HorizontalOptions="FillAndExpand" />
 
+        <Button x:Name="LogoutButton"
+                Text="Logout"
+                IsVisible="False"
+                BackgroundColor="#F44336"
+                TextColor="White"
+                FontAttributes="Bold"
+                CornerRadius="15"
+                Padding="10"
+                Clicked="OnLogoutClicked"
+                HorizontalOptions="FillAndExpand" />
+
     </VerticalStackLayout>
 </ContentPage>
