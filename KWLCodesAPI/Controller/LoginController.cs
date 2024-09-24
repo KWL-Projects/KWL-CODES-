@@ -17,9 +17,22 @@ namespace KWLCodesAPI.Controller
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Login>>> GetLogins()
+        public async Task<ActionResult<IEnumerable<Login>>> GetLogin()
         {
             return await _context.Login.ToListAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Login>> GetLogin(long id)
+        {
+            var Login = await _context.Login.FindAsync(id);
+
+            if (Login == null)
+            {
+                return NotFound();
+            }
+
+            return ItemToDTO(Login);
         }
     }
 }
