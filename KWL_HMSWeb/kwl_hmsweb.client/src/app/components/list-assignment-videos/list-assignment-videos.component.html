@@ -1,1 +1,8 @@
-<p>list-assignment-videos works!</p>
+<!-- src/app/components/list-assignment-videos/list-assignment-videos.component.html -->
+<h2>Assignment Videos</h2>
+<ul>
+  <li *ngFor="let video of videos">
+    {{ video.title }}
+    <a [routerLink]="['/videos', video.id]">Watch</a>
+  </li>
+</ul>

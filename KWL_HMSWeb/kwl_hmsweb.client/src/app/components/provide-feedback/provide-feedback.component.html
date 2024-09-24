@@ -1,1 +1,8 @@
-<p>provide-feedback works!</p>
+<!-- src/app/components/provide-feedback/provide-feedback.component.html -->
+<h2>Provide Feedback</h2>
+<form (ngSubmit)="onSubmit()">
+  <label for="feedback">Feedback:</label>
+  <textarea id="feedback" [(ngModel)]="feedback" name="feedback" required></textarea>
+
+  <button type="submit">Submit</button>
+</form>
