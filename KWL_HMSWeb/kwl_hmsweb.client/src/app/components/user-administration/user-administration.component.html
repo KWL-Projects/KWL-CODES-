@@ -1,0 +1,17 @@
+<!-- src/app/components/user-admin/user-admin.component.html -->
+<h2>User Administration</h2>
+<table>
+  <tr>
+    <th>Username</th>
+    <th>Role</th>
+    <th>Actions</th>
+  </tr>
+  <tr *ngFor="let user of users">
+    <td>{{ user.username }}</td>
+    <td>{{ user.role }}</td>
+    <td>
+      <button (click)="editUser(user)">Edit</button>
+      <button (click)="deleteUser(user.id)">Delete</button>
+    </td>
+  </tr>
+</table>
