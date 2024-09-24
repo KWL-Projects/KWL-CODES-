@@ -1,3 +1,7 @@
+using Microsoft.Maui.Media;
+using Microsoft.Maui.Storage;
+using System;
+
 namespace KWLCodes_HMSProject.Maui.Pages
 {
     public partial class UploadVideo : ContentPage
@@ -40,20 +44,43 @@ namespace KWLCodes_HMSProject.Maui.Pages
         {
             try
             {
-                var result = await MediaPicker.CaptureVideoAsync(new MediaPickerOptions
+                // Check and request camera permission
+                var cameraStatus = await Permissions.CheckStatusAsync<Permissions.Camera>();
+                if (cameraStatus != PermissionStatus.Granted)
                 {
-                    Title = "Record a Video"
-                });
+                    cameraStatus = await Permissions.RequestAsync<Permissions.Camera>();
+                }
 
-                if (result != null)
+                // Check and request storage permission (for saving video)
+                var storageStatus = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
+                if (storageStatus != PermissionStatus.Granted)
                 {
-                    string filePath = result.FullPath;
+                    storageStatus = await Permissions.RequestAsync<Permissions.StorageWrite>();
+                }
 
-                    // Display success message
-                    StatusLabel.Text = $"Success: Video recorded at {filePath}";
-                    LogFileEntry($"Success: Video recorded: {filePath}");
+                // If permissions are granted, proceed with video recording
+                if (cameraStatus == PermissionStatus.Granted && storageStatus == PermissionStatus.Granted)
+                {
+                    var result = await MediaPicker.CaptureVideoAsync(new MediaPickerOptions
+                    {
+                        Title = "Record a Video"
+                    });
 
-                    // Here you can implement logic to use the recorded video using filePath
+                    if (result != null)
+                    {
+                        string filePath = result.FullPath;
+
+                        // Display success message
+                        StatusLabel.Text = $"Success: Video recorded at {filePath}";
+                        LogFileEntry($"Success: Video recorded: {filePath}");
+
+                        // Here you can implement logic to use the recorded video using filePath
+                    }
+                }
+                else
+                {
+                    // Display permission denial message
+                    StatusLabel.Text = "Permission denied to access camera or storage.";
                 }
             }
             catch (Exception ex)

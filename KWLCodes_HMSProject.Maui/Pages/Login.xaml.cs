@@ -1,6 +1,6 @@
 using System;
 using Microsoft.Maui.Controls;
-using Microsoft.Maui.Storage; // Add this namespace for Preferences
+using Microsoft.Maui.Storage;
 
 namespace KWLCodes_HMSProject.Maui.Pages
 {
