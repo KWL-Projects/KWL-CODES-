@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KWLCodes_HMSProject.Maui.Pages.UploadVideo"
-             Title="Upload Video">
+             Title="View Assignments">
 
     <VerticalStackLayout Padding="40" Spacing="30"
                          VerticalOptions="Center"

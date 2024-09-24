@@ -1,6 +1,9 @@
 using Microsoft.Maui.Media;
 using Microsoft.Maui.Storage;
 using System;
+using System.IO;
+using System.Threading.Tasks;
+using Xabe.FFmpeg;
 
 namespace KWLCodes_HMSProject.Maui.Pages
 {
@@ -35,7 +38,8 @@ namespace KWLCodes_HMSProject.Maui.Pages
                         StatusLabel.Text = $"Success: Video selected from {filePath}";
                         LogEntry("Success", $"Video selected: {filePath}");
 
-                        // Here you can implement logic to use the selected video using filePath
+                        // Compress the video
+                        await CompressVideo(filePath);
                     }
                     else
                     {
@@ -83,12 +87,35 @@ namespace KWLCodes_HMSProject.Maui.Pages
             }
         }
 
+        private async Task CompressVideo(string filePath)
+        {
+            try
+            {
+                string outputFilePath = Path.Combine(Path.GetDirectoryName(filePath), "compressed_" + Path.GetFileName(filePath));
+
+                // Set the FFmpeg path
+                FFmpeg.SetExecutablesPath("path_to_ffmpeg");
+
+                // Compress the video
+                var conversion = await FFmpeg.Conversions.FromSnippet.Convert(filePath, outputFilePath);
+                await conversion.Start();
+
+                // Display success message
+                StatusLabel.Text = $"Success: Video compressed and saved to {outputFilePath}";
+                LogEntry("Success", $"Video compressed: {outputFilePath}");
+            }
+            catch (Exception ex)
+            {
+                // Display failure message
+                StatusLabel.Text = $"Failure: Could not compress video. {ex.Message}";
+                LogEntry("Failure", ex.Message);
+            }
+        }
+
         private bool IsValidVideoFile(string filePath)
         {
-            // Implement logic to verify the file type if needed
-            // For example, check the file extension
             var validExtensions = new[] { ".mp4", ".mov", ".avi" };
-            return validExtensions.Contains(System.IO.Path.GetExtension(filePath).ToLower());
+            return validExtensions.Contains(Path.GetExtension(filePath).ToLower());
         }
 
         private async Task AnimateButton(Button button)
