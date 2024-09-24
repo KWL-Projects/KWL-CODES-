@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using KWLCodesAPI.Models;
+using KWL_HMSWeb.Server.Models;
 
 namespace KWL_HMSWeb.Server.Models
 {
