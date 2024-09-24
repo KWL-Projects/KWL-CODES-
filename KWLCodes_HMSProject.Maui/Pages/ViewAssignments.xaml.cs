@@ -8,7 +8,7 @@ namespace KWLCodes_HMSProject.Maui.Pages
         public ViewAssignments()
         {
             InitializeComponent();
-            LoadAssignments(); // Method to load assignments if you have one
+            LoadAssignments();
         }
 
         private void LoadAssignments()
@@ -18,12 +18,22 @@ namespace KWLCodes_HMSProject.Maui.Pages
 
         private async void OnUploadVideoClicked(object sender, EventArgs e)
         {
+            var button = (Button)sender;
+            await AnimateButton(button);
             await Navigation.PushAsync(new UploadVideo());
         }
 
         private async void OnViewVideoFeedbackClicked(object sender, EventArgs e)
         {
+            var button = (Button)sender;
+            await AnimateButton(button);
             await Navigation.PushAsync(new ViewVideoFeedback());
+        }
+
+        private async Task AnimateButton(Button button)
+        {
+            await button.ScaleTo(1.1, 100);
+            await button.ScaleTo(1.0, 100);
         }
     }
 }

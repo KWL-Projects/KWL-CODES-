@@ -7,18 +7,26 @@
                          VerticalOptions="Center"
                          HorizontalOptions="Center">
 
-        <Label Text="Username" />
+        <Label Text="Username"
+               FontSize="16"
+               TextColor="#2A2A2A"
+               HorizontalOptions="Center" />
         <Entry x:Name="UsernameEntry"
                Placeholder="Enter your username"
-               Keyboard="Default"/>
+               Keyboard="Default"
+               HorizontalOptions="FillAndExpand" />
 
-        <Label Text="Password" Margin="0,10,0,0"/>
+        <Label Text="Password"
+               FontSize="16"
+               TextColor="#2A2A2A"
+               Margin="0,10,0,0"
+               HorizontalOptions="Center" />
         <Entry x:Name="PasswordEntry"
                Placeholder="Enter your password"
                IsPassword="True"
-               Keyboard="Default"/>
+               Keyboard="Default"
+               HorizontalOptions="FillAndExpand" />
 
-        <!-- Login Button with same style as the Landing Page -->
         <Button x:Name="LoginButton"
                 Text="Login"
                 BackgroundColor="#4CAF50"
@@ -29,7 +37,6 @@
                 Clicked="OnLoginClicked"
                 HorizontalOptions="FillAndExpand" />
 
-        <!-- Cancel Button with same style as the View Assignments button -->
         <Button x:Name="CancelButton"
                 Text="Cancel"
                 BackgroundColor="#2196F3"

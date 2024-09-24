@@ -2,18 +2,18 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KWLCodes_HMSProject.Maui.Pages.UploadVideo"
-             Title="View Assignments">
+             Title="Upload Video">
 
     <VerticalStackLayout Padding="40" Spacing="30"
-                     VerticalOptions="Center"
-                     HorizontalOptions="Center">
-        
+                         VerticalOptions="Center"
+                         HorizontalOptions="Center">
+
         <Label Text="Upload a Video" 
                FontSize="32" 
                TextColor="#2A2A2A"
                HorizontalOptions="Center"
                FontAttributes="Bold"/>
-        
+
         <Button Text="Select Video" 
                 Clicked="OnSelectVideoClicked" 
                 BackgroundColor="#2196F3"
@@ -22,7 +22,7 @@
                 CornerRadius="15"
                 Padding="10"
                 HorizontalOptions="FillAndExpand"/>
-        
+
         <Button Text="Record Video" 
                 Clicked="OnRecordVideoClicked"
                 BackgroundColor="#2196F3"
@@ -31,12 +31,12 @@
                 CornerRadius="15"
                 Padding="10"
                 HorizontalOptions="FillAndExpand"/>
-        
+
         <Label x:Name="StatusLabel"
                Text=""
                FontSize="14"
                TextColor="Red"
                HorizontalOptions="Center" />
-        
+
     </VerticalStackLayout>
 </ContentPage>

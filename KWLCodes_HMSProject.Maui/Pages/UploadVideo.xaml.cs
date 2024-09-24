@@ -14,8 +14,7 @@ namespace KWLCodes_HMSProject.Maui.Pages
         private async void OnSelectVideoClicked(object sender, EventArgs e)
         {
             var button = (Button)sender;
-            await button.ScaleTo(1.1, 100);  // Slightly enlarge button
-            await button.ScaleTo(1.0, 100);
+            await AnimateButton(button);
 
             try
             {
@@ -29,11 +28,20 @@ namespace KWLCodes_HMSProject.Maui.Pages
                 {
                     string filePath = result.FullPath;
 
-                    // Display success message
-                    StatusLabel.Text = $"Success: Video selected from {filePath}";
-                    LogEntry("Success", $"Video selected: {filePath}");
+                    // Verify file type (optional, as FilePickerFileType.Videos already filters video files)
+                    if (IsValidVideoFile(filePath))
+                    {
+                        // Display success message
+                        StatusLabel.Text = $"Success: Video selected from {filePath}";
+                        LogEntry("Success", $"Video selected: {filePath}");
 
-                    // Here you can implement logic to use the selected video using filePath
+                        // Here you can implement logic to use the selected video using filePath
+                    }
+                    else
+                    {
+                        StatusLabel.Text = "Failure: Invalid video file type.";
+                        LogEntry("Failure", "Invalid video file type selected.");
+                    }
                 }
             }
             catch (Exception ex)
@@ -47,8 +55,7 @@ namespace KWLCodes_HMSProject.Maui.Pages
         private async void OnRecordVideoClicked(object sender, EventArgs e)
         {
             var button = (Button)sender;
-            await button.ScaleTo(1.1, 100);  // Slightly enlarge button
-            await button.ScaleTo(1.0, 100);
+            await AnimateButton(button);
 
             try
             {
@@ -74,6 +81,20 @@ namespace KWLCodes_HMSProject.Maui.Pages
                 StatusLabel.Text = $"Status: An error occurred: {ex.Message}";
                 LogEntry("Failure", ex.Message);
             }
+        }
+
+        private bool IsValidVideoFile(string filePath)
+        {
+            // Implement logic to verify the file type if needed
+            // For example, check the file extension
+            var validExtensions = new[] { ".mp4", ".mov", ".avi" };
+            return validExtensions.Contains(System.IO.Path.GetExtension(filePath).ToLower());
+        }
+
+        private async Task AnimateButton(Button button)
+        {
+            await button.ScaleTo(1.1, 100);  // Slightly enlarge button
+            await button.ScaleTo(1.0, 100);  // Return to normal size
         }
 
         private void LogEntry(string status, string message)
