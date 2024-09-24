@@ -13,6 +13,10 @@ namespace KWLCodes_HMSProject.Maui.Pages
 
         private async void OnSelectVideoClicked(object sender, EventArgs e)
         {
+            var button = (Button)sender;
+            await button.ScaleTo(1.1, 100);  // Slightly enlarge button
+            await button.ScaleTo(1.0, 100);
+
             try
             {
                 var result = await FilePicker.PickAsync(new PickOptions
@@ -27,7 +31,7 @@ namespace KWLCodes_HMSProject.Maui.Pages
 
                     // Display success message
                     StatusLabel.Text = $"Success: Video selected from {filePath}";
-                    LogFileEntry($"Success: Video selected: {filePath}");
+                    LogEntry("Success", $"Video selected: {filePath}");
 
                     // Here you can implement logic to use the selected video using filePath
                 }
@@ -36,65 +40,47 @@ namespace KWLCodes_HMSProject.Maui.Pages
             {
                 // Display failure message
                 StatusLabel.Text = "Failure: Could not select video.";
-                LogFileEntry($"Failure: {ex.Message}");
+                LogEntry("Failure", ex.Message);
             }
         }
 
         private async void OnRecordVideoClicked(object sender, EventArgs e)
         {
+            var button = (Button)sender;
+            await button.ScaleTo(1.1, 100);  // Slightly enlarge button
+            await button.ScaleTo(1.0, 100);
+
             try
             {
-                // Check and request camera permission
-                var cameraStatus = await Permissions.CheckStatusAsync<Permissions.Camera>();
-                if (cameraStatus != PermissionStatus.Granted)
+                if (MediaPicker.Default.IsCaptureSupported)
                 {
-                    cameraStatus = await Permissions.RequestAsync<Permissions.Camera>();
-                }
-
-                // Check and request storage permission (for saving video)
-                var storageStatus = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
-                if (storageStatus != PermissionStatus.Granted)
-                {
-                    storageStatus = await Permissions.RequestAsync<Permissions.StorageWrite>();
-                }
-
-                // If permissions are granted, proceed with video recording
-                if (cameraStatus == PermissionStatus.Granted && storageStatus == PermissionStatus.Granted)
-                {
-                    var result = await MediaPicker.CaptureVideoAsync(new MediaPickerOptions
+                    var video = await MediaPicker.Default.CaptureVideoAsync();
+                    if (video != null)
                     {
-                        Title = "Record a Video"
-                    });
-
-                    if (result != null)
-                    {
-                        string filePath = result.FullPath;
-
-                        // Display success message
-                        StatusLabel.Text = $"Success: Video recorded at {filePath}";
-                        LogFileEntry($"Success: Video recorded: {filePath}");
-
-                        // Here you can implement logic to use the recorded video using filePath
+                        var filePath = video.FullPath;
+                        // Handle the captured video file
+                        StatusLabel.Text = "Status: Video recorded successfully!";
+                        LogEntry("Success", $"Video recorded: {filePath}");
                     }
                 }
                 else
                 {
-                    // Display permission denial message
-                    StatusLabel.Text = "Permission denied to access camera or storage.";
+                    StatusLabel.Text = "Status: Video capture not supported on this device.";
+                    LogEntry("Failure", "Video capture not supported.");
                 }
             }
             catch (Exception ex)
             {
-                // Display failure message
-                StatusLabel.Text = "Failure: Could not record video.";
-                LogFileEntry($"Failure: {ex.Message}");
+                StatusLabel.Text = $"Status: An error occurred: {ex.Message}";
+                LogEntry("Failure", ex.Message);
             }
         }
 
-        private void LogFileEntry(string message)
+        private void LogEntry(string status, string message)
         {
-            // Implement logging logic here (e.g., write to a file, database, etc.)
-            Console.WriteLine(message);
+            var logMessage = $"{DateTime.Now}: {status} - {message}";
+            // Save logMessage to a log file or database
+            Console.WriteLine(logMessage);
         }
     }
 }
