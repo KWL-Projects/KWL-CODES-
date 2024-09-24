@@ -1,5 +1,5 @@
-// src/app/components/create-assignment/create-assignment.component.ts
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-assignment',
@@ -9,10 +9,16 @@ import { Component } from '@angular/core';
 export class CreateAssignmentComponent {
   assignment = { title: '', description: '' };
 
+  constructor(private router: Router) { }
+
   onSubmit() {
     // Implement create assignment logic here
     console.log('Assignment:', this.assignment);
     // Reset form after submission
     this.assignment = { title: '', description: '' };
+  }
+
+  navigateToVideos() {
+    this.router.navigate(['/list-assignment-videos']);
   }
 }
