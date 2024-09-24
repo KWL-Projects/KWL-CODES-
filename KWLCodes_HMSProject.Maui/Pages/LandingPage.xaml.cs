@@ -17,6 +17,7 @@ namespace KWLCodes_HMSProject.Maui.Pages
             bool isLoggedIn = Preferences.Get("IsLoggedIn", false);
             LoginButton.IsVisible = !isLoggedIn;
             ViewAssignmentsButton.IsVisible = isLoggedIn;
+            LogoutButton.IsVisible = isLoggedIn;
         }
 
         private async void OnLoginClicked(object sender, EventArgs e)
@@ -31,6 +32,18 @@ namespace KWLCodes_HMSProject.Maui.Pages
             var button = (Button)sender;
             await AnimateButton(button);
             await Navigation.PushAsync(new ViewAssignments());
+        }
+
+        private async void OnLogoutClicked(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            await AnimateButton(button);
+
+            // Clear login state
+            Preferences.Set("IsLoggedIn", false);
+
+            // Update UI
+            CheckLoginState();
         }
 
         private async Task AnimateButton(Button button)
