@@ -29,10 +29,6 @@ namespace KWLCodes_HMSProject.Maui.Pages
             await SecureStorage.SetAsync("username", username);
             await SecureStorage.SetAsync("password", password);
 
-            // Debugging: Display saved credentials
-            Console.WriteLine($"Saved Username: {username}");
-            Console.WriteLine($"Saved Password: {password}");
-
             await DisplayAlert("Success", "Account created successfully. Please log in.", "OK");
 
             // Navigate back to Login page

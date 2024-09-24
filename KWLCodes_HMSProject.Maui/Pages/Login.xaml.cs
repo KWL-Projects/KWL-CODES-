@@ -29,10 +29,6 @@ namespace KWLCodes_HMSProject.Maui.Pages
             string storedUsername = await SecureStorage.GetAsync("username");
             string storedPassword = await SecureStorage.GetAsync("password");
 
-            // Debugging: Display stored credentials
-            Console.WriteLine($"Stored Username: {storedUsername}");
-            Console.WriteLine($"Stored Password: {storedPassword}");
-
             // Validate credentials
             if (username == storedUsername && password == storedPassword)
             {
