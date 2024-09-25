@@ -4,7 +4,7 @@ using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+/*var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 //var connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
 
@@ -14,7 +14,7 @@ if (string.IsNullOrEmpty(connectionString))
 }
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
-    options.UseMySQL(connectionString));
+    options.UseMySQL(connectionString));*/
 
 // Add Azure App Configuration to the container.
 var azAppConfigConnection = builder.Configuration["DefaultConnectionString"];
