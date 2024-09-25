@@ -9,7 +9,7 @@ using KWL_HMSWeb.Server.Models;
 
 namespace KWL_HMSWeb.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/enrollment")]
     [ApiController]
     public class EnrollmentController : ControllerBase
     {

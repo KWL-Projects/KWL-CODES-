@@ -9,7 +9,7 @@ using KWLCodesAPI.Models;
 
 namespace KWLCodesAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/enrollment")]
     [ApiController]
     public class EnrollmentController : ControllerBase
     {
