@@ -7,15 +7,27 @@ import { Router } from '@angular/router';
   styleUrls: ['./provide-feedback.component.css']
 })
 export class ProvideFeedbackComponent {
+  submissionId: string = '';
+  userId: string = '';
   feedback: string = '';
+  mark: number | null = null;
 
   constructor(private router: Router) { }
 
   onSubmit() {
-    // Implement feedback submission logic here
-    console.log('Feedback:', this.feedback);
+    const feedbackData = {
+      submissionId: this.submissionId,
+      userId: this.userId,
+      feedback: this.feedback,
+      mark: this.mark
+    };
+
+    console.log('Feedback Data:', feedbackData);
     // Reset form after submission
+    this.submissionId = '';
+    this.userId = '';
     this.feedback = '';
+    this.mark = null;
   }
 
   goToLanding(): void {

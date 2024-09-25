@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 //import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { LandingComponent } from './components/landing/landing.component';
-import { UserAdminComponent } from './components/user-administration/user-administration.component';
+import { UserAdministrationComponent} from './components/user-administration/user-administration.component';
 import { ListAssignmentsComponent } from './components/list-assignments/list-assignments.component';
 import { CreateAssignmentComponent } from './components/create-assignment/create-assignment.component';
 import { ListAssignmentVideosComponent } from './components/list-assignment-videos/list-assignment-videos.component';
@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'landing', component: LandingComponent },
   { path: '', redirectTo: '/landing', pathMatch: 'full' },
-  { path: 'user-administration', component: UserAdminComponent },
+  { path: 'user-administration', component: UserAdministrationComponent },
   { path: '', redirectTo: '/user-administration', pathMatch: 'full' },
   { path: 'list-assignments', component: ListAssignmentsComponent },
   { path: '', redirectTo: '/list-assignments', pathMatch: 'full' },

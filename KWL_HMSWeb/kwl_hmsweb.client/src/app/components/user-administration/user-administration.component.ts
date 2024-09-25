@@ -1,4 +1,3 @@
-// src/app/components/user-admin/user-admin.component.ts
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,23 +5,42 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './user-administration.component.html',
   styleUrls: ['./user-administration.component.css']
 })
-export class UserAdminComponent implements OnInit {
+export class UserAdministrationComponent implements OnInit {
   users = [
-    { id: 1, username: 'user1', role: 'Admin' },
-    { id: 2, username: 'user2', role: 'User' }
+    { login_id: '1', user_first_name: 'John', user_surname: 'Doe', user_type: 'A' },
+    { login_id: '2', user_first_name: 'Jane', user_surname: 'Smith', user_type: 'U' }
   ];
+  selectedUser: any = null;
+  showAddForm: boolean = false;
+  newUser: any = { login_id: '', user_first_name: '', user_surname: '', user_type: '' };
 
   constructor() { }
 
   ngOnInit(): void { }
 
-  editUser(user: any) {
-    // Implement edit user logic here
-    console.log('Edit user:', user);
+  selectUser(user: any) {
+    this.selectedUser = { ...user };
   }
 
-  deleteUser(userId: number) {
-    // Implement delete user logic here
-    console.log('Delete user with ID:', userId);
+  updateUser() {
+    const index = this.users.findIndex(u => u.login_id === this.selectedUser.login_id);
+    if (index !== -1) {
+      this.users[index] = { ...this.selectedUser };
+      this.selectedUser = null;
+    }
+  }
+
+  deleteUser(login_id: string) {
+    this.users = this.users.filter(user => user.login_id !== login_id);
+  }
+
+  showAddUserForm() {
+    this.showAddForm = true;
+  }
+
+  addUser() {
+    this.users.push({ ...this.newUser });
+    this.newUser = { login_id: '', user_first_name: '', user_surname: '', user_type: '' };
+    this.showAddForm = false;
   }
 }

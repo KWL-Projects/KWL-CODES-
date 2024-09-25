@@ -8,8 +8,22 @@ import { Router } from '@angular/router';
 })
 export class ListAssignmentVideosComponent implements OnInit {
   videos = [
-    { id: 1, title: 'Video 1' },
-    { id: 2, title: 'Video 2' }
+    {
+      id: 1,
+      title: 'Video 1',
+      submissionId: 1,
+      assignmentId: 101,
+      submissionDateTime: '2024-09-20T10:00:00',
+      submissionDescription: 'First submission description'
+    },
+    {
+      id: 2,
+      title: 'Video 2',
+      submissionId: 2,
+      assignmentId: 102,
+      submissionDateTime: '2024-09-21T12:00:00',
+      submissionDescription: 'Second submission description'
+    }
   ];
 
   constructor(private router: Router) { }

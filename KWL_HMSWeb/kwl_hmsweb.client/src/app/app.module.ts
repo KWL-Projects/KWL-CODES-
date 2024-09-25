@@ -7,6 +7,7 @@ import { LandingComponent } from './components/landing/landing.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ListAssignmentsComponent } from './components/list-assignments/list-assignments.component';
+import { UserAdministrationComponent } from './components/user-administration/user-administration.component';
 import { CreateAssignmentComponent } from './components/create-assignment/create-assignment.component';
 import { ListAssignmentVideosComponent } from './components/list-assignment-videos/list-assignment-videos.component';
 import { ProvideFeedbackComponent } from './components/provide-feedback/provide-feedback.component';
@@ -16,6 +17,7 @@ import { ProvideFeedbackComponent } from './components/provide-feedback/provide-
     AppComponent,
     LoginComponent,
     LandingComponent,
+    UserAdministrationComponent,
     ListAssignmentsComponent,
     CreateAssignmentComponent,
     ListAssignmentVideosComponent,
