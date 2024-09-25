@@ -1,8 +1,23 @@
-<!-- src/app/components/list-assignments/list-assignments.component.html -->
-<h2>Assignments</h2>
-<ul>
-  <li *ngFor="let assignment of assignments">
-    {{ assignment.title }}
-    <a [routerLink]="['/assignments', assignment.id]">View</a>
-  </li>
-</ul>
+<h2>Here are all the current Assignments</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Subject Id</th>
+      <th>User Id</th>
+      <th>Assignment Name</th>
+      <th>Assignment Description</th>
+      <th>Due Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let assignment of assignments">
+      <td>{{ assignment.subjectId }}</td>
+      <td>{{ assignment.userId }}</td>
+      <td>{{ assignment.name }}</td>
+      <td>{{ assignment.description }}</td>
+      <td>{{ assignment.dueDate | date:'short' }}</td>
+      <td><a [routerLink]="['/assignments', assignment.id]">View</a></td>
+    </tr>
+  </tbody>
+</table>

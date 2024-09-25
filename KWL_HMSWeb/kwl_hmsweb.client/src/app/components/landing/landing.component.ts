@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-landing',
@@ -6,5 +7,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./landing.component.css']
 })
 export class LandingComponent {
-  // Add any necessary logic here
+  constructor(private router: Router) { }
+
+  navigateToUserAdmin() {
+    this.router.navigate(['/user-administration']);
+  }
+
+  navigateToListAssignments() {
+    this.router.navigate(['/list-assignments']);
+  }
+
+  navigateToCreateAssignment() {
+    this.router.navigate(['/create-assignment']);
+  }
 }
