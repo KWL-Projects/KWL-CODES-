@@ -19,10 +19,12 @@ namespace KWL_HMSWeb.Server.Controllers
     public class LoginController : ControllerBase
     {
         private readonly DatabaseContext _context;
+        private readonly IConfiguration _configuration; // For reading configurations like JWT secret
 
-        public LoginController(DatabaseContext context)
+        public LoginController(DatabaseContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // GET: api/Login
@@ -79,9 +81,79 @@ namespace KWL_HMSWeb.Server.Controllers
 
         // POST: api/Login
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        
+
+        [HttpPost("authenticate")]
+        public async Task<IActionResult> Authenticate([FromBody] Login login)
+        {
+            // Fetch user by username
+            var user = await _context.Login.FirstOrDefaultAsync(u => u.username == login.username);
+
+            if (user == null || !BCrypt.Net.BCrypt.Verify(login.password, user.password))
+            {
+                // Log the failed attempt
+                LogFailure(login.username);
+                return Unauthorized(new { message = "Invalid username or password" });
+            }
+
+            // Generate JWT token
+            var token = GenerateJwtToken(user);
+
+            // Log the successful login
+            LogSuccess(login.username);
+
+            return Ok(new { message = "Login successful", token });
+        }
+
+        private string GenerateJwtToken(Login user)
+        {
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.username),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.login_id.ToString()),
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private void LogSuccess(string username)
+        {
+            // Log the successful login attempt (Implement your logging logic here)
+            Console.WriteLine($"User {username} successfully logged in at {DateTime.UtcNow}");
+        }
+
+        private void LogFailure(string username)
+        {
+            // Log the failed login attempt (Implement your logging logic here)
+            Console.WriteLine($"Failed login attempt for user {username} at {DateTime.UtcNow}");
+        }
+
+        /*[HttpPost]
         public async Task<ActionResult<Login>> PostLogin(Login login)
         {
+            _context.Login.Add(login);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetLogin", new { id = login.login_id }, login);
+        }*/
+
+        [HttpPost]
+        public async Task<ActionResult<Login>> Register(Login login)
+        {
+            // Encrypt password before saving
+            login.password = BCrypt.Net.BCrypt.HashPassword(login.password);
+
             _context.Login.Add(login);
             await _context.SaveChangesAsync();
 
