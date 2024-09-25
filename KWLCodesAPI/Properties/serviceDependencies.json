@@ -12,6 +12,11 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings:zaazrcmpg323kwlsql.database.windows.net",
       "dynamicId": null
+    },
+    "appConfig1": {
+      "type": "appConfig",
+      "connectionId": "DefaultConnectionString",
+      "dynamicId": null
     }
   }
 }
