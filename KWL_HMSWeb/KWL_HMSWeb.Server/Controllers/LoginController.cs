@@ -6,6 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KWL_HMSWeb.Server.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using BCrypt.Net;
+using Microsoft.IdentityModel.Tokens;
 
 namespace KWL_HMSWeb.Server.Controllers
 {
