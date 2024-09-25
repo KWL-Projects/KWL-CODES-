@@ -7,8 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+//builder.Services.AddDbContext<DatabaseContext>(options =>
+    //options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddDbContext<DatabaseContext>(options =>
-    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
+
 
 builder.Services.AddEndpointsApiExplorer();
 

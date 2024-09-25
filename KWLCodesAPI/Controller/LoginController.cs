@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using KWLCodesAPI.Models;
 using Microsoft.EntityFrameworkCore;
 

@@ -10,6 +10,14 @@
       "type": "mssql.azure",
       "connectionId": "ConnectionStrings:DefaultConnection",
       "dynamicId": null
+    },
+    "mssql2": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ServiceLinker/locations/southafricanorth/connectors/ConnectionStringszaazrcmpg323kwlsql.data_1E1B6801DD",
+      "secretStore": "LocalSecretsFile",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/zaazrcmpg323kwlsql/databases/KWL Codes Database",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:zaazrcmpg323kwlsql.database.windows.net",
+      "dynamicId": null
     }
   }
 }
