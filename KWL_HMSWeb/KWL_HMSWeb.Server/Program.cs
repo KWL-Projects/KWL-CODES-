@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using KWL_HMSWeb.Server.Models;
 using Azure.Identity;
+using KWL_HMSWeb.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+/*
 // Add Azure App Configuration to the container.
 var connectionString = builder.Configuration["DefaultConnection"];
 
@@ -34,26 +36,30 @@ else if (Uri.TryCreate(builder.Configuration["Endpoints:DefaultConnection"], Uri
             refresh.Register("TestApp:Settings:Sentinel", refreshAll: true);
         });
     });
-}
+}*/
 builder.Services.AddAzureAppConfiguration();
+builder.Services.AddScoped<IVideoService, VideoService>();
 
+
+/*
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
     // Use the connection string from Azure App Configuration
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+*/
+builder.Services.AddSingleton<BlobStorageService>();
 
 builder.Services.AddControllers();
-
+/*
 builder.Services.AddEndpointsApiExplorer();
-
+*/
 var app = builder.Build();
 
+/*
 app.UseAzureAppConfiguration();
-
+*/
 app.UseAuthorization();
-
-app.UseAuthentication();
 
 app.MapControllers();
 
