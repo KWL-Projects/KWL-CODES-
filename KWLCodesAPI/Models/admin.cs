@@ -5,6 +5,6 @@ namespace KWLCodesAPI.Models
     {
         [Key]
         public int user_id { get; set; }
-        public string admin_Role { get; set; }
+        public required string admin_Role { get; set; }
     }
 }

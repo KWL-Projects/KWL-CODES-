@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using KWLCodesAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +24,7 @@ namespace KWLCodesAPI.Controller
             return await _context.Login.ToListAsync();
         }
 
-        [HttpGet("{id}")]
+        /*[HttpGet("{id}")]
         public async Task<ActionResult<Login>> GetLogin(long id)
         {
             var Login = await _context.Login.FindAsync(id);
@@ -33,6 +35,6 @@ namespace KWLCodesAPI.Controller
             }
 
             return ItemToDTO(Login);
-        }
+        }*/
     }
 }
