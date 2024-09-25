@@ -1,8 +1,6 @@
 <div class="landing-container">
   <h1>HMS by KWL Codes</h1>
-  <button (click)="navigateToLogin()">Login</button>
-    <router-outlet></router-outlet>
-    <p>HumanMovementSciences</p>
-  </div>
-
-
+  <button *ngIf="isMainPage" (click)="navigateToLogin()">Login</button>
+  <router-outlet></router-outlet>
+  <p>HumanMovementSciences</p>
+</div>
