@@ -1,5 +1,5 @@
-// src/app/components/list-assignment-videos/list-assignment-videos.component.ts
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-assignment-videos',
@@ -12,9 +12,13 @@ export class ListAssignmentVideosComponent implements OnInit {
     { id: 2, title: 'Video 2' }
   ];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     // Fetch videos from the backend
+  }
+
+  openFeedback(): void {
+    this.router.navigate(['/provide-feedback']);
   }
 }

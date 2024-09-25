@@ -1,5 +1,5 @@
-// src/app/components/provide-feedback/provide-feedback.component.ts
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-provide-feedback',
@@ -9,10 +9,16 @@ import { Component } from '@angular/core';
 export class ProvideFeedbackComponent {
   feedback: string = '';
 
+  constructor(private router: Router) { }
+
   onSubmit() {
     // Implement feedback submission logic here
     console.log('Feedback:', this.feedback);
     // Reset form after submission
     this.feedback = '';
+  }
+
+  goToLanding(): void {
+    this.router.navigate(['/landing']);
   }
 }
