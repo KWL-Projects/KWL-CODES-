@@ -7,7 +7,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./create-assignment.component.css']
 })
 export class CreateAssignmentComponent {
-  assignment = { title: '', description: '' };
+  assignment = {
+    subjectId: '',
+    userId: '',
+    name: '',
+    description: '',
+    dueDate: ''
+  };
 
   constructor(private router: Router) { }
 
@@ -15,7 +21,13 @@ export class CreateAssignmentComponent {
     // Implement create assignment logic here
     console.log('Assignment:', this.assignment);
     // Reset form after submission
-    this.assignment = { title: '', description: '' };
+    this.assignment = {
+      subjectId: '',
+      userId: '',
+      name: '',
+      description: '',
+      dueDate: ''
+    };
   }
 
   navigateToVideos() {
