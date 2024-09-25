@@ -1,22 +1,3 @@
 {
-  "dependencies": {
-    "secrets1": {
-      "type": "secrets"
-    },
-    "mssql1": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:DefaultConnection",
-      "dynamicId": null
-    },
-    "mssql2": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:zaazrcmpg323kwlsql.database.windows.net",
-      "dynamicId": null
-    },
-    "appConfig1": {
-      "type": "appConfig",
-      "connectionId": "DefaultConnectionString",
-      "dynamicId": null
-    }
-  }
+  "dependencies": {}
 }

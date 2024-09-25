@@ -2,6 +2,19 @@
   "dependencies": {
     "apis1": {
       "type": "apis"
+    },
+    "secrets1": {
+      "type": "secrets"
+    },
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "DefaultConnection",
+      "dynamicId": null
+    },
+    "appConfig1": {
+      "type": "appConfig",
+      "connectionId": "DefaultConnection",
+      "dynamicId": null
     }
   }
 }
