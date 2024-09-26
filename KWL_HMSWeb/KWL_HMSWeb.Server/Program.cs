@@ -58,7 +58,7 @@ builder.Services.AddControllers()
 
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<IVideoService, VideoService>();
+builder.Services.AddScoped<IServices, VideoService>();
 
 builder.Services.AddSingleton<BlobStorageService>();
 
