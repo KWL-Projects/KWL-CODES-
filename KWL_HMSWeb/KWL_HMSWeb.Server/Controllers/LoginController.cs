@@ -12,11 +12,13 @@ using System.Text;
 using BCrypt.Net;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KWL_HMSWeb.Server.Controllers
 {
     [Route("api/login")]
     [ApiController]
+    //[Authorize(Roles = 'A')]
     public class LoginController : ControllerBase
     {
         private readonly DatabaseContext _context;

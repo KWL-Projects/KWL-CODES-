@@ -13,7 +13,11 @@ export class LoginComponent {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  onSubmit() {
+  navigateToLogin() {
+    this.router.navigate(['/landing']);
+  }
+
+  /*onSubmit() {
     this.http.post('/api/auth/login', { username: this.username, password: this.password })
       .subscribe(response => {
         // Handle successful login
@@ -21,6 +25,6 @@ export class LoginComponent {
       }, error => {
         // Handle login error
         console.error('Login failed', error);
-      });
+      });*/
   }
 }
