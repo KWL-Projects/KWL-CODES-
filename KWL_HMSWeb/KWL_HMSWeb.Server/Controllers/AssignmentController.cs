@@ -107,7 +107,7 @@ namespace KWL_HMSWeb.Server.Controllers
         public async Task<ActionResult<Assignment>> PostAssignment(Assignment assignment)
         {
             // Data verification
-            if (string.IsNullOrEmpty(assignment.subject_id) || string.IsNullOrEmpty(assignment.assignment_name) || assignment.due_date == default)
+            if (assignment.assignment_id <= 0 || string.IsNullOrEmpty(assignment.assignment_name) || assignment.due_date == default)
             {
                 _logger.LogWarning("Invalid assignment data provided.");
                 return BadRequest("Invalid assignment data.");
