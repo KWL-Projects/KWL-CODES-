@@ -116,7 +116,7 @@ namespace KWL_HMSWeb.Server.Controllers
             return Ok(new { message = "Login successful", token, userDetail });
         }
 
-        private async Task<object> GetUserDetails(int loginId)
+        private async Task<object?> GetUserDetails(int loginId)
         {
             var user = await _context.User.FirstOrDefaultAsync(u => u.login_id == loginId);
             if (user != null)
@@ -126,13 +126,13 @@ namespace KWL_HMSWeb.Server.Controllers
             return null;
         }
 
-        private string GenerateJwtToken(Login user)
+        private string GenerateJwtToken(Login login, object userDetail)
         {
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.username),
+                new Claim(JwtRegisteredClaimNames.Sub, login.username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.login_id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, login.login_id.ToString()),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -169,7 +169,7 @@ namespace KWL_HMSWeb.Server.Controllers
             return CreatedAtAction("GetLogin", new { id = login.login_id }, login);
         }*/
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<ActionResult<Login>> Register(Login login)
         {
             // Encrypt password before saving

@@ -2,8 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using KWL_HMSWeb.Server.Models;
 using Azure.Identity;
 using KWL_HMSWeb.Services;
+//using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//DotNetEnv.Env.Load();
 
 // Add Azure App Configuration to the container.
 var azAppConfigConnection = builder.Configuration["DefaultConnection"];
