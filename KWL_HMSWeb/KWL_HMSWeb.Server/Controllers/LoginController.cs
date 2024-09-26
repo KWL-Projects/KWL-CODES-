@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using BCrypt.Net;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography;
 
 namespace KWL_HMSWeb.Server.Controllers
 {
