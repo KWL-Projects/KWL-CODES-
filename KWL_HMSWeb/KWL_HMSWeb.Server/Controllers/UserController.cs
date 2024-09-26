@@ -105,3 +105,22 @@ namespace KWL_HMSWeb.Server.Controllers
         }
     }
 }
+
+// Check the different tables for user details based on the login ID
+var admin = await _context.Admin.FirstOrDefaultAsync(a => a.login_id == loginId);
+if (admin != null)
+{
+    return new { Role = "Admin", Details = admin };
+}
+
+var lecturer = await _context.Lecturer.FirstOrDefaultAsync(l => l.login_id == loginId);
+if (lecturer != null)
+{
+    return new { Role = "Lecturer", Details = lecturer };
+}
+
+var student = await _context.Student.FirstOrDefaultAsync(s => s.login_id == loginId);
+if (student != null)
+{
+    return new { Role = "Student", Details = student };
+}

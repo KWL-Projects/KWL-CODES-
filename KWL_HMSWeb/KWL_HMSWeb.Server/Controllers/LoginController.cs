@@ -87,25 +87,43 @@ namespace KWL_HMSWeb.Server.Controllers
         
 
         [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody] Login login)
+        public async Task<IActionResult> Authenticate([FromBody] Login loginRequest)
         {
             // Fetch user by username
-            var user = await _context.Login.FirstOrDefaultAsync(u => u.username == login.username);
+            var login = await _context.Login.FirstOrDefaultAsync(u => u.username == loginRequest.username);
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(login.password, user.password))
+            if (login == null || !BCrypt.Net.BCrypt.Verify(loginRequest.password, login.password))
             {
                 // Log the failed attempt
-                LogFailure(login.username);
+                LogFailure(loginRequest.username);
                 return Unauthorized(new { message = "Invalid username or password" });
             }
 
+            var userDetail = await GetUserDetails(login.login_id);
+
+            if(userDetail == null)
+            {
+                LogFailure(loginRequest.username);
+                return Unauthorized(new { message = "User not registered" });
+            }
+
             // Generate JWT token
-            var token = GenerateJwtToken(user);
+            var token = GenerateJwtToken(login, userDetail);
 
             // Log the successful login
-            LogSuccess(login.username);
+            LogSuccess(loginRequest.username);
 
-            return Ok(new { message = "Login successful", token });
+            return Ok(new { message = "Login successful", token, userDetail });
+        }
+
+        private async Task<object> GetUserDetails(int loginId)
+        {
+            var user = await _context.User.FirstOrDefaultAsync(u => u.login_id == loginId);
+            if (user != null)
+            {
+                return new { Details = user };
+            }
+            return null;
         }
 
         private string GenerateJwtToken(Login user)
