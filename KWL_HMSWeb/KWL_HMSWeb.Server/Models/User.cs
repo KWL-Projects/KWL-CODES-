@@ -1,30 +1,45 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Collections.Generic;
 
 namespace KWL_HMSWeb.Server.Models
 {
     public class User
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int user_id { get; set; }
 
-        [ForeignKey("Login")]
+        [Required]
         public int login_id { get; set; }
 
-        public string user_firstname { get; set; }
-        public string user_surname { get; set; }
-        public string user_type { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string user_firstname { get; set; } = string.Empty;
 
-        // Navigation property for related entities
-        public virtual Login Login { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string user_surname { get; set; } = string.Empty;
 
-        public virtual Admin Admin { get; set; }
-        public virtual Student Student { get; set; }
-        public virtual Lecturer Lecturer { get; set; }
+        [Required]
+        [MaxLength(20)]
+        public string user_type { get; set; } = string.Empty;
 
-        public virtual ICollection<Enrollment> Enrollments { get; set; }
-        public virtual ICollection<Feedback> Feedbacks { get; set; }
+        // Navigation property for the related Login
+        [ForeignKey("login_id")]
+        public Login Login { get; set; } = null!;
+
+        public Admin Admin { get; set; } = null!;
+        //public ICollection<Admin> Admin { get; set; }
+
+        public Student Student { get; set; } = null!;
+
+        public Lecturer Lecturer {  get; set; } = null!;
+
+        public Enrollment Enrollment { get; set; } = null!;
+        public Assignment Assignment { get; set; } = null!;
+        public Submission Submission { get; set; } = null!;
+        public Feedback Feedback { get; set; } = null!;
     }
 }
+
 

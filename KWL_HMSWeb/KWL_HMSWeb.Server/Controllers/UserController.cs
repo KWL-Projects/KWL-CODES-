@@ -22,33 +22,40 @@ namespace KWL_HMSWeb.Server.Controllers
 
         // GET: api/User
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.User.ToListAsync();
+            return await _context.User.Include(u => u.Admin)
+                                      .Include(u => u.Student)
+                                      .Include(u => u.Lecturer)
+                                      .ToListAsync();
         }
 
         // GET: api/User/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = await _context.User.FindAsync(id);
+            var user = await _context.User.Include(u => u.Admin)
+                                          .Include(u => u.Student)
+                                          .Include(u => u.Lecturer)
+                                          .FirstOrDefaultAsync(u => u.user_id == id);
 
             if (user == null)
             {
-                return NotFound();
+                LogFailure($"User with ID {id} not found.");
+                return NotFound(new { message = "User not found" });
             }
 
             return user;
         }
 
         // PUT: api/User/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> UpdateUser(int id, User user)
         {
             if (id != user.user_id)
             {
-                return BadRequest();
+                LogFailure("User ID mismatch.");
+                return BadRequest(new { message = "User ID mismatch" });
             }
 
             _context.Entry(user).State = EntityState.Modified;
@@ -56,12 +63,14 @@ namespace KWL_HMSWeb.Server.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                LogSuccess($"User with ID {id} updated successfully.");
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!UserExists(id))
                 {
-                    return NotFound();
+                    LogFailure($"User with ID {id} not found.");
+                    return NotFound(new { message = "User not found" });
                 }
                 else
                 {
@@ -69,41 +78,26 @@ namespace KWL_HMSWeb.Server.Controllers
                 }
             }
 
-            return NoContent();
-        }
-
-        private async Task<object?> GetUserDetails(int userId)
-        {
-            // Check the different tables for user details based on the login ID
-            var admin = await _context.Admin.FirstOrDefaultAsync(a => a.user_id == userId);
-            if (admin != null)
-            {
-                return new { Role = "Admin", Details = admin };
-            }
-
-            var lecturer = await _context.Lecturer.FirstOrDefaultAsync(l => l.user_id == userId);
-            if (lecturer != null)
-            {
-                return new { Role = "Lecturer", Details = lecturer };
-            }
-
-            var student = await _context.Student.FirstOrDefaultAsync(s => s.user_id == userId);
-            if (student != null)
-            {
-                return new { Role = "Student", Details = student };
-            }
-            return null;
+            return Ok(new { message = "User updated successfully" });
         }
 
         // POST: api/User
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> CreateUser(User user)
         {
-            _context.User.Add(user);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.User.Add(user);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.user_id }, user);
+                LogSuccess($"User with ID {user.user_id} created successfully.");
+                return CreatedAtAction(nameof(GetUser), new { id = user.user_id }, user);
+            }
+            catch (Exception ex)
+            {
+                LogFailure($"Failed to create user: {ex.Message}");
+                return StatusCode(500, new { message = "An error occurred while creating the user." });
+            }
         }
 
         // DELETE: api/User/5
@@ -113,19 +107,40 @@ namespace KWL_HMSWeb.Server.Controllers
             var user = await _context.User.FindAsync(id);
             if (user == null)
             {
-                return NotFound();
+                LogFailure($"User with ID {id} not found.");
+                return NotFound(new { message = "User not found" });
             }
 
-            _context.User.Remove(user);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.User.Remove(user);
+                await _context.SaveChangesAsync();
 
-            return NoContent();
+                LogSuccess($"User with ID {id} deleted successfully.");
+                return Ok(new { message = "User deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                LogFailure($"Failed to delete user: {ex.Message}");
+                return StatusCode(500, new { message = "An error occurred while deleting the user." });
+            }
         }
 
         private bool UserExists(int id)
         {
             return _context.User.Any(e => e.user_id == id);
         }
+
+        private void LogSuccess(string message)
+        {
+            // Log the successful action (Implement your logging logic here)
+            Console.WriteLine($"SUCCESS: {message} at {DateTime.UtcNow}");
+        }
+
+        private void LogFailure(string message)
+        {
+            // Log the failed action (Implement your logging logic here)
+            Console.WriteLine($"FAILURE: {message} at {DateTime.UtcNow}");
+        }
     }
 }
-

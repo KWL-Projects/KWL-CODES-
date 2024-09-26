@@ -22,33 +22,35 @@ namespace KWL_HMSWeb.Server.Controllers
 
         // GET: api/Admin
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Admin>>> GetAdmin()
+        public async Task<ActionResult<IEnumerable<Admin>>> GetAdmins()
         {
-            return await _context.Admin.ToListAsync();
+            return await _context.Admin.Include(a => a.User).ToListAsync();
         }
 
         // GET: api/Admin/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Admin>> GetAdmin(int id)
         {
-            var admin = await _context.Admin.FindAsync(id);
+            var admin = await _context.Admin.Include(a => a.User)
+                                            .FirstOrDefaultAsync(a => a.user_id == id);
 
             if (admin == null)
             {
-                return NotFound();
+                LogFailure($"Admin with ID {id} not found.");
+                return NotFound(new { message = "Admin not found" });
             }
 
             return admin;
         }
 
         // PUT: api/Admin/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAdmin(int id, Admin admin)
+        public async Task<IActionResult> UpdateAdmin(int id, Admin admin)
         {
             if (id != admin.user_id)
             {
-                return BadRequest();
+                LogFailure("Admin ID mismatch.");
+                return BadRequest(new { message = "Admin ID mismatch" });
             }
 
             _context.Entry(admin).State = EntityState.Modified;
@@ -56,12 +58,14 @@ namespace KWL_HMSWeb.Server.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                LogSuccess($"Admin with ID {id} updated successfully.");
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!AdminExists(id))
                 {
-                    return NotFound();
+                    LogFailure($"Admin with ID {id} not found.");
+                    return NotFound(new { message = "Admin not found" });
                 }
                 else
                 {
@@ -69,18 +73,26 @@ namespace KWL_HMSWeb.Server.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(new { message = "Admin updated successfully" });
         }
 
         // POST: api/Admin
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Admin>> PostAdmin(Admin admin)
+        public async Task<ActionResult<Admin>> CreateAdmin(Admin admin)
         {
-            _context.Admin.Add(admin);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Admin.Add(admin);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAdmin", new { id = admin.user_id }, admin);
+                LogSuccess($"Admin with ID {admin.user_id} created successfully.");
+                return CreatedAtAction(nameof(GetAdmin), new { id = admin.user_id }, admin);
+            }
+            catch (Exception ex)
+            {
+                LogFailure($"Failed to create admin: {ex.Message}");
+                return StatusCode(500, new { message = "An error occurred while creating the admin." });
+            }
         }
 
         // DELETE: api/Admin/5
@@ -90,18 +102,40 @@ namespace KWL_HMSWeb.Server.Controllers
             var admin = await _context.Admin.FindAsync(id);
             if (admin == null)
             {
-                return NotFound();
+                LogFailure($"Admin with ID {id} not found.");
+                return NotFound(new { message = "Admin not found" });
             }
 
-            _context.Admin.Remove(admin);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Admin.Remove(admin);
+                await _context.SaveChangesAsync();
 
-            return NoContent();
+                LogSuccess($"Admin with ID {id} deleted successfully.");
+                return Ok(new { message = "Admin deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                LogFailure($"Failed to delete admin: {ex.Message}");
+                return StatusCode(500, new { message = "An error occurred while deleting the admin." });
+            }
         }
 
         private bool AdminExists(int id)
         {
             return _context.Admin.Any(e => e.user_id == id);
+        }
+
+        private void LogSuccess(string message)
+        {
+            // Log the successful action (Implement your logging logic here)
+            Console.WriteLine($"SUCCESS: {message} at {DateTime.UtcNow}");
+        }
+
+        private void LogFailure(string message)
+        {
+            // Log the failed action (Implement your logging logic here)
+            Console.WriteLine($"FAILURE: {message} at {DateTime.UtcNow}");
         }
     }
 }

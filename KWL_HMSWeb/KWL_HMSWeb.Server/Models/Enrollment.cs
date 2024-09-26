@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KWL_HMSWeb.Server.Models
@@ -6,18 +7,29 @@ namespace KWL_HMSWeb.Server.Models
     public class Enrollment
     {
         [Key]
-        public int enrollment_id { get; set; }
-
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int user_id { get; set; }
+
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int subject_id { get; set; }
 
-        public string enrollment_description { get; set; }
+        [MaxLength(50)]
+        public string? enrollment_description { get; set; }
+
+        [DataType(DataType.Date)]
         public DateTime enrollment_startDate { get; set; }
+
+        [DataType(DataType.Date)]
         public DateTime enrollment_endDate { get; set; }
 
         // Navigation properties
-        public virtual User User { get; set; }
-        public virtual Subject Subject { get; set; }
+        [ForeignKey("user_id")]
+        public User User { get; set; } = null!;
+
+        [ForeignKey("subject_id")]
+        public Subject Subject { get; set; } = null!;
     }
 }
+
 

@@ -5,12 +5,16 @@ namespace KWL_HMSWeb.Server.Models
 {
     public class Admin
     {
-        [Key, ForeignKey("User")]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int user_id { get; set; }
 
-        public string admin_Role { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string admin_role { get; set; } = string.Empty;
 
-        // Navigation property
-        public virtual User User { get; set; }
+        // Navigation property for the User associated with this admin
+        [ForeignKey("user_id")]
+        public User User { get; set; } = null!;
     }
 }
