@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KWL_HMSWeb.Server.Models;
 using Microsoft.Extensions.Logging;
+using System.Text;
 
 namespace KWL_HMSWeb.Server.Controllers
 {
@@ -162,6 +163,55 @@ namespace KWL_HMSWeb.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving feedback.");
             }
         }
+
+        // GET: api/Feedback/download-marks/{submissionId}
+        [HttpGet("download-marks/{submissionId}")]
+        public async Task<IActionResult> DownloadMarks(int submissionId)
+        {
+            try
+            {
+                // Retrieve the marks data for the given submission ID
+                var feedbackList = await _context.Feedback
+                    .Where(f => f.submission_id == submissionId)
+                    .ToListAsync();
+
+                if (feedbackList == null || !feedbackList.Any())
+                {
+                    _logger.LogWarning("No feedback found for submission ID: {SubmissionId}", submissionId);
+                    return NotFound(new { Message = "No feedback found for this submission." });
+                }
+
+                // Prepare the data into a CSV format
+                var csvData = new StringBuilder();
+                csvData.AppendLine("Feedback ID, Submission ID, User ID, Feedback, Mark Received");
+
+                foreach (var feedback in feedbackList)
+                {
+                    csvData.AppendLine($"{feedback.feedback_id}, {feedback.submission_id}, {feedback.user_id}, \"{feedback.feedback}\", {feedback.mark_received}");
+                }
+
+                // Convert CSV data to byte array
+                var bytes = Encoding.UTF8.GetBytes(csvData.ToString());
+
+                // Log success
+                _logger.LogInformation("Marks file successfully prepared for submission ID: {SubmissionId}", submissionId);
+
+                // Set headers to force file download
+                var fileContentResult = new FileContentResult(bytes, "text/csv")
+                {
+                    FileDownloadName = $"Marks_Submission_{submissionId}.csv"
+                };
+
+                return fileContentResult;
+            }
+            catch (Exception ex)
+            {
+                // Log failure
+                _logger.LogError(ex, "Error occurred while downloading marks for submission ID: {SubmissionId}", submissionId);
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while downloading marks.");
+            }
+        }
+
 
         private bool FeedbackExists(int id)
         {

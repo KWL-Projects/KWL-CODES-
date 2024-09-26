@@ -18,7 +18,7 @@ namespace KWL_HMSWeb.Server.Models
         [MaxLength(50)]
         public string feedback { get; set; } = string.Empty;
 
-        public float mark_received { get; set; }
+        public int mark_received { get; set; }
 
         // Navigation properties
         [ForeignKey("submission_id")]
