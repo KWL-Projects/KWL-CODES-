@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 /*
 // Add Azure App Configuration to the container.
 var connectionString = builder.Configuration["DefaultConnection"];
-
+ 
 if (!string.IsNullOrEmpty(connectionString))
 {
     // Use the connection string if it is available.

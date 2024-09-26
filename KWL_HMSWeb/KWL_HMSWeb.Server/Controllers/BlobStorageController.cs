@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using KWL_HMSWeb.Services;
 
 [ApiController]
 [Route("api/[controller]")]
