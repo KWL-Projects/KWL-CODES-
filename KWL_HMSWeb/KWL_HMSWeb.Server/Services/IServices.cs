@@ -41,6 +41,6 @@ namespace KWL_HMSWeb.Services
         public async Task<Submission> GetSubmissionByIdAsync(int submissionId)
         {
             return await _context.Submission.FirstOrDefaultAsync(s => s.submission_id == submissionId);
-        }*/
-    }
+        }
+    }*/
 }
