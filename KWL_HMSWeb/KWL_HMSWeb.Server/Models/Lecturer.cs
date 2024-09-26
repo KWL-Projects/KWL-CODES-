@@ -5,7 +5,7 @@ namespace KWL_HMSWeb.Server.Models
 {
     public class Lecturer
     {
-        [Key, ForeignKey("User")]
+        /*[Key, ForeignKey("User")]
         public int user_id { get; set; }
 
         public int subject_id { get; set; }
@@ -13,7 +13,12 @@ namespace KWL_HMSWeb.Server.Models
 
         // Navigation properties
         public virtual User User { get; set; }
-        public virtual Subject Subject { get; set; }
+        public virtual Subject Subject { get; set; }*/
+
+        [Key]
+        public int user_id {  get; set; }
+        public int subject_id { get; set; }
+        public string office_number { get; set; }
     }
 }
 
