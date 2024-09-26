@@ -1,16 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using KWLCodesAPI.Models;
+using Azure.Identity;
+using KWLCodesAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//DotNetEnv.Env.Load(builder);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddControllers();
+Console.WriteLine(connectionString + "Is the connection string------------------------------------------------------------------------------------------------------------------------");
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
-    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(connectionString));
 
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 

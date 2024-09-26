@@ -7,7 +7,9 @@ namespace KWL_HMSWeb.Server.Models
         [Key]
         public int submission_id { get; set; }
         public int assignment_id { get; set; }
+        public int user_id { get; set; }
         public DateTime submission_date { get; set; }
         public string submission_description { get; set; }
+        public string video_path { get; set;  }
     }
 }

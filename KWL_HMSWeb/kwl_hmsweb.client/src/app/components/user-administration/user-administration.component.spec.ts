@@ -3,7 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserAdministrationComponent } from './user-administration.component';
 
 describe('UserAdministrationComponent', () => {
-  let component: UserAdministrationComponent;
+    type NewType = UserAdministrationComponent;
+
+  let component: NewType;
   let fixture: ComponentFixture<UserAdministrationComponent>;
 
   beforeEach(async () => {
