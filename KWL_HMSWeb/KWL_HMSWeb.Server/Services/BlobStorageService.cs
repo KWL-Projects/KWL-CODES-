@@ -68,7 +68,7 @@ namespace KWL_HMSWeb.Services
         }
 
     }
-    public class VideoService : IVideoService
+    public class VideoService : IServices
     {
         private readonly DatabaseContext _context;
 
