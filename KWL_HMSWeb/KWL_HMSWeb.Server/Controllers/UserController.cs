@@ -24,7 +24,7 @@ namespace KWL_HMSWeb.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.User.Include(u => u.Admin)
+            return await _context.Users.Include(u => u.Admin)
                                       .Include(u => u.Student)
                                       .Include(u => u.Lecturer)
                                       .ToListAsync();
@@ -34,7 +34,7 @@ namespace KWL_HMSWeb.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = await _context.User.Include(u => u.Admin)
+            var user = await _context.Users.Include(u => u.Admin)
                                           .Include(u => u.Student)
                                           .Include(u => u.Lecturer)
                                           .FirstOrDefaultAsync(u => u.user_id == id);
@@ -87,7 +87,7 @@ namespace KWL_HMSWeb.Server.Controllers
         {
             try
             {
-                _context.User.Add(user);
+                _context.Users.Add(user);
                 await _context.SaveChangesAsync();
 
                 LogSuccess($"User with ID {user.user_id} created successfully.");
@@ -104,7 +104,7 @@ namespace KWL_HMSWeb.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            var user = await _context.User.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
                 LogFailure($"User with ID {id} not found.");
@@ -113,7 +113,7 @@ namespace KWL_HMSWeb.Server.Controllers
 
             try
             {
-                _context.User.Remove(user);
+                _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
 
                 LogSuccess($"User with ID {id} deleted successfully.");
@@ -128,7 +128,7 @@ namespace KWL_HMSWeb.Server.Controllers
 
         private bool UserExists(int id)
         {
-            return _context.User.Any(e => e.user_id == id);
+            return _context.Users.Any(e => e.user_id == id);
         }
 
         private void LogSuccess(string message)

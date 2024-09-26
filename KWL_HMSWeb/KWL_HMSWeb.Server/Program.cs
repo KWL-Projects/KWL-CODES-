@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using KWL_HMSWeb.Server.Models;
 using Azure.Identity;
 using KWL_HMSWeb.Services;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 //using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,6 +48,14 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+// Configure services
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.MaxDepth = 64; // You can adjust this if needed
+    });
+
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IVideoService, VideoService>();
@@ -55,6 +65,12 @@ builder.Services.AddSingleton<BlobStorageService>();
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
+
+// Configure the HTTP request pipeline
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
 
 //app.UseAzureAppConfiguration();
 

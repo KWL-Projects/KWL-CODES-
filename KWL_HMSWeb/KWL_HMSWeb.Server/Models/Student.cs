@@ -6,7 +6,7 @@ namespace KWL_HMSWeb.Server.Models
     public class Student
     {
         [Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int user_id { get; set; }
 
         [Required]

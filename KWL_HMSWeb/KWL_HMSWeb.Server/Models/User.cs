@@ -29,7 +29,6 @@ namespace KWL_HMSWeb.Server.Models
         public Login Login { get; set; } = null!;
 
         public Admin Admin { get; set; } = null!;
-        //public ICollection<Admin> Admin { get; set; }
 
         public Student Student { get; set; } = null!;
 

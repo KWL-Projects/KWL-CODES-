@@ -12,7 +12,7 @@ namespace KWL_HMSWeb.Server.Models
         }
 
         public DbSet<Login> Login { get; set; } = null!;
-        public DbSet<User> User { get; set; } = null!;
+        public DbSet<User> Users { get; set; } = null!;
         public DbSet<Assignment> Assignment { get; set; } = null!;
         public DbSet<Feedback> Feedback { get; set; } = null!;
         public DbSet<Lecturer> Lecturer { get; set; } = null!;
@@ -23,11 +23,14 @@ namespace KWL_HMSWeb.Server.Models
         public DbSet<Subject> Subject { get; set; } = null!;
         public DbSet<Submission> Submission { get; set; } = null!;
 
-        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure relationships if needed
 
-            modelBuilder.Entity<Login>()
+             modelBuilder.Entity<Enrollment>()
+                .HasKey(e => new { e.user_id, e.subject_id }); // Configure composite key
+
+            /*modelBuilder.Entity<Login>()
                 .HasKey(l => l.login_id);
 
             modelBuilder.Entity<User>()
@@ -122,8 +125,8 @@ namespace KWL_HMSWeb.Server.Models
                 .HasOne<User>()
                 .WithMany()
                 .HasForeignKey(f => f.user_id)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade);*/
 
-        }*/
+        }
     }
 }

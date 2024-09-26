@@ -118,7 +118,7 @@ namespace KWL_HMSWeb.Server.Controllers
 
         private async Task<object?> GetUserDetails(int loginId)
         {
-            var user = await _context.User.FirstOrDefaultAsync(u => u.login_id == loginId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.login_id == loginId);
             if (user != null)
             {
                 return new { Details = user };

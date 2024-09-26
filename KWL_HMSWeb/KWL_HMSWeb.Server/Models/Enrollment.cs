@@ -6,12 +6,12 @@ namespace KWL_HMSWeb.Server.Models
 {
     public class Enrollment
     {
-        [Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 0)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int user_id { get; set; }
 
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int subject_id { get; set; }
 
         [MaxLength(50)]
