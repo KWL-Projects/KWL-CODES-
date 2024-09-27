@@ -5,11 +5,35 @@ using KWL_HMSWeb.Services;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Azure.Storage.Blobs;
-//using DotNetEnv;
+using DotNetEnv;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //DotNetEnv.Env.Load();
+
+Env.Load("info.env");
+
+// Retrieve environment variables
+var jwtSecret = Env.GetString("KWLCodes_JWT_SECRET");
+var jwtIssuer = Env.GetString("KWLCodes_JWT_ISSUER");
+var jwtAudience = Env.GetString("KWLCodes_JWT_AUDIENCE");
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtIssuer,
+        ValidAudience = jwtAudience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
+    };
+});
 
 // Add Azure App Configuration to the container.
 var azAppConfigConnection = builder.Configuration["DefaultConnection"];

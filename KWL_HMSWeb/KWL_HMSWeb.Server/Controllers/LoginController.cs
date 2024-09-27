@@ -18,7 +18,7 @@ namespace KWL_HMSWeb.Server.Controllers
 {
     [Route("api/login")]
     [ApiController]
-    //[Authorize(Roles = 'A')]
+    
     public class LoginController : ControllerBase
     {
         private readonly DatabaseContext _context;
@@ -116,7 +116,7 @@ namespace KWL_HMSWeb.Server.Controllers
             return Ok(new { message = "Login successful", token, userDetail });
         }
 
-        private async Task<object?> GetUserDetails(int loginId)
+        /*private async Task<object?> GetUserDetails(int loginId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.login_id == loginId);
             if (user != null)
@@ -124,23 +124,51 @@ namespace KWL_HMSWeb.Server.Controllers
                 return new { Details = user };
             }
             return null;
+        }*/
+
+        private async Task<object?> GetUserDetails(int loginId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.login_id == loginId);
+            if (user != null)
+            {
+                // Fetch the role of the user
+                string role = user.user_type; // Assuming user_type indicates the role
+
+                // Depending on your business logic, you could fetch more specific roles
+                // Example: if user is an admin, fetch the admin role, etc.
+                // Here, we're directly returning the user role.
+                return new
+                {
+                    Details = user,
+                    Role = role // Include user role in the details
+                };
+            }
+            return null;
         }
 
         private string GenerateJwtToken(Login login, object userDetail)
         {
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, login.username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, login.login_id.ToString()),
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            // Add user role to claims
+            var user = (dynamic)userDetail; // Cast to dynamic to access Role
+            claims.Add(new Claim(ClaimTypes.Role, user.Role)); // Assuming user.Role holds the role
+
+            var jwtSecret = Environment.GetEnvironmentVariable("KWLCodes_JWT_SECRET");
+            var jwtIssuer = Environment.GetEnvironmentVariable("KWLCodes_JWT_ISSUER");
+            var jwtAudience = Environment.GetEnvironmentVariable("KWLCodes_JWT_AUDIENCE");
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
+                issuer: jwtIssuer,
+                audience: jwtAudience,
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: creds);
