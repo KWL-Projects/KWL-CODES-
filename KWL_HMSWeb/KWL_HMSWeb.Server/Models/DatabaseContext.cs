@@ -18,7 +18,6 @@ namespace KWL_HMSWeb.Server.Models
         public DbSet<Lecturer> Lecturer { get; set; } = null!;
         public DbSet<Student> Student { get; set; } = null!;
         public DbSet<Admin> Admin { get; set; } = null!;
-        public DbSet<Admin_Kayla> Admin_Kayla { get; set; } = null!;
         public DbSet<Enrollment> Enrollment { get; set; } = null!;
         public DbSet<Subject> Subject { get; set; } = null!;
         public DbSet<Submission> Submission { get; set; } = null!;
