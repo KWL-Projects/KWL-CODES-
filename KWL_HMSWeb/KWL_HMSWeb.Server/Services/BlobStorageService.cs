@@ -2,25 +2,31 @@
 using KWL_HMSWeb.Server.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using KWL_HMSWeb.Controllers;
+using Azure.Storage.Blobs.Models;
+using KWL_HMSWeb.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace KWL_HMSWeb.Services
 {
     public class BlobStorageService
     {
         private readonly BlobContainerClient _blobContainerClient;
+        private readonly ILogger<BlobStorageService> _logger;
 
-        // Constructor to initialize the Blob Container Client
-        public BlobStorageService(IConfiguration configuration)
+        public BlobStorageService(IConfiguration configuration, ILogger<BlobStorageService> logger)
         {
-            // Retrieve connection string and container name from appsettings.json
+            _logger = logger;
+
             var connectionString = configuration["AzureBlobStorage:ConnectionString"];
             var containerName = configuration["AzureBlobStorage:ContainerName"];
 
-            // Create a BlobContainerClient to interact with the blob container
             _blobContainerClient = new BlobContainerClient(connectionString, containerName);
         }
 
@@ -29,22 +35,20 @@ namespace KWL_HMSWeb.Services
         {
             try
             {
-                // Create the container if it does not exist
+                _logger.LogInformation($"Uploading file '{fileName}' to Blob Storage.");
                 await _blobContainerClient.CreateIfNotExistsAsync();
 
-                // Get a reference to the blob (file) in the container
                 var blobClient = _blobContainerClient.GetBlobClient(fileName);
 
-                // Upload the file
                 await blobClient.UploadAsync(fileStream, overwrite: true);
+                _logger.LogInformation($"File '{fileName}' uploaded successfully.");
 
-                // Return the URI of the uploaded file
                 return blobClient.Uri.ToString();
             }
             catch (Exception ex)
             {
-                // Handle exceptions
-                throw new ApplicationException("Error uploading file to Blob Storage.", ex);
+                _logger.LogError(ex, $"Error uploading file '{fileName}'.");
+                throw;
             }
         }
 
@@ -53,20 +57,44 @@ namespace KWL_HMSWeb.Services
         {
             try
             {
-                // Get a reference to the blob (file) in the container
+                _logger.LogInformation($"Downloading file '{fileName}' from Blob Storage.");
                 var blobClient = _blobContainerClient.GetBlobClient(fileName);
 
-                // Download the file content as a stream
                 var response = await blobClient.DownloadAsync();
                 return response.Value.Content;
             }
             catch (Exception ex)
             {
-                // Handle exceptions
-                throw new ApplicationException("Error downloading file from Blob Storage.", ex);
+                _logger.LogError(ex, $"Error downloading file '{fileName}'.");
+                throw;
             }
         }
 
+        // Method to get all file names from the blob container
+        public async Task<List<string>> GetAllFileNamesAsync()
+        {
+            try
+            {
+                var fileNames = new List<string>();
+
+                // Ensure the container exists
+                await _blobContainerClient.CreateIfNotExistsAsync();
+
+                // Retrieve all blobs in the container
+                await foreach (BlobItem blobItem in _blobContainerClient.GetBlobsAsync())
+                {
+                    fileNames.Add(blobItem.Name); // Add each blob's name to the list
+                }
+
+                _logger.LogInformation("Retrieved file names from Blob Storage successfully.");
+                return fileNames;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving file names from Blob Storage.");
+                throw;
+            }
+        }
     }
     public class VideoService : IServices
     {
@@ -87,5 +115,6 @@ namespace KWL_HMSWeb.Services
             return video;
         }
     }
-
 }
+
+

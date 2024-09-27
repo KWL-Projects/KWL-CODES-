@@ -9,38 +9,35 @@ namespace KWL_HMSWeb.Services
     {
         Task<string> GetVideoFilePathAsync(int videoId);  // Add methods related to video handling
     }
+
     public interface ILogService
     {
         Task LogAsync(string message);
     }
 
-    public class LogService : ILogService
-    {
-        // Implement logging methods here
-        public Task LogAsync(string message)
-        {
-            // Your logging logic here
-            return Task.CompletedTask;
-        }
-    }
-
-    /*public interface ISubmissionService
-    {
-        Task<Submission> GetSubmissionByIdAsync(int submissionId);
-    }
-
-    public class SubmissionService : ISubmissionService
+    public class Services : IServices
     {
         private readonly DatabaseContext _context;
 
-        public SubmissionService(DatabaseContext context)
+        public Services(DatabaseContext context)
         {
             _context = context;
         }
 
-        public async Task<Submission> GetSubmissionByIdAsync(int submissionId)
+        public async Task<string> GetVideoFilePathAsync(int videoId)
         {
-            return await _context.Submission.FirstOrDefaultAsync(s => s.submission_id == submissionId);
+            var submission = await _context.Submission.FirstOrDefaultAsync(s => s.submission_id == videoId);
+            return submission?.video_path;
         }
-    }*/
+    }
+
+    public class LogService : ILogService
+    {
+        public async Task LogAsync(string message)
+        {
+            // Example logging to a file (implement your preferred logging mechanism)
+            var logFilePath = "log.txt"; // Adjust this path as necessary
+            await File.AppendAllTextAsync(logFilePath, $"{DateTime.UtcNow}: {message}{Environment.NewLine}");
+        }
+    }
 }

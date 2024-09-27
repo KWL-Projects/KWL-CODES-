@@ -57,6 +57,17 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.MaxDepth = 64; // You can adjust this if needed
     });
 
+/*// Retrieve the Blob Storage connection string from configuration
+string? blobConnectionString = builder.Configuration.GetConnectionString("ConnectionString");
+
+if (string.IsNullOrEmpty(blobConnectionString))
+{
+    throw new InvalidOperationException("Azure Blob Storage connection string is missing or empty. Please check your configuration.");
+}
+
+// Register BlobServiceClient
+builder.Services.AddSingleton(new BlobServiceClient(blobConnectionString));*/
+
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IServices, VideoService>();
