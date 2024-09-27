@@ -87,6 +87,7 @@ namespace KWL_HMSWeb.Server.Controllers
         
 
         [HttpPost("authenticate")]
+        [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromBody] Login loginRequest)
         {
             // Fetch user by username
@@ -198,6 +199,7 @@ namespace KWL_HMSWeb.Server.Controllers
         }*/
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<ActionResult<Login>> Register(Login login)
         {
             // Encrypt password before saving
