@@ -6,7 +6,7 @@ using System;
 using System.Threading.Tasks;
 
 [ApiController]
-[Route("api/upload")] // Base route for this controller is 'api/upload'
+[Route("api/files")] // Base route for this controller is 'api/upload'
 public class FilesController : ControllerBase
 {
     private readonly BlobStorageService _blobStorageService; // Service to interact with Azure Blob Storage
@@ -19,7 +19,7 @@ public class FilesController : ControllerBase
         _logger = logger;
     }
 
-    // HTTP POST method for uploading a file - /api/upload/upload
+    // HTTP POST method for uploading a file - /api/files/upload
     [HttpPost("upload")]
     public async Task<IActionResult> UploadFile(IFormFile file)
     {
@@ -48,7 +48,7 @@ public class FilesController : ControllerBase
         }
     }
 
-    // HTTP GET method for downloading a file by its name - api/upload/download/{fileName}
+    // HTTP GET method for downloading a file by its name - api/files/download/{fileName}
     [HttpGet("download/{fileName}")]
     public async Task<IActionResult> DownloadFile(string fileName)
     {
@@ -101,7 +101,7 @@ public class FilesController : ControllerBase
         };
     }
 
-    // HTTP GET method to get a list of all file names - api/upload/files
+    // HTTP GET method to get a list of all file names - api/files/files
     [HttpGet("files")]
     public async Task<IActionResult> GetFileList()
     {
