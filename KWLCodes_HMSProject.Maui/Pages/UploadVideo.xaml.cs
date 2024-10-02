@@ -96,9 +96,15 @@ namespace KWLCodes_HMSProject.Maui.Pages
                 // Set the FFmpeg path
                 FFmpeg.SetExecutablesPath("path_to_ffmpeg");
 
-                // Compress the video
-                var conversion = await FFmpeg.Conversions.FromSnippet.Convert(filePath, outputFilePath);
-                await conversion.Start();
+                // Compress the video with specific parameters
+                var conversion = await FFmpeg.Conversions.New()
+                    .AddParameter($"-i \"{filePath}\"")
+                    .AddParameter("-c:v libx264")
+                    .AddParameter("-b:v 1M")
+                    .AddParameter("-c:a aac")
+                    .AddParameter("-b:a 128k")
+                    .SetOutput(outputFilePath)
+                    .Start();
 
                 // Display success message
                 StatusLabel.Text = $"Success: Video compressed and saved to {outputFilePath}";
@@ -106,9 +112,9 @@ namespace KWLCodes_HMSProject.Maui.Pages
             }
             catch (Exception ex)
             {
-                // Display failure message
+                // Display failure message with detailed error
                 StatusLabel.Text = $"Failure: Could not compress video. {ex.Message}";
-                LogEntry("Failure", ex.Message);
+                LogEntry("Failure", $"Could not compress video. Exception: {ex}");
             }
         }
 
