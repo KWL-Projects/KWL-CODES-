@@ -3,7 +3,7 @@ using Microsoft.Maui.Storage;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Xabe.FFmpeg;
+using FFMpegCore;
 
 namespace KWLCodes_HMSProject.Maui.Pages
 {
@@ -31,14 +31,11 @@ namespace KWLCodes_HMSProject.Maui.Pages
                 {
                     string filePath = result.FullPath;
 
-                    // Verify file type (optional, as FilePickerFileType.Videos already filters video files)
                     if (IsValidVideoFile(filePath))
                     {
-                        // Display success message
                         StatusLabel.Text = $"Success: Video selected from {filePath}";
                         LogEntry("Success", $"Video selected: {filePath}");
 
-                        // Compress the video
                         await CompressVideo(filePath);
                     }
                     else
@@ -50,7 +47,6 @@ namespace KWLCodes_HMSProject.Maui.Pages
             }
             catch (Exception ex)
             {
-                // Display failure message
                 StatusLabel.Text = "Failure: Could not select video.";
                 LogEntry("Failure", ex.Message);
             }
@@ -69,7 +65,6 @@ namespace KWLCodes_HMSProject.Maui.Pages
                     if (video != null)
                     {
                         var filePath = video.FullPath;
-                        // Handle the captured video file
                         StatusLabel.Text = "Status: Video recorded successfully!";
                         LogEntry("Success", $"Video recorded: {filePath}");
                     }
@@ -93,26 +88,23 @@ namespace KWLCodes_HMSProject.Maui.Pages
             {
                 string outputFilePath = Path.Combine(Path.GetDirectoryName(filePath), "compressed_" + Path.GetFileName(filePath));
 
-                // Set the FFmpeg path
-                FFmpeg.SetExecutablesPath("path_to_ffmpeg");
+                LogEntry("Info", $"Input file path: {filePath}");
+                LogEntry("Info", $"Output file path: {outputFilePath}");
 
-                // Compress the video with specific parameters
-                var conversion = await FFmpeg.Conversions.New()
-                    .AddParameter($"-i \"{filePath}\"")
-                    .AddParameter("-c:v libx264")
-                    .AddParameter("-b:v 1M")
-                    .AddParameter("-c:a aac")
-                    .AddParameter("-b:a 128k")
-                    .SetOutput(outputFilePath)
-                    .Start();
+                await FFMpegArguments
+                    .FromFileInput(filePath)
+                    .OutputToFile(outputFilePath, true, options => options
+                        .WithVideoCodec("libx264")
+                        .WithVideoBitrate(1000)
+                        .WithAudioCodec("aac")
+                        .WithAudioBitrate(128))
+                    .ProcessAsynchronously();
 
-                // Display success message
                 StatusLabel.Text = $"Success: Video compressed and saved to {outputFilePath}";
                 LogEntry("Success", $"Video compressed: {outputFilePath}");
             }
             catch (Exception ex)
             {
-                // Display failure message with detailed error
                 StatusLabel.Text = $"Failure: Could not compress video. {ex.Message}";
                 LogEntry("Failure", $"Could not compress video. Exception: {ex}");
             }
@@ -126,14 +118,13 @@ namespace KWLCodes_HMSProject.Maui.Pages
 
         private async Task AnimateButton(Button button)
         {
-            await button.ScaleTo(1.1, 100);  // Slightly enlarge button
-            await button.ScaleTo(1.0, 100);  // Return to normal size
+            await button.ScaleTo(1.1, 100);
+            await button.ScaleTo(1.0, 100);
         }
 
         private void LogEntry(string status, string message)
         {
             var logMessage = $"{DateTime.Now}: {status} - {message}";
-            // Save logMessage to a log file or database
             Console.WriteLine(logMessage);
         }
     }
