@@ -33,11 +33,6 @@ namespace KWL_HMSWeb.Server.Models
         public Student Student { get; set; } = null!;
 
         public Lecturer Lecturer {  get; set; } = null!;
-
-        public Enrollment Enrollment { get; set; } = null!;
-        public Assignment Assignment { get; set; } = null!;
-        public Submission Submission { get; set; } = null!;
-        public Feedback Feedback { get; set; } = null!;
     }
 }
 
