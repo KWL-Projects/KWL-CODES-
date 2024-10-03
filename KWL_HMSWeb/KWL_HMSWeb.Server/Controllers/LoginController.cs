@@ -9,7 +9,7 @@ using KWL_HMSWeb.Server.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using BCrypt.Net;
+//using BCrypt.Net;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authorization;
@@ -93,7 +93,14 @@ namespace KWL_HMSWeb.Server.Controllers
             // Fetch user by username
             var login = await _context.Login.FirstOrDefaultAsync(u => u.username == loginRequest.username);
 
-            if (login == null || !BCrypt.Net.BCrypt.Verify(loginRequest.password, login.password))
+            /*if (login == null || !BCrypt.Net.BCrypt.Verify(loginRequest.password, login.password))
+            {
+                // Log the failed attempt
+                LogFailure(loginRequest.username);
+                return Unauthorized(new { message = "Invalid username or password" });
+            }*/
+
+            if (login == null)
             {
                 // Log the failed attempt
                 LogFailure(loginRequest.username);

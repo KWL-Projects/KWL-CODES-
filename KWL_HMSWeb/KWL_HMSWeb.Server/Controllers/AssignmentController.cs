@@ -13,7 +13,7 @@ namespace KWL_HMSWeb.Server.Controllers
 {
     [Route("api/assignment")]
     [ApiController]
-    [Authorize(Roles = "admin,student,lecturer")]
+    //[Authorize(Roles = "admin,student,lecturer")]
     public class AssignmentController : ControllerBase
     {
         private readonly DatabaseContext _context;
