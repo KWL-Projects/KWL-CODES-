@@ -40,28 +40,24 @@ input[type="datetime-local"] {
 
 .button-container {
   display: flex;
-  flex-direction: column;
-  gap: 20px; /* Add space between buttons */
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 10px; /* Add space between buttons */
+  margin-top: 10px;
+  align-items: center; /* Center align buttons */
 }
 
 button {
-  width: 100%;
+  width: 250px; /* Set width to match the red area in the photo */
   padding: 10px;
   background-color: #004d00; /* Change to green */
   color: white;
-  border: none;
+  border: 1px solid #004d00; /* Thinner border */
   border-radius: 4px;
   cursor: pointer;
+  font-size: 14px; /* Adjust text size */
 }
 
   button:hover {
     background-color: #003300; /* Darker green on hover */
+    border: 1px solid #003300; /* Thinner border on hover */
   }
-
-  button + button {
-    background-color: #004d00; /* Ensure all buttons are green */
-  }
-
-    button + button:hover {
-      background-color: #003300; /* Darker green on hover */
-    }

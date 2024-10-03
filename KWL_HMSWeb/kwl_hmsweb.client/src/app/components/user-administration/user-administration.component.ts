@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-user-administration',
@@ -14,7 +15,7 @@ export class UserAdministrationComponent implements OnInit {
   showAddForm: boolean = false;
   newUser: any = { login_id: '', user_first_name: '', user_surname: '', user_type: '' };
 
-  constructor() { }
+  constructor(private location: Location) { }
 
   ngOnInit(): void { }
 
@@ -42,5 +43,9 @@ export class UserAdministrationComponent implements OnInit {
     this.users.push({ ...this.newUser });
     this.newUser = { login_id: '', user_first_name: '', user_surname: '', user_type: '' };
     this.showAddForm = false;
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

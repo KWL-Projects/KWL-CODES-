@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common'; // Import Location service
 
 @Component({
   selector: 'app-create-assignment',
@@ -15,7 +16,7 @@ export class CreateAssignmentComponent {
     dueDate: ''
   };
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private location: Location) { } // Inject Location service
 
   onSubmit() {
     // Implement create assignment logic here
@@ -32,5 +33,10 @@ export class CreateAssignmentComponent {
 
   navigateToVideos() {
     this.router.navigate(['/list-assignment-videos']);
+  }
+
+  goBack() {
+    // Logic to navigate back to the previous page
+    this.location.back();
   }
 }
