@@ -1,21 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-list-assignments',
   templateUrl: './list-assignments.component.html',
   styleUrls: ['./list-assignments.component.css']
 })
-/*export class ListAssignmentsComponent implements OnInit {
-  assignments: any[] = [];
-
-  constructor(private assignmentService: AssignmentService) { }
-
-  ngOnInit(): void {
-    this.assignmentService.getAssignments().subscribe(data => {
-      this.assignments = data;
-    });
-  }
-}*/
 export class ListAssignmentsComponent implements OnInit {
   assignments = [
     {
@@ -36,9 +26,26 @@ export class ListAssignmentsComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(private location: Location) { }
 
   ngOnInit(): void {
     // Fetch assignments from the backend
   }
+  /*export class ListAssignmentsComponent implements OnInit {
+  assignments: any[] = [];
+
+  constructor(private assignmentService: AssignmentService) { }
+
+  ngOnInit(): void {
+    this.assignmentService.getAssignments().subscribe(data => {
+      this.assignments = data;
+    });
+  }
+}*/
+
+
+  goBack(): void {
+    this.location.back();
+  }
 }
+

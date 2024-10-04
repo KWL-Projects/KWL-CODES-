@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-list-assignment-videos',
@@ -26,7 +27,7 @@ export class ListAssignmentVideosComponent implements OnInit {
     }
   ];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private location: Location) { }
 
   ngOnInit(): void {
     // Fetch videos from the backend
@@ -34,5 +35,9 @@ export class ListAssignmentVideosComponent implements OnInit {
 
   openFeedback(): void {
     this.router.navigate(['/provide-feedback']);
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }
