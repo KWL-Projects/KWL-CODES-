@@ -11,6 +11,21 @@
   width: 250px; /* Adjust the width as needed */
   height: auto; /* Maintain aspect ratio */
 }
+.overview {
+  background-color: #f3e5f5; /* Light purple color */
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+  .overview h2 {
+    color: #333;
+  }
+
+  .overview p {
+    color: #555;
+  }
+
 
 
 .landing-container {

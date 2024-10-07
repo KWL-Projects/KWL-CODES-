@@ -1,6 +1,13 @@
 <div class="landing-container">
   <img src="assets/th.jpeg" alt="Logo" class="logo">
   <h1>Human Movement Sciences by KWL</h1>
+
+  <div *ngIf="isMainPage" class="overview">
+    <h2>Overview</h2>
+    <p>The School of Human Movement Sciences has a vision to be a school of excellence in the development and training of students in the areas of human movement science, biokinetics, recreation, sports science and coaching science, enabling them to be practitioners, leaders and innovators in these applied fields for the people of South Africa and Africa.</p>
+    <p>The mission of the School of Human Movement Sciences is to produce well-rounded experts in the fields of human movement, sport, health and recreation that will be able to fulfil the needs of these fields within the country and its people.</p>
+  </div>
+
   <button *ngIf="isMainPage" (click)="navigateToLogin()">Login</button>
   <router-outlet></router-outlet>
   <p>Human Movement Sciences</p>
