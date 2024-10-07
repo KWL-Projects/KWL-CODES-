@@ -5,12 +5,12 @@ namespace KWL_HMSWeb.Server.Models
 {
     public class User
     {
-        [Key]
+        [Key] // Primary key
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int user_id { get; set; }
+        public int user_id { get; set; } // Primary key
 
-        [Required]
-        public int login_id { get; set; }
+        [ForeignKey("Login")] // Foreign key to Login table
+        public int login_id { get; set; } // Foreign key
 
         [Required]
         [MaxLength(50)]
@@ -21,18 +21,13 @@ namespace KWL_HMSWeb.Server.Models
         public string user_surname { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(20)]
         public string user_type { get; set; } = string.Empty;
 
-        // Navigation property for the related Login
-        [ForeignKey("login_id")]
-        public Login Login { get; set; } = null!;
+        // Foreign key relationship
+        public Login Login { get; set; } // Navigation property for foreign key
 
-        public Admin Admin { get; set; } = null!;
-
-        public Student Student { get; set; } = null!;
-
-        public Lecturer Lecturer {  get; set; } = null!;
+        // Navigation property
+        public ICollection<Subject> Subject { get; set; } // User can have multiple Subjects
     }
 }
 

@@ -6,33 +6,27 @@ namespace KWL_HMSWeb.Server.Models
 {
     public class Assignment
     {
-        [Key]
+        [Key] // Primary key
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int assignment_id { get; set; }
+        public int assignment_id { get; set; } // Primary key
+
+        [ForeignKey("Subject")] // Foreign key to Subject table
+        public int subject_id { get; set; } // Foreign key
 
         [Required]
-        public int subject_id { get; set; }
-
-        [Required]
-        public int user_id { get; set; }
-
-        [Required]
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string assignment_name { get; set; } = string.Empty;
 
-        [MaxLength(50)]
-        public string? assignment_description { get; set; }
+        [MaxLength(500)]
+        public string assignment_description { get; set; } = string.Empty;
 
-        [DataType(DataType.Date)]
         public DateTime due_date { get; set; }
 
-        // Navigation properties
-        [ForeignKey("user_id")]
-        public User User { get; set; } = null!;
+        // Foreign key relationship
+        public Subject Subject { get; set; } // Navigation property for foreign key
 
-        [ForeignKey("subject_id")]
-        public Subject Subject { get; set; } = null!;
-        public Submission Submission {  get; set; } = null!;
+        // Navigation property
+        public ICollection<Submission> Submission { get; set; } // Assignment can have multiple Submissions
     }
 }
 
