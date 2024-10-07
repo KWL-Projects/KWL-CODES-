@@ -15,6 +15,7 @@ form {
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 300px;
+  margin: auto; /* Center horizontally */
 }
 
 h2 {
@@ -49,15 +50,15 @@ input[type="datetime-local"] {
 button {
   width: 250px; /* Set width to match the red area in the photo */
   padding: 10px;
-  background-color: #004d00; /* Change to green */
+  background-color: #800080; /* Change to purple */
   color: white;
-  border: 1px solid #004d00; /* Thinner border */
+  border: 1px solid #800080; /* Thinner border */
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px; /* Adjust text size */
 }
 
   button:hover {
-    background-color: #003300; /* Darker green on hover */
-    border: 1px solid #003300; /* Thinner border on hover */
+    background-color: #4b004b; /* Darker purple on hover */
+    border: 1px solid #4b004b; /* Thinner border on hover */
   }

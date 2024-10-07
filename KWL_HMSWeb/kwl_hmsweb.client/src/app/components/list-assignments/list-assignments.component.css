@@ -46,7 +46,7 @@ a {
   }
 
 button {
-  background-color: #28a745; /* Green color */
+  background-color: #800080; /* Purple color */
   color: white;
   border: none;
   padding: 10px 20px;
@@ -60,5 +60,5 @@ button {
 }
 
   button:hover {
-    background-color: #218838; /* Darker green */
+    background-color: #4b004b; /* Darker purple */
   }

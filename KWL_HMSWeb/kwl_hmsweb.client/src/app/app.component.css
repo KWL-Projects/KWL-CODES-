@@ -16,12 +16,12 @@
 }
 
 h1 {
-  color: #004d00; /* Dark green color for the heading */
+  color: #800080; /* Dark purple color for the heading */
   margin-bottom: 1.5rem;
 }
 
 button {
-  background-color: #004d00; /* Dark green background for the button */
+  background-color: #800080; /* Dark purple background for the button */
   color: #ffffff; /* White text color */
   border: none;
   padding: 0.75rem 1.5rem;
@@ -32,7 +32,7 @@ button {
 }
 
   button:hover {
-    background-color: #003300; /* Darker green on hover */
+    background-color: #4b004b; /* Darker purple on hover */
   }
 
 p {
@@ -52,13 +52,13 @@ table {
 }
 
 th {
-  background-color: #004d00; /* Dark green background for table headers */
+  background-color: #800080; /* Dark purple background for table headers */
   color: #ffffff; /* White text color for table headers */
   padding: 1rem;
 }
 
 td {
-  background-color: #e6ffe6; /* Light green background for table cells */
+  background-color: #f2e6f2; /* Light purple background for table cells */
   color: #333333; /* Dark grey text color for table cells */
   padding: 1rem;
   border: 1px solid #cccccc; /* Light grey border for table cells */

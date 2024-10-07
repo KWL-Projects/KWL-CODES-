@@ -2,7 +2,7 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
   margin: 0;
-  padding: 20px;
+  padding: 0; /* Removed padding to avoid shifting */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,6 +15,7 @@ form {
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 300px;
+  margin: auto; /* Center horizontally */
 }
 
 h2 {
@@ -42,7 +43,7 @@ textarea {
 button {
   width: 100%;
   padding: 10px;
-  background-color: #28a745; /* Green color */
+  background-color: #800080; /* Purple color */
   color: white;
   border: none;
   border-radius: 4px;
@@ -51,7 +52,7 @@ button {
 }
 
   button:hover {
-    background-color: #218838; /* Darker green on hover */
+    background-color: #4b004b; /* Darker purple on hover */
   }
 
 .back-button {
@@ -60,5 +61,5 @@ button {
 }
 
   .back-button:hover {
-    background-color: #218838; /* Darker green on hover */
+    background-color: #4b004b; /* Darker purple on hover */
   }

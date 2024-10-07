@@ -38,7 +38,7 @@ tr:hover {
 
 button {
   padding: 10px 20px;
-  background-color: #28a745; /* Green color */
+  background-color: #800080; /* Purple color */
   color: white;
   border: none;
   border-radius: 4px;
@@ -47,7 +47,7 @@ button {
 }
 
   button:hover {
-    background-color: #218838; /* Darker green on hover */
+    background-color: #4b004b; /* Darker purple on hover */
   }
 
 form {
@@ -88,7 +88,7 @@ input[type="number"] {
   display: block;
   margin: 20px auto;
   padding: 10px 20px;
-  background-color: #28a745; /* Match the green color */
+  background-color: #800080; /* Match the purple color */
   color: white;
   border: none;
   border-radius: 4px;
@@ -97,5 +97,5 @@ input[type="number"] {
 }
 
   .back-button:hover {
-    background-color: #218838; /* Darker green on hover */
+    background-color: #4b004b; /* Darker purple on hover */
   }
