@@ -13,6 +13,9 @@ namespace KWL_HMSWeb.Server.Models
         [ForeignKey("Assignment")] // Foreign key to Assignment table
         public int assignment_id { get; set; } // Foreign key
 
+        [ForeignKey("User")] // Foreign key to Assignment table
+        public int user_id { get; set; } // Foreign key
+
         public DateTime submission_date { get; set; }
 
         [MaxLength(500)]
@@ -23,6 +26,8 @@ namespace KWL_HMSWeb.Server.Models
 
         // Foreign key relationship
         public Assignment Assignment { get; set; } // Navigation property for foreign key
+
+        public User Users { get; set; } // Navigation property for foreign key
 
         // Navigation property
         public ICollection<Feedback> Feedback { get; set; } // Submission can have multiple Feedbacks

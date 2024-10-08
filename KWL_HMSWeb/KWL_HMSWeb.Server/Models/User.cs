@@ -28,6 +28,8 @@ namespace KWL_HMSWeb.Server.Models
 
         // Navigation property
         public ICollection<Subject> Subject { get; set; } // User can have multiple Subjects
+
+        public ICollection<Submission> Submission { get; set; } // User can have multiple Submissions
     }
 }
 
