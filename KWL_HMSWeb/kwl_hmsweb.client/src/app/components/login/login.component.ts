@@ -26,5 +26,18 @@ export class LoginComponent {
         // Handle login error
         console.error('Login failed', error);
       });*/
+
+  onSubmit() {
+    this.http.post('https://localhost:5001/api/login/authenticate',
+      { username: this.username, password: this.password })
+      .subscribe(response => {
+        // Handle successful login, e.g., save the token to localStorage
+        this.router.navigate(['/landing']);
+      }, error => {
+        // Handle login error
+        console.error('Login failed', error);
+      });
+  }
+
   }
 
