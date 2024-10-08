@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common'; // Import Location service
+import { HttpClient } from '@angular/common/http'; // Import HttpClient
 
 @Component({
   selector: 'app-create-assignment',

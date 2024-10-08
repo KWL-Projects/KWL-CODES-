@@ -27,7 +27,7 @@ export class LoginComponent {
         console.error('Login failed', error);
       });*/
 
-  onSubmit() {
+  /*onSubmit() {
     this.http.post('https://localhost:5001/api/login/authenticate',
       { username: this.username, password: this.password })
       .subscribe(response => {
@@ -36,8 +36,20 @@ export class LoginComponent {
       }, error => {
         // Handle login error
         console.error('Login failed', error);
+      });*/
+  onSubmit() {
+    this.http.post('https://localhost:5001/api/login/authenticate',
+      { username: this.username, password: this.password })
+      .subscribe((response: any) => {
+        // Assuming the token is in the response
+        const token = response.token;
+        localStorage.setItem('jwtToken', token);
+        this.router.navigate(['/landing']);
+      }, error => {
+        console.error('Login failed', error);
       });
   }
+
 
   }
 

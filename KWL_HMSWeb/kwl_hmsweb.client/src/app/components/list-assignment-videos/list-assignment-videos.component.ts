@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { HttpClient } from '@angular/common/http'; // Import HttpClient
 
 @Component({
   selector: 'app-list-assignment-videos',
