@@ -95,12 +95,12 @@ builder.Services.AddScoped<IServices, VideoService>();
 builder.Services.AddSingleton<BlobStorageService>();
 builder.Services.AddEndpointsApiExplorer();
 
-//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen();
 
 // Build the app.
 var app = builder.Build();
 
-/*if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
@@ -108,7 +108,7 @@ var app = builder.Build();
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
     });
-}*/
+}
 
 // Use Developer Exception Page in Development mode.
 if (app.Environment.IsDevelopment())

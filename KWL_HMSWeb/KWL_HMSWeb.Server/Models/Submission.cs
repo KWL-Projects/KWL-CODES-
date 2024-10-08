@@ -30,7 +30,7 @@ namespace KWL_HMSWeb.Server.Models
         public User Users { get; set; } // Navigation property for foreign key
 
         // Navigation property
-        public ICollection<Feedback> Feedback { get; set; } // Submission can have multiple Feedbacks
+        //public ICollection<Feedback> Feedback { get; set; } // Submission can have multiple Feedbacks
     }
 }
 

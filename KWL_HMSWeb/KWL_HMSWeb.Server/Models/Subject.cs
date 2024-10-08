@@ -23,7 +23,7 @@ namespace KWL_HMSWeb.Server.Models
         public User Users { get; set; } // Navigation property for foreign key
 
         // Navigation property
-        public ICollection<Assignment> Assignment { get; set; } // Subject can have multiple Assignments
+        //public ICollection<Assignment> Assignment { get; set; } // Subject can have multiple Assignments
     }
 }
 

@@ -145,7 +145,7 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // GET: api/Login/5
-        [HttpGet("{id}")]
+        [HttpGet("view/{id}")]
         public async Task<ActionResult<Login>> GetLogin(int id)
         {
             var login = await _context.Login.FindAsync(id);
@@ -159,7 +159,7 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // PUT: api/Login/5
-        [HttpPut("{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> PutLogin(int id, Login login)
         {
             if (id != login.login_id)
@@ -189,7 +189,7 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // DELETE: api/Login/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteLogin(int id)
         {
             var login = await _context.Login.FindAsync(id);

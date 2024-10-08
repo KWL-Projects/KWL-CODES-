@@ -26,7 +26,7 @@ namespace KWL_HMSWeb.Server.Models
         public Subject Subject { get; set; } // Navigation property for foreign key
 
         // Navigation property
-        public ICollection<Submission> Submission { get; set; } // Assignment can have multiple Submissions
+        //public ICollection<Submission> Submission { get; set; } // Assignment can have multiple Submissions
     }
 }
 
