@@ -35,6 +35,7 @@ namespace KWL_HMSWeb.Server.Controllers
         {
             try
             {
+                // Fetch the user by username
                 var user = await _context.Login.SingleOrDefaultAsync(u => u.username == login.username);
                 if (user == null)
                 {
@@ -42,14 +43,16 @@ namespace KWL_HMSWeb.Server.Controllers
                     return Unauthorized(new { message = "Invalid username or password" });
                 }
 
-                // Verify password with BCrypt
+                // Log before verifying the password
+                Log("Verifying password", true);
                 if (!VerifyPassword(login.password, user.password))
                 {
                     Log("Login failed: Incorrect password", false);
                     return Unauthorized(new { message = "Invalid username or password" });
                 }
+                Log("Password verification successful", true);
 
-                // Retrieve the user type
+                // Retrieve the user details (e.g., user type)
                 var userDetail = await _context.Users.SingleOrDefaultAsync(u => u.login_id == user.login_id);
                 if (userDetail == null)
                 {
@@ -57,7 +60,7 @@ namespace KWL_HMSWeb.Server.Controllers
                     return Unauthorized(new { message = "Invalid username or password" });
                 }
 
-                // Generate JWT token on success, including user type
+                // Generate JWT token on successful authentication
                 var token = GenerateJwtToken(user, userDetail.user_type);
                 Log("Login successful", true);
                 return Ok(new { message = "Login successful", token });
@@ -81,11 +84,18 @@ namespace KWL_HMSWeb.Server.Controllers
                     return BadRequest(new { message = "Username already exists" });
                 }
 
-                // Log the received login object
+                // Log the received registration details (excluding login_id)
                 Log($"Received registration: Username - {login.username}", true);
+
+                // Ensure login_id is not set (let the database auto-generate it)
+                login.login_id = 0; // Or, remove this line entirely if unnecessary
 
                 // Hash the password
                 login.password = HashPassword(login.password);
+
+                // No hashing for testing purposes
+                //login.password = login.password;
+
 
                 // Add login object to the database
                 _context.Login.Add(login);
@@ -102,7 +112,6 @@ namespace KWL_HMSWeb.Server.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-
 
         // BCrypt Password Hashing Helper Method
         private string HashPassword(string password)
