@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KWL_HMSWeb.Server.Models;
-using Microsoft.Extensions.Logging;
-using KWL_HMSWeb.Services;
+using Microsoft.Extensions.Logging; // For logging
 
 namespace KWL_HMSWeb.Server.Controllers
 {
@@ -16,55 +15,74 @@ namespace KWL_HMSWeb.Server.Controllers
     public class SubmissionController : ControllerBase
     {
         private readonly DatabaseContext _context;
-        private readonly BlobStorageService _blobStorageService;
-        private readonly ILogger<SubmissionController> _logger;
+        private readonly ILogger<SubmissionController> _logger; // Logger
 
-        public SubmissionController(DatabaseContext context, BlobStorageService blobStorageService, ILogger<SubmissionController> logger)
+        public SubmissionController(DatabaseContext context, ILogger<SubmissionController> logger)
         {
             _context = context;
-            _blobStorageService = blobStorageService;
-            _logger = logger;
+            _logger = logger; // Initialize logger
         }
 
-        // GET: api/Submission
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Submission>>> GetSubmission()
+        // 1st functionality: View all submissions
+        // GET: api/submission/view
+        [HttpGet("view")]
+        public async Task<ActionResult<IEnumerable<Submission>>> ViewSubmissions()
         {
             try
             {
                 var submissions = await _context.Submission.ToListAsync();
+                if (submissions == null || !submissions.Any())
+                {
+                    _logger.LogInformation("No submissions found.");
+                    return NotFound("No submissions found.");
+                }
+
                 _logger.LogInformation("Successfully retrieved all submissions.");
-                return submissions;
+                return Ok(submissions);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while retrieving submissions.");
-                return StatusCode(500, "An error occurred while retrieving submissions.");
+                _logger.LogError($"Error retrieving submissions: {ex.Message}");
+                return StatusCode(500, "Internal server error while retrieving submissions.");
             }
         }
 
-        // GET: api/Submission/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Submission>> GetSubmission(int id)
+        // 2nd functionality: Browse own submissions
+        // GET: api/submission/browse/{userId}
+        [HttpGet("browse/{userId}")]
+        public async Task<ActionResult<IEnumerable<Submission>>> BrowseOwnSubmissions(int userId)
         {
             try
             {
-                var submission = await _context.Submission.FindAsync(id);
+                var submissions = await _context.Submission
+                    .Where(s => s.user_id == userId) // Filter by userId
+                    .ToListAsync();
 
-                if (submission == null)
+                if (submissions == null || !submissions.Any())
                 {
-                    _logger.LogWarning("Submission with ID {Id} not found.", id);
-                    return NotFound();
+                    _logger.LogInformation($"No submissions found for user ID: {userId}.");
+                    return NotFound($"No submissions found for user ID: {userId}.");
                 }
 
-                _logger.LogInformation("Successfully retrieved submission with ID {Id}.", id);
-                return submission;
+                _logger.LogInformation($"Successfully retrieved submissions for user ID: {userId}.");
+                return Ok(submissions);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while retrieving submission with ID {Id}.", id);
-                return StatusCode(500, "An error occurred while retrieving the submission.");
+                _logger.LogError($"Error retrieving submissions for user ID: {userId}. Error: {ex.Message}");
+                return StatusCode(500, $"Internal server error while retrieving submissions for user ID: {userId}.");
             }
+        }
+
+        // Existing methods (POST, PUT, DELETE, etc.) remain the same
+        // POST: api/Submission
+        [HttpPost]
+        public async Task<ActionResult<Submission>> PostSubmission(Submission submission)
+        {
+            _context.Submission.Add(submission);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetSubmission", new { id = submission.submission_id }, submission);
         }
 
         // PUT: api/Submission/5
@@ -97,42 +115,6 @@ namespace KWL_HMSWeb.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Submission
-        [HttpPost]
-        public async Task<ActionResult<Submission>> PostSubmission(Submission submission, IFormFile file)
-        {
-            try
-            {
-                _logger.LogInformation("Attempting to store the file '{FileName}'", file?.FileName);
-
-                if (file == null || file.Length == 0)
-                {
-                    _logger.LogWarning("No file provided or file is empty.");
-                    return BadRequest("Please upload a valid file.");
-                }
-
-                using (var stream = file.OpenReadStream())
-                {
-                    var fileName = file.FileName;
-                    string filePath = await _blobStorageService.UploadFileAsync(stream, fileName);
-                    _logger.LogInformation("File '{FileName}' successfully stored at '{FilePath}'", fileName, filePath);
-                    submission.video_path = filePath;
-                }
-
-                _logger.LogInformation("Attempting to create database entry for submission '{SubmissionId}'", submission.submission_id);
-                _context.Submission.Add(submission);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Database entry successfully created for submission '{SubmissionId}'", submission.submission_id);
-
-                return CreatedAtAction("GetSubmission", new { id = submission.submission_id }, submission);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while processing the submission.");
-                return StatusCode(500, "An error occurred while processing the submission.");
-            }
-        }
-
         // DELETE: api/Submission/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSubmission(int id)
@@ -155,4 +137,5 @@ namespace KWL_HMSWeb.Server.Controllers
         }
     }
 }
+
 

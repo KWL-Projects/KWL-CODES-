@@ -6,32 +6,26 @@ namespace KWL_HMSWeb.Server.Models
 {
     public class Submission
     {
-        [Key]
+        [Key] // Primary key
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int submission_id { get; set; }
+        public int submission_id { get; set; } // Primary key
 
-        [Required]
-        public int assignment_id { get; set; }
+        [ForeignKey("Assignment")] // Foreign key to Assignment table
+        public int assignment_id { get; set; } // Foreign key
 
-        [Required]
-        public int user_id { get; set; }
-
-        [DataType(DataType.Date)]
         public DateTime submission_date { get; set; }
 
-        [MaxLength(50)]
-        public string? submission_description { get; set; }
+        [MaxLength(500)]
+        public string submission_description { get; set; } = string.Empty;
 
-        [MaxLength(50)]
-        public string? video_path { get; set; }
+        [MaxLength(200)]
+        public string video_path { get; set; } = string.Empty;
+
+        // Foreign key relationship
+        public Assignment Assignment { get; set; } // Navigation property for foreign key
 
         // Navigation property
-        [ForeignKey("assignment_id")]
-        public Assignment Assignment { get; set; } = null!;
-
-        [ForeignKey("user_id")]
-        public User User { get; set; } = null!;
-        public Feedback Feedback {  get; set; } = null!;
+        public ICollection<Feedback> Feedback { get; set; } // Submission can have multiple Feedbacks
     }
 }
 

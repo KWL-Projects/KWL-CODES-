@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KWL_HMSWeb.Server.Models;
-using Microsoft.Extensions.Logging;
-using System.Text;
 
 namespace KWL_HMSWeb.Server.Controllers
 {
@@ -16,12 +14,10 @@ namespace KWL_HMSWeb.Server.Controllers
     public class FeedbackController : ControllerBase
     {
         private readonly DatabaseContext _context;
-        private readonly ILogger<FeedbackController> _logger;
 
-        public FeedbackController(DatabaseContext context, ILogger<FeedbackController> logger)
+        public FeedbackController(DatabaseContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         // GET: api/Feedback
@@ -46,6 +42,7 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // PUT: api/Feedback/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFeedback(int id, Feedback feedback)
         {
@@ -76,14 +73,12 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // POST: api/Feedback
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Feedback>> PostFeedback(Feedback feedback)
         {
             _context.Feedback.Add(feedback);
             await _context.SaveChangesAsync();
-
-            // Log success
-            _logger.LogInformation("Feedback successfully added with ID: {FeedbackId}", feedback.feedback_id);
 
             return CreatedAtAction("GetFeedback", new { id = feedback.feedback_id }, feedback);
         }
@@ -101,117 +96,8 @@ namespace KWL_HMSWeb.Server.Controllers
             _context.Feedback.Remove(feedback);
             await _context.SaveChangesAsync();
 
-            // Log success
-            _logger.LogInformation("Feedback successfully deleted with ID: {FeedbackId}", id);
-
             return NoContent();
         }
-
-        // POST: api/Feedback/submit
-        [HttpPost("submit")]
-        public async Task<ActionResult> SubmitFeedback([FromBody] Feedback feedback)
-        {
-            if (feedback == null)
-            {
-                _logger.LogError("Feedback submission failed: Feedback is null.");
-                return BadRequest("Feedback cannot be null.");
-            }
-
-            try
-            {
-                _context.Feedback.Add(feedback);
-                await _context.SaveChangesAsync();
-
-                // Log success
-                _logger.LogInformation("Feedback successfully submitted with ID: {FeedbackId}", feedback.feedback_id);
-
-                return Ok(new { Message = "Feedback submitted successfully.", FeedbackId = feedback.feedback_id });
-            }
-            catch (Exception ex)
-            {
-                // Log failure
-                _logger.LogError(ex, "Feedback submission failed.");
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while submitting feedback.");
-            }
-        }
-
-        // GET: api/Feedback/view/{submissionId}
-        [HttpGet("view/{submissionId}")]
-        public async Task<ActionResult<IEnumerable<Feedback>>> ViewFeedback(int submissionId)
-        {
-            try
-            {
-                var feedbackList = await _context.Feedback
-                    .Where(f => f.submission_id == submissionId)
-                    .ToListAsync();
-
-                if (feedbackList == null || !feedbackList.Any())
-                {
-                    _logger.LogWarning("No feedback found for submission ID: {SubmissionId}", submissionId);
-                    return NotFound(new { Message = "No feedback found for this submission." });
-                }
-
-                // Log success
-                _logger.LogInformation("Feedback retrieved for submission ID: {SubmissionId}", submissionId);
-
-                return Ok(feedbackList);
-            }
-            catch (Exception ex)
-            {
-                // Log failure
-                _logger.LogError(ex, "Error retrieving feedback for submission ID: {SubmissionId}", submissionId);
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving feedback.");
-            }
-        }
-
-        // GET: api/Feedback/download-marks/{submissionId}
-        [HttpGet("download-marks/{submissionId}")]
-        public async Task<IActionResult> DownloadMarks(int submissionId)
-        {
-            try
-            {
-                // Retrieve the marks data for the given submission ID
-                var feedbackList = await _context.Feedback
-                    .Where(f => f.submission_id == submissionId)
-                    .ToListAsync();
-
-                if (feedbackList == null || !feedbackList.Any())
-                {
-                    _logger.LogWarning("No feedback found for submission ID: {SubmissionId}", submissionId);
-                    return NotFound(new { Message = "No feedback found for this submission." });
-                }
-
-                // Prepare the data into a CSV format
-                var csvData = new StringBuilder();
-                csvData.AppendLine("Feedback ID, Submission ID, User ID, Feedback, Mark Received");
-
-                foreach (var feedback in feedbackList)
-                {
-                    csvData.AppendLine($"{feedback.feedback_id}, {feedback.submission_id}, {feedback.user_id}, \"{feedback.feedback}\", {feedback.mark_received}");
-                }
-
-                // Convert CSV data to byte array
-                var bytes = Encoding.UTF8.GetBytes(csvData.ToString());
-
-                // Log success
-                _logger.LogInformation("Marks file successfully prepared for submission ID: {SubmissionId}", submissionId);
-
-                // Set headers to force file download
-                var fileContentResult = new FileContentResult(bytes, "text/csv")
-                {
-                    FileDownloadName = $"Marks_Submission_{submissionId}.csv"
-                };
-
-                return fileContentResult;
-            }
-            catch (Exception ex)
-            {
-                // Log failure
-                _logger.LogError(ex, "Error occurred while downloading marks for submission ID: {SubmissionId}", submissionId);
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while downloading marks.");
-            }
-        }
-
 
         private bool FeedbackExists(int id)
         {

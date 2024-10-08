@@ -5,15 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using KWL_HMSWeb.Server.Models;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authorization;
+using KWL_HMSWeb.Server.Models;
 
 namespace KWL_HMSWeb.Server.Controllers
 {
     [Route("api/assignment")]
     [ApiController]
-    //[Authorize(Roles = "admin,student,lecturer")]
     public class AssignmentController : ControllerBase
     {
         private readonly DatabaseContext _context;
@@ -25,114 +23,118 @@ namespace KWL_HMSWeb.Server.Controllers
             _logger = logger;
         }
 
-        // GET: api/Assignment
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Assignment>>> GetAssignment()
+        // POST: api/Assignment/Create
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateAssignment([FromBody] Assignment assignment)
         {
-            try
+            // Date verification logic
+            if (assignment.due_date < DateTime.Now)
             {
-                var assignments = await _context.Assignment.ToListAsync();
-                _logger.LogInformation("Assignments retrieved successfully.");
-                return assignments;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving assignments.");
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
-            }
-        }
-
-        // GET: api/Assignment/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Assignment>> GetAssignment(int id)
-        {
-            try
-            {
-                var assignment = await _context.Assignment.FindAsync(id);
-
-                if (assignment == null)
-                {
-                    _logger.LogWarning("Assignment with id {Id} not found.", id);
-                    return NotFound();
-                }
-
-                _logger.LogInformation("Assignment with id {Id} retrieved successfully.", id);
-                return assignment;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving assignment with id {Id}.", id);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
-            }
-        }
-
-        // PUT: api/Assignment/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAssignment(int id, Assignment assignment)
-        {
-            if (id != assignment.assignment_id)
-            {
-                _logger.LogWarning("Assignment id mismatch.");
-                return BadRequest();
-            }
-
-            _context.Entry(assignment).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Assignment with id {Id} updated successfully.", id);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AssignmentExists(id))
-                {
-                    _logger.LogWarning("Assignment with id {Id} not found.", id);
-                    return NotFound();
-                }
-                else
-                {
-                    _logger.LogError("Concurrency error updating assignment with id {Id}.", id);
-                    throw;
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error updating assignment with id {Id}.", id);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Assignment
-        [HttpPost]
-        public async Task<ActionResult<Assignment>> PostAssignment(Assignment assignment)
-        {
-            // Data verification
-            if (assignment.assignment_id <= 0 || string.IsNullOrEmpty(assignment.assignment_name) || assignment.due_date == default)
-            {
-                _logger.LogWarning("Invalid assignment data provided.");
-                return BadRequest("Invalid assignment data.");
+                _logger.LogError("Assignment creation failed: Due date is in the past.");
+                return BadRequest("Due date must be in the future.");
             }
 
             try
             {
                 _context.Assignment.Add(assignment);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("Assignment created successfully with id {Id}.", assignment.assignment_id);
 
-                return CreatedAtAction("GetAssignment", new { id = assignment.assignment_id }, assignment);
+                _logger.LogInformation($"Assignment created successfully: Assignment ID {assignment.assignment_id}");
+                return Ok(new { message = "Assignment created successfully.", assignment_id = assignment.assignment_id });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating assignment.");
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+                _logger.LogError($"Error creating assignment: {ex.Message}");
+                return StatusCode(500, "Internal server error. Please try again later.");
             }
         }
 
-        // DELETE: api/Assignment/5
-        [HttpDelete("{id}")]
+        // GET: api/Assignment/View/{id}
+        [HttpGet("view/{id}")]
+        public async Task<IActionResult> ViewAssignment(int id)
+        {
+            try
+            {
+                var assignment = await _context.Assignment.FindAsync(id);
+                if (assignment == null)
+                {
+                    _logger.LogWarning($"Assignment with ID {id} not found.");
+                    return NotFound($"Assignment with ID {id} not found.");
+                }
+
+                _logger.LogInformation($"Assignment with ID {id} retrieved successfully.");
+                return Ok(assignment);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error retrieving assignment: {ex.Message}");
+                return StatusCode(500, "Internal server error. Please try again later.");
+            }
+        }
+
+        // GET: api/Assignment/All
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllAssignments()
+        {
+            try
+            {
+                var assignments = await _context.Assignment.ToListAsync();
+
+                if (!assignments.Any())
+                {
+                    _logger.LogWarning("No assignments found.");
+                    return NotFound("No assignments found.");
+                }
+
+                _logger.LogInformation("All assignments retrieved successfully.");
+                return Ok(assignments);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error retrieving assignments: {ex.Message}");
+                return StatusCode(500, "Internal server error. Please try again later.");
+            }
+        }
+
+        // PUT: api/Assignment/Update/{id}
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateAssignment(int id, [FromBody] Assignment updatedAssignment)
+        {
+            if (id != updatedAssignment.assignment_id)
+            {
+                _logger.LogError("Assignment update failed: Assignment ID mismatch.");
+                return BadRequest("Assignment ID mismatch.");
+            }
+
+            _context.Entry(updatedAssignment).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"Assignment with ID {id} updated successfully.");
+                return Ok(new { message = "Assignment updated successfully." });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AssignmentExists(id))
+                {
+                    _logger.LogWarning($"Assignment with ID {id} not found.");
+                    return NotFound($"Assignment with ID {id} not found.");
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error updating assignment: {ex.Message}");
+                return StatusCode(500, "Internal server error. Please try again later.");
+            }
+        }
+
+        // DELETE: api/Assignment/Delete/{id}
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteAssignment(int id)
         {
             try
@@ -140,20 +142,20 @@ namespace KWL_HMSWeb.Server.Controllers
                 var assignment = await _context.Assignment.FindAsync(id);
                 if (assignment == null)
                 {
-                    _logger.LogWarning("Assignment with id {Id} not found.", id);
-                    return NotFound();
+                    _logger.LogWarning($"Assignment with ID {id} not found.");
+                    return NotFound($"Assignment with ID {id} not found.");
                 }
 
                 _context.Assignment.Remove(assignment);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("Assignment with id {Id} deleted successfully.", id);
 
-                return NoContent();
+                _logger.LogInformation($"Assignment with ID {id} deleted successfully.");
+                return Ok(new { message = "Assignment deleted successfully." });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting assignment with id {Id}.", id);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+                _logger.LogError($"Error deleting assignment: {ex.Message}");
+                return StatusCode(500, "Internal server error. Please try again later.");
             }
         }
 
@@ -163,3 +165,5 @@ namespace KWL_HMSWeb.Server.Controllers
         }
     }
 }
+
+
