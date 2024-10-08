@@ -23,8 +23,8 @@ namespace KWL_HMSWeb.Server.Controllers
             _logger = logger;
         }
 
-        // GET: api/User
-        [HttpGet]
+        // GET: api/User/all
+        [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             var users = await _context.Users.ToListAsync();
@@ -49,7 +49,7 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // PUT: api/User/5
-        [HttpPut("{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
             if (id != user.user_id)
@@ -82,8 +82,8 @@ namespace KWL_HMSWeb.Server.Controllers
             return Ok(new { message = "User updated successfully" });
         }
 
-        // POST: api/User
-        [HttpPost]
+        // POST: api/User/create
+        [HttpPost("create")]
         public async Task<ActionResult<User>> PostUser(User user)
         {
             _context.Users.Add(user);
@@ -94,7 +94,7 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // DELETE: api/User/5
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var user = await _context.Users.FindAsync(id);

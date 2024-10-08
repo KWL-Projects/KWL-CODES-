@@ -24,8 +24,8 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // 1st functionality: View all submissions
-        // GET: api/submission/view
-        [HttpGet("view")]
+        // GET: api/submission/all
+        [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<Submission>>> ViewSubmissions()
         {
             try
@@ -48,8 +48,8 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // 2nd functionality: Browse own submissions
-        // GET: api/submission/browse/{userId}
-        [HttpGet("browse/{userId}")]
+        // GET: api/submission/view/{userId}
+        [HttpGet("view/{userId}")]
         public async Task<ActionResult<IEnumerable<Submission>>> BrowseOwnSubmissions(int userId)
         {
             try
@@ -75,8 +75,8 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // Existing methods (POST, PUT, DELETE, etc.) remain the same
-        // POST: api/Submission
-        [HttpPost]
+        // POST: api/Submission/create
+        [HttpPost("create")]
         public async Task<ActionResult<Submission>> PostSubmission(Submission submission)
         {
             _context.Submission.Add(submission);
@@ -85,8 +85,8 @@ namespace KWL_HMSWeb.Server.Controllers
             return CreatedAtAction("GetSubmission", new { id = submission.submission_id }, submission);
         }
 
-        // PUT: api/Submission/5
-        [HttpPut("{id}")]
+        // PUT: api/Submission/update/5
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> PutSubmission(int id, Submission submission)
         {
             if (id != submission.submission_id)
@@ -115,8 +115,8 @@ namespace KWL_HMSWeb.Server.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Submission/5
-        [HttpDelete("{id}")]
+        // DELETE: api/Submission/delete/5
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteSubmission(int id)
         {
             var submission = await _context.Submission.FindAsync(id);

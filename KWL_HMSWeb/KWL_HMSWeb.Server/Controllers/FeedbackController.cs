@@ -21,10 +21,9 @@ namespace KWL_HMSWeb.Server.Controllers
             _context = context;
         }
 
-        // Existing methods...
-
         // 1st functionality: View feedback on your submissions
-        [HttpGet("my-submissions/{userId}")]
+        // GET: api/feedback/submissions/{userId}
+        [HttpGet("submissions/{userId}")]
         public async Task<ActionResult<IEnumerable<Feedback>>> ViewMyFeedback(int userId)
         {
             try
@@ -58,7 +57,8 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // 2nd functionality: Provide feedback on video
-        [HttpPost("submit-feedback")]
+        // POST: api/feedback/submit
+        [HttpPost("submit")]
         public async Task<IActionResult> ProvideFeedback([FromBody] Feedback feedback)
         {
             if (feedback == null || string.IsNullOrEmpty(feedback.feedback) || feedback.mark_received == null)
@@ -83,6 +83,7 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // 3rd functionality: Download marks
+        // GET: api/feedback/download-marks/{userId}
         [HttpGet("download-marks/{userId}")]
         public async Task<IActionResult> DownloadMarks(int userId)
         {
@@ -119,6 +120,42 @@ namespace KWL_HMSWeb.Server.Controllers
             }
         }
 
+        // 4th functionality: Update feedback on video
+        // PUT: api/feedback/update/{feedbackId}
+        [HttpPut("update/{feedbackId}")]
+        public async Task<IActionResult> UpdateFeedback(int feedbackId, [FromBody] Feedback updatedFeedback)
+        {
+            if (updatedFeedback == null || string.IsNullOrEmpty(updatedFeedback.feedback) || updatedFeedback.mark_received == null)
+                return BadRequest("Invalid feedback input.");
+
+            try
+            {
+                var existingFeedback = await _context.Feedback.FindAsync(feedbackId);
+
+                if (existingFeedback == null)
+                    return NotFound("Feedback not found.");
+
+                // Update the feedback fields
+                existingFeedback.feedback = updatedFeedback.feedback;
+                existingFeedback.mark_received = updatedFeedback.mark_received;
+
+                _context.Feedback.Update(existingFeedback);
+                await _context.SaveChangesAsync();
+
+                // Log success
+                Log("Feedback successfully updated for feedback ID: " + feedbackId);
+
+                return Ok("Feedback updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                // Log failure
+                Log("Failed to update feedback for feedback ID: " + feedbackId + ". Error: " + ex.Message);
+                return StatusCode(500, "An error occurred while updating feedback.");
+            }
+        }
+
+
         private void Log(string message)
         {
             // Implement your logging functionality here (e.g., write to a file or database)
@@ -126,6 +163,7 @@ namespace KWL_HMSWeb.Server.Controllers
         }
     }
 }
+
 
 
 

@@ -23,7 +23,7 @@ namespace KWL_HMSWeb.Server.Controllers
             _logger = logger;
         }
 
-        // POST: api/Assignment/Create
+        // POST: api/assignment/create
         [HttpPost("create")]
         public async Task<IActionResult> CreateAssignment([FromBody] Assignment assignment)
         {
@@ -49,7 +49,7 @@ namespace KWL_HMSWeb.Server.Controllers
             }
         }
 
-        // GET: api/Assignment/View/{id}
+        // GET: api/assignment/view/{id}
         [HttpGet("view/{id}")]
         public async Task<IActionResult> ViewAssignment(int id)
         {
@@ -72,7 +72,7 @@ namespace KWL_HMSWeb.Server.Controllers
             }
         }
 
-        // GET: api/Assignment/All
+        // GET: api/assignment/all
         [HttpGet("all")]
         public async Task<IActionResult> GetAllAssignments()
         {
@@ -96,7 +96,7 @@ namespace KWL_HMSWeb.Server.Controllers
             }
         }
 
-        // PUT: api/Assignment/Update/{id}
+        // PUT: api/assignment/update/{id}
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateAssignment(int id, [FromBody] Assignment updatedAssignment)
         {
@@ -133,7 +133,7 @@ namespace KWL_HMSWeb.Server.Controllers
             }
         }
 
-        // DELETE: api/Assignment/Delete/{id}
+        // DELETE: api/assignment/delete/{id}
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteAssignment(int id)
         {
@@ -165,5 +165,6 @@ namespace KWL_HMSWeb.Server.Controllers
         }
     }
 }
+
 
 

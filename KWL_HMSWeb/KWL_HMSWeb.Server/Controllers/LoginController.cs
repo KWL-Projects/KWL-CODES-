@@ -188,7 +188,7 @@ namespace KWL_HMSWeb.Server.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Login/5
+        // DELETE: api/Login/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLogin(int id)
         {
