@@ -5,9 +5,9 @@ namespace KWL_HMSWeb.Server.Models
 {
     public class User
     {
-        //[Key] // Primary key
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int user_id { get; set; } // Primary key
+        [Key] // Primary key
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int user_id { get; set; } // Primary key
 
         [ForeignKey("Login")] // Foreign key to Login table
         public int login_id { get; set; } // Foreign key

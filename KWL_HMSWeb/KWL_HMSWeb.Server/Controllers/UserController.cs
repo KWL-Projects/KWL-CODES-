@@ -86,6 +86,7 @@ namespace KWL_HMSWeb.Server.Controllers
         [HttpPost("create")]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            // Do not set user_id, let EF handle it
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
