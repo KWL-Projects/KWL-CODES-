@@ -50,15 +50,30 @@ namespace KWL_HMSWeb.Server.Controllers
 
         // PUT: api/User/5
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, User updatedUser)
         {
-            if (id != user.user_id)
+            if (id != updatedUser.user_id)
             {
                 _logger.LogWarning("User ID mismatch.");
                 return BadRequest(new { message = "User ID mismatch" });
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            var existingUser = await _context.Users.Include(u => u.Login).FirstOrDefaultAsync(u => u.user_id == id);
+
+            if (existingUser == null)
+            {
+                _logger.LogError($"User with ID {id} not found during update.");
+                return NotFound(new { message = "User not found" });
+            }
+
+            // Prevent modification of user_id and login_id
+            updatedUser.user_id = existingUser.user_id;
+            updatedUser.login_id = existingUser.login_id;
+
+            // Optionally prevent modification of Login details (if needed)
+            updatedUser.Login.login_id = existingUser.Login.login_id;
+
+            _context.Entry(existingUser).CurrentValues.SetValues(updatedUser);
 
             try
             {
@@ -81,6 +96,7 @@ namespace KWL_HMSWeb.Server.Controllers
 
             return Ok(new { message = "User updated successfully" });
         }
+
 
         // POST: api/User/create
         [HttpPost("create")]

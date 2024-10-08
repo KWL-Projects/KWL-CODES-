@@ -81,21 +81,28 @@ namespace KWL_HMSWeb.Server.Controllers
                     return BadRequest(new { message = "Username already exists" });
                 }
 
-                // Hash the password with BCrypt
+                // Log the received login object
+                Log($"Received registration: Username - {login.username}", true);
+
+                // Hash the password
                 login.password = HashPassword(login.password);
 
+                // Add login object to the database
                 _context.Login.Add(login);
                 await _context.SaveChangesAsync();
 
                 Log("User registered successfully", true);
+
                 return CreatedAtAction(nameof(GetLogin), new { id = login.login_id }, new { message = "Registration successful" });
             }
             catch (Exception ex)
             {
-                Log($"Registration failed: {ex.Message}", false);
-                return StatusCode(500, "Internal server error");
+                // Log the full exception
+                Log($"Registration failed: {ex.ToString()}", false);
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
 
         // BCrypt Password Hashing Helper Method
         private string HashPassword(string password)
@@ -144,27 +151,48 @@ namespace KWL_HMSWeb.Server.Controllers
             Console.WriteLine($"[{DateTime.Now}] {(success ? "SUCCESS" : "FAILURE")}: {message}");
         }
 
-        // GET: api/Login/5
+        // GET: api/Login/all
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<Login>>> GetAllLogins()
+        {
+            var logins = await _context.Login.ToListAsync();
+
+            if (logins == null || !logins.Any())
+            {
+                return NotFound("No logins found.");
+            }
+
+            return Ok(logins); // Return the list of logins
+        }
+
+        // GET: api/Login/view/5
         [HttpGet("view/{id}")]
-        public async Task<ActionResult<Login>> GetLogin(int id)
+        public async Task<ActionResult<object>> GetLogin(int id)
         {
             var login = await _context.Login.FindAsync(id);
 
             if (login == null)
             {
-                return NotFound();
+                return NotFound("Login not found.");
             }
 
-            return login;
+            var response = new
+            {
+                Message = "Login retrieved successfully.",
+                Data = login
+            };
+
+            return Ok(response); // Return success message and the login object
         }
 
-        // PUT: api/Login/5
+
+        // PUT: api/Login/update/5
         [HttpPut("update/{id}")]
         public async Task<IActionResult> PutLogin(int id, Login login)
         {
             if (id != login.login_id)
             {
-                return BadRequest();
+                return BadRequest("ID mismatch: provided ID does not match the login ID.");
             }
 
             _context.Entry(login).State = EntityState.Modified;
@@ -177,32 +205,33 @@ namespace KWL_HMSWeb.Server.Controllers
             {
                 if (!LoginExists(id))
                 {
-                    return NotFound();
+                    return NotFound("Login not found for the provided ID.");
                 }
                 else
                 {
-                    throw;
+                    return StatusCode(500, "An error occurred while updating the login details.");
                 }
             }
 
-            return NoContent();
+            return Ok("Login updated successfully.");
         }
 
-        // DELETE: api/Login/{id}
+        // DELETE: api/Login/delete/5
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteLogin(int id)
         {
             var login = await _context.Login.FindAsync(id);
             if (login == null)
             {
-                return NotFound();
+                return NotFound("Login not found.");
             }
 
             _context.Login.Remove(login);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok("Login deleted successfully.");
         }
+
 
         private bool LoginExists(int id)
         {
