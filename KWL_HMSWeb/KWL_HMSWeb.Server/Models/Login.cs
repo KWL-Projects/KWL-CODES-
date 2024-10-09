@@ -16,8 +16,5 @@ namespace KWL_HMSWeb.Server.Models
 
         [Required]
         public string password { get; set; } = string.Empty;
-
-        // Navigation property
-        //public User Users { get; set; }
     }
 }

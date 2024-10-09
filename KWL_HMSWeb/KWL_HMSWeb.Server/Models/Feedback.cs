@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization; // Add this for System.Text.Json.JsonIgnore
 
 namespace KWL_HMSWeb.Server.Models
 {
@@ -18,7 +19,8 @@ namespace KWL_HMSWeb.Server.Models
         public int mark_received { get; set; }
 
         // Foreign key relationship
-        public Submission Submission { get; set; } // Navigation property for foreign key
+        [JsonIgnore]
+        public Submission? Submission { get; set; } // Navigation property for foreign key
     }
 }
 

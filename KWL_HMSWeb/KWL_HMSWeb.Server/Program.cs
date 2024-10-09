@@ -34,13 +34,26 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Load environment variables.
+// Load environment variables from the .env file
 Env.Load("info.env");
 
+// Set up configuration to include environment variables
+builder.Configuration.AddEnvironmentVariables();
+
+// Retrieve JWT settings from configuration
+var jwtSecret = builder.Configuration["KWLCodes_JWT_SECRET"];
+var jwtIssuer = builder.Configuration["KWLCodes_JWT_ISSUER"];
+var jwtAudience = builder.Configuration["KWLCodes_JWT_AUDIENCE"];
+
 // Retrieve environment variables for JWT configuration.
-var jwtSecret = Env.GetString("KWLCodes_JWT_SECRET");
-var jwtIssuer = Env.GetString("KWLCodes_JWT_ISSUER");
-var jwtAudience = Env.GetString("KWLCodes_JWT_AUDIENCE");
+//var jwtSecret = Env.GetString("KWLCodes_JWT_SECRET");
+//var jwtIssuer = Env.GetString("KWLCodes_JWT_ISSUER");
+//var jwtAudience = Env.GetString("KWLCodes_JWT_AUDIENCE");
+
+// Log to confirm loading of variables
+//Console.WriteLine($"JWT Secret: {jwtSecret}");
+//Console.WriteLine($"JWT Issuer: {jwtIssuer}");
+//Console.WriteLine($"JWT Audience: {jwtAudience}");
 
 // Configure JWT Authentication.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -127,4 +140,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.Run();
+
 
