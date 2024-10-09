@@ -16,7 +16,7 @@ namespace KWL_HMSWeb.Server.Models
         [Required]
         public string feedback { get; set; } = string.Empty;
 
-        public int mark_received { get; set; }
+        public decimal mark_received { get; set; }
 
         // Foreign key relationship
         [JsonIgnore]
