@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 //import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { LandingComponent } from './components/landing/landing.component';
-import { UserAdministrationComponent} from './components/user-administration/user-administration.component';
+import { UserAdministrationComponent } from './components/user-administration/user-administration.component';
 import { ListAssignmentsComponent } from './components/list-assignments/list-assignments.component';
 import { CreateAssignmentComponent } from './components/create-assignment/create-assignment.component';
 import { ListAssignmentVideosComponent } from './components/list-assignment-videos/list-assignment-videos.component';
@@ -27,7 +27,7 @@ const routes: Routes = [
   { path: 'provide-feedback', component: ProvideFeedbackComponent },
   { path: '', redirectTo: '/provide-feedback', pathMatch: 'full' },
 
-  
+
 ];
 
 @NgModule({
