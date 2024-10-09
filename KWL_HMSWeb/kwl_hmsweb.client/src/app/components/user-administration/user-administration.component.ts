@@ -8,17 +8,33 @@ import { HttpClient } from '@angular/common/http'; // Import HttpClient
   styleUrls: ['./user-administration.component.css']
 })
 export class UserAdministrationComponent implements OnInit {
-  users = [
-    { login_id: '1', user_first_name: 'John', user_surname: 'Doe', user_type: 'A' },
-    { login_id: '2', user_first_name: 'Jane', user_surname: 'Smith', user_type: 'U' }
-  ];
+  users: any[] = [];
   selectedUser: any = null;
   showAddForm: boolean = false;
   newUser: any = { login_id: '', user_first_name: '', user_surname: '', user_type: '' };
 
-  constructor(private location: Location) { }
+  constructor(private location: Location, private http: HttpClient) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.getUsers();
+  }
+
+  getUsers(): void {
+    this.http.get<any>('https://localhost:7074/api/user/all')
+      .subscribe(response => {
+        console.log('API response:', response); // Log the response
+        if (response.message === 'Success') {
+          this.users = response.data;
+          console.log('Users:', this.users); // Log the users array
+        } else {
+          console.error('Failed to fetch users:', response.message);
+        }
+      }, error => {
+        console.error('Error fetching users:', error);
+      });
+  }
+
+
 
   selectUser(user: any) {
     this.selectedUser = { ...user };
