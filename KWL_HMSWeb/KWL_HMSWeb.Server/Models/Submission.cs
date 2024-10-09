@@ -30,7 +30,7 @@ namespace KWL_HMSWeb.Server.Models
         public Assignment? Assignment { get; set; } // Navigation property for foreign key
 
         [JsonIgnore]
-        public User? Users { get; set; } // Navigation property for foreign key
+        public User? User { get; set; } // Navigation property for foreign key
     }
 }
 

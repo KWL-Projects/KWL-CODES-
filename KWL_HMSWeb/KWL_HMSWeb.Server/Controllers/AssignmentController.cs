@@ -23,7 +23,7 @@ namespace KWL_HMSWeb.Server.Controllers
             _logger = logger;
         }
 
-        // POST: api/assignment/create
+        // POST create assignment - api/assignment/create
         [HttpPost("create")]
         public async Task<IActionResult> CreateAssignment([FromBody] Assignment assignment)
         {
@@ -54,30 +54,7 @@ namespace KWL_HMSWeb.Server.Controllers
             }
         }
 
-        // GET: api/assignment/view/{id}
-        [HttpGet("view/{id}")]
-        public async Task<IActionResult> ViewAssignment(int id)
-        {
-            try
-            {
-                var assignment = await _context.Assignment.FindAsync(id);
-                if (assignment == null)
-                {
-                    _logger.LogWarning($"Assignment with ID {id} not found.");
-                    return NotFound($"Assignment with ID {id} not found.");
-                }
-
-                _logger.LogInformation($"Assignment with ID {id} retrieved successfully.");
-                return Ok(assignment);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error retrieving assignment: {ex.Message}");
-                return StatusCode(500, "Internal server error. Please try again later.");
-            }
-        }
-
-        // GET: api/assignment/all
+        // GET all assignments - api/assignment/all
         [HttpGet("all")]
         public async Task<IActionResult> GetAllAssignments()
         {
@@ -101,7 +78,30 @@ namespace KWL_HMSWeb.Server.Controllers
             }
         }
 
-        // PUT: api/assignment/update/{id}
+        // GET assignment by assignment_id - api/assignment/view/{id}
+        [HttpGet("view/{id}")]
+        public async Task<IActionResult> ViewAssignment(int id)
+        {
+            try
+            {
+                var assignment = await _context.Assignment.FindAsync(id);
+                if (assignment == null)
+                {
+                    _logger.LogWarning($"Assignment with ID {id} not found.");
+                    return NotFound($"Assignment with ID {id} not found.");
+                }
+
+                _logger.LogInformation($"Assignment with ID {id} retrieved successfully.");
+                return Ok(assignment);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error retrieving assignment: {ex.Message}");
+                return StatusCode(500, "Internal server error. Please try again later.");
+            }
+        }
+
+        // PUT update assignment by assignment_id - api/assignment/update/{id}
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateAssignment(int id, [FromBody] Assignment updatedAssignment)
         {
@@ -138,7 +138,7 @@ namespace KWL_HMSWeb.Server.Controllers
             }
         }
 
-        // DELETE: api/assignment/delete/{id}
+        // DELETE assignment by assignment_id - api/assignment/delete/{id}
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteAssignment(int id)
         {

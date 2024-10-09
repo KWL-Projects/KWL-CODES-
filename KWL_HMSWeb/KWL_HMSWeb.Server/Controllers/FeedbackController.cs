@@ -23,6 +23,31 @@ namespace KWL_HMSWeb.Server.Controllers
             _logger = logger;
         }
 
+        // Provide feedback on video
+        // POST: api/feedback/submit
+        [HttpPost("submit")]
+        public async Task<IActionResult> ProvideFeedback([FromBody] Feedback feedback)
+        {
+            if (feedback == null)
+            {
+                return BadRequest("Feedback data is required.");
+            }
+
+            try
+            {
+                _context.Feedback.Add(feedback);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Feedback provided successfully.");
+                return Ok("Feedback submitted successfully.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to provide feedback.");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
         // Get all feedbacks
         [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<Feedback>>> GetFeedback()
@@ -107,31 +132,6 @@ namespace KWL_HMSWeb.Server.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to download marks.");
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
-        // Provide feedback on video
-        // POST: api/feedback/submit
-        [HttpPost("submit")]
-        public async Task<IActionResult> ProvideFeedback([FromBody] Feedback feedback)
-        {
-            if (feedback == null)
-            {
-                return BadRequest("Feedback data is required.");
-            }
-
-            try
-            {
-                _context.Feedback.Add(feedback);
-                await _context.SaveChangesAsync();
-
-                _logger.LogInformation("Feedback provided successfully.");
-                return Ok("Feedback submitted successfully.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to provide feedback.");
                 return StatusCode(500, "Internal server error");
             }
         }

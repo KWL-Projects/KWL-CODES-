@@ -23,7 +23,17 @@ namespace KWL_HMSWeb.Server.Controllers
             _logger = logger; // Initialize logger
         }
 
-        // 1st functionality: View all submissions
+        // POST: api/Submission/create
+        [HttpPost("create")]
+        public async Task<ActionResult<Submission>> PostSubmission(Submission submission)
+        {
+            _context.Submission.Add(submission);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetSubmission", new { id = submission.submission_id }, submission);
+        }
+
+        // View all submissions
         // GET: api/submission/all
         [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<Submission>>> ViewSubmissions()
@@ -47,7 +57,7 @@ namespace KWL_HMSWeb.Server.Controllers
             }
         }
 
-        // 2nd functionality: Browse own submissions
+        // Browse own submissions
         // GET: api/submission/view/{userId}
         [HttpGet("view/{userId}")]
         public async Task<ActionResult<IEnumerable<Submission>>> BrowseOwnSubmissions(int userId)
@@ -72,17 +82,6 @@ namespace KWL_HMSWeb.Server.Controllers
                 _logger.LogError($"Error retrieving submissions for user ID: {userId}. Error: {ex.Message}");
                 return StatusCode(500, $"Internal server error while retrieving submissions for user ID: {userId}.");
             }
-        }
-
-        // Existing methods (POST, PUT, DELETE, etc.) remain the same
-        // POST: api/Submission/create
-        [HttpPost("create")]
-        public async Task<ActionResult<Submission>> PostSubmission(Submission submission)
-        {
-            _context.Submission.Add(submission);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetSubmission", new { id = submission.submission_id }, submission);
         }
 
         // PUT: api/Submission/update/5

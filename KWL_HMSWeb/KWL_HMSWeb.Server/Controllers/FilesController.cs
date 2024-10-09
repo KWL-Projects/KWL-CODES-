@@ -48,6 +48,23 @@ public class FilesController : ControllerBase
         }
     }
 
+    // HTTP GET method to get a list of all file names - api/files/files
+    [HttpGet("files")]
+    public async Task<IActionResult> GetFileList()
+    {
+        try
+        {
+            // Retrieve the list of file names using the BlobStorageService
+            var fileNames = await _blobStorageService.GetAllFileNamesAsync();
+            return Ok(fileNames); // Return the list of file names
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error fetching file list."); // Log the error if an exception occurs
+            return StatusCode(500, "Internal server error."); // Return a 500 Internal Server Error response
+        }
+    }
+
     // HTTP GET method for downloading a file by its name - api/files/download/{fileName}
     [HttpGet("download/{fileName}")]
     public async Task<IActionResult> DownloadFile(string fileName)
@@ -99,23 +116,6 @@ public class FilesController : ControllerBase
             ".mkv" => "video/x-matroska",
             _ => "application/octet-stream", // Default to binary for unknown types
         };
-    }
-
-    // HTTP GET method to get a list of all file names - api/files/files
-    [HttpGet("files")]
-    public async Task<IActionResult> GetFileList()
-    {
-        try
-        {
-            // Retrieve the list of file names using the BlobStorageService
-            var fileNames = await _blobStorageService.GetAllFileNamesAsync();
-            return Ok(fileNames); // Return the list of file names
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error fetching file list."); // Log the error if an exception occurs
-            return StatusCode(500, "Internal server error."); // Return a 500 Internal Server Error response
-        }
     }
 }
 

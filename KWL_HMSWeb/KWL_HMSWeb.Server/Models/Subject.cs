@@ -18,11 +18,11 @@ namespace KWL_HMSWeb.Server.Models
         public string subject_name { get; set; } = string.Empty;
 
         [MaxLength(500)]
-        public string subject_decription { get; set; } = string.Empty;
+        public string subject_description { get; set; } = string.Empty;
 
         // Foreign key relationship
         [JsonIgnore]
-        public User? Users { get; set; } // Navigation property for foreign key
+        public User? User { get; set; } // Navigation property for foreign key
     }
 }
 
