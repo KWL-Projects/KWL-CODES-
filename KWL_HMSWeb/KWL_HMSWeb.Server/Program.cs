@@ -24,10 +24,10 @@ builder.Services.AddControllers()
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowWebClient", policy =>
-        policy.WithOrigins("https://localhost:7074") // Replace with your actual web client URL
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials());
+    policy.WithOrigins("http://localhost:4200", "https://localhost:7074") // Allow both client and server URLs
+          .AllowAnyHeader()
+          .AllowAnyMethod()
+          .AllowCredentials());
 });
 
 // Configure DatabaseContext with SQL Server.
@@ -128,6 +128,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
+
+app.UseRouting();
 
 // Use configured CORS policy.
 app.UseCors("AllowWebClient");
