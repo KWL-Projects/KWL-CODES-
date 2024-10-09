@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization; // Add this for System.Text.Json.JsonIgnore
 
 namespace KWL_HMSWeb.Server.Models
 {
@@ -25,11 +26,6 @@ namespace KWL_HMSWeb.Server.Models
 
         // Foreign key relationship
         public Login Login { get; set; } // Navigation property for foreign key
-
-        // Navigation property
-        //public ICollection<Subject> Subject { get; set; } // User can have multiple Subjects
-
-        //public ICollection<Submission> Submission { get; set; } // User can have multiple Submissions
     }
 }
 

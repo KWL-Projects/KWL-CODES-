@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization; // Add this for System.Text.Json.JsonIgnore
 
 namespace KWL_HMSWeb.Server.Models
 {
@@ -25,12 +26,11 @@ namespace KWL_HMSWeb.Server.Models
         public string video_path { get; set; } = string.Empty;
 
         // Foreign key relationship
-        public Assignment Assignment { get; set; } // Navigation property for foreign key
+        [JsonIgnore]
+        public Assignment? Assignment { get; set; } // Navigation property for foreign key
 
-        public User Users { get; set; } // Navigation property for foreign key
-
-        // Navigation property
-        //public ICollection<Feedback> Feedback { get; set; } // Submission can have multiple Feedbacks
+        [JsonIgnore]
+        public User? Users { get; set; } // Navigation property for foreign key
     }
 }
 

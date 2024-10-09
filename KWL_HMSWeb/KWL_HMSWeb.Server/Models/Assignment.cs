@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization; // Add this for System.Text.Json.JsonIgnore
 
 namespace KWL_HMSWeb.Server.Models
 {
@@ -23,10 +24,8 @@ namespace KWL_HMSWeb.Server.Models
         public DateTime due_date { get; set; }
 
         // Foreign key relationship
-        public Subject Subject { get; set; } // Navigation property for foreign key
-
-        // Navigation property
-        //public ICollection<Submission> Submission { get; set; } // Assignment can have multiple Submissions
+        [JsonIgnore]
+        public Subject? Subject { get; set; } // Navigation property for foreign key
     }
 }
 

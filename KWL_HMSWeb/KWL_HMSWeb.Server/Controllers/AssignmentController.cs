@@ -36,9 +36,14 @@ namespace KWL_HMSWeb.Server.Controllers
 
             try
             {
+                // Ensure assignment_id is not set, since it is auto-incremented
+                assignment.assignment_id = 0; // Optional but ensures no manual ID is passed
+
+                // Add the new assignment to the database
                 _context.Assignment.Add(assignment);
                 await _context.SaveChangesAsync();
 
+                // Log the success and return a response with the auto-incremented assignment_id
                 _logger.LogInformation($"Assignment created successfully: Assignment ID {assignment.assignment_id}");
                 return Ok(new { message = "Assignment created successfully.", assignment_id = assignment.assignment_id });
             }
