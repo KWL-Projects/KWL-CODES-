@@ -12,10 +12,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
-using BCrypt.Net; 
+using BCrypt.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KWL_HMSWeb.Server.Controllers
 {
+    [Authorize] // This ensures all actions in this controller require authentication
     [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
@@ -32,6 +34,7 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         [HttpPost("register")]
+        [AllowAnonymous] // This allows access to the login endpoint
         public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegisterDto)
         {
             try

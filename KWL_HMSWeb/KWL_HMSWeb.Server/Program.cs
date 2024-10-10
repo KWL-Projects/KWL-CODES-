@@ -45,20 +45,35 @@ var jwtSecret = builder.Configuration["KWLCodes_JWT_SECRET"];
 var jwtIssuer = builder.Configuration["KWLCodes_JWT_ISSUER"];
 var jwtAudience = builder.Configuration["KWLCodes_JWT_AUDIENCE"];
 
-// Retrieve environment variables for JWT configuration.
-//var jwtSecret = Env.GetString("KWLCodes_JWT_SECRET");
-//var jwtIssuer = Env.GetString("KWLCodes_JWT_ISSUER");
-//var jwtAudience = Env.GetString("KWLCodes_JWT_AUDIENCE");
-
-// Log to confirm loading of variables
-//Console.WriteLine($"JWT Secret: {jwtSecret}");
-//Console.WriteLine($"JWT Issuer: {jwtIssuer}");
-//Console.WriteLine($"JWT Audience: {jwtAudience}");
-
 // Configure JWT Authentication.
+/*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
+        };
+    });*/
+
+// Configure JWT Authentication with custom response on failure.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                context.Response.StatusCode = 401; // Unauthorized
+                context.Response.ContentType = "application/json";
+                return context.Response.WriteAsync("{\"error\":\"Unauthorized access\"}");
+            }
+        };
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
