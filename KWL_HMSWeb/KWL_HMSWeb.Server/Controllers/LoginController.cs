@@ -32,7 +32,7 @@ namespace KWL_HMSWeb.Server.Controllers
 
         // Secure Login Method
         [HttpPost("authenticate")]
-        [AllowAnonymous] // This allows access to the login endpoint
+        //[AllowAnonymous] // This allows access to the login endpoint
         public async Task<IActionResult> Authenticate([FromBody] Login login)
         {
             try

@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace KWL_HMSWeb.Server.Controllers
 {
-    [Authorize] // This ensures all actions in this controller require authentication
+    //[Authorize] // This ensures all actions in this controller require authentication
     [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
@@ -34,7 +34,7 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         [HttpPost("register")]
-        [AllowAnonymous] // This allows access to the login endpoint
+        //[AllowAnonymous] // This allows access to the login endpoint
         public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegisterDto)
         {
             try
