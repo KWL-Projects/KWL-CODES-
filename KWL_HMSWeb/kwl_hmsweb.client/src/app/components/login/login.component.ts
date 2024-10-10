@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment'; // Correct import path
 
 @Component({
   selector: 'app-login',
@@ -10,46 +11,41 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   username: string = '';
   password: string = '';
+  errorMessage: string = ''; // For displaying error messages
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  navigateToLogin() {
-    this.router.navigate(['/landing']);
-  }
-
-  /*onSubmit() {
-    this.http.post('/api/auth/login', { username: this.username, password: this.password })
-      .subscribe(response => {
-        // Handle successful login
-        this.router.navigate(['/landing']);
-      }, error => {
-        // Handle login error
-        console.error('Login failed', error);
-      });*/
-
-  /*onSubmit() {
-    this.http.post('https://localhost:5001/api/login/authenticate',
-      { username: this.username, password: this.password })
-      .subscribe(response => {
-        // Handle successful login, e.g., save the token to localStorage
-        this.router.navigate(['/landing']);
-      }, error => {
-        // Handle login error
-        console.error('Login failed', error);
-      });*/
   onSubmit() {
-    this.http.post('https://localhost:5001/api/login/authenticate',
-      { username: this.username, password: this.password })
-      .subscribe((response: any) => {
-        // Assuming the token is in the response
-        const token = response.token;
-        localStorage.setItem('jwtToken', token);
-        this.router.navigate(['/landing']);
-      }, error => {
-        console.error('Login failed', error);
-      });
+    const loginData = { username: this.username, password: this.password };
+
+    // Make the login request to the API
+    this.http.post(`${environment.apiUrl}login/authenticate`, loginData)
+      .subscribe(
+        (response: any) => {
+          const token = response.token;
+          localStorage.setItem('jwtToken', token);
+          this.router.navigate(['/user-administration']);
+        },
+        (error) => {
+          this.errorMessage = 'Login failed: Invalid username or password';
+          console.error('Login failed', error);
+        }
+      );
   }
 
-
+  // New method to navigate to login
+  navigateToLogin() {
+    this.router.navigate(['/login']);
   }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('jwtToken');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+}
+
+
+
+
+
 
