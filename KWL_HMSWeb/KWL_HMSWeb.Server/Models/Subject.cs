@@ -1,28 +1,24 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization; // Add this for System.Text.Json.JsonIgnore
 
 namespace KWL_HMSWeb.Server.Models
 {
     public class Subject
     {
-        [Key] // Primary key
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int subject_id { get; set; } // Primary key
-
-        [ForeignKey("User")] // Foreign key to User table
-        public int user_id { get; set; } // Foreign key
+        public int subject_id { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [MaxLength(50)]
         public string subject_name { get; set; } = string.Empty;
 
-        [MaxLength(500)]
-        public string subject_description { get; set; } = string.Empty;
+        [MaxLength(50)]
+        public string? subject_description { get; set; }
 
-        // Foreign key relationship
-        [JsonIgnore]
-        public User? User { get; set; } // Navigation property for foreign key
+        public Lecturer Lecturer { get; set; } = null!;
+        public Enrollment Enrollment { get; set; } = null!;
+        public Assignment Assignment { get; set; } = null!;
     }
 }
 

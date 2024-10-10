@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../auth.service'; // Adjust the import path if necessary
-import { Router } from '@angular/router'; // Import Router
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,39 +10,21 @@ import { Router } from '@angular/router'; // Import Router
 export class LoginComponent {
   username: string = '';
   password: string = '';
-  errorMessage: string | null = null; // Store error message if login fails
 
-  constructor(private authService: AuthService, private router: Router) { } // Inject Router
+  constructor(private http: HttpClient, private router: Router) { }
 
-  onSubmit() {
-    // Reset the error message on new submission
-    this.errorMessage = null;
-
-    // Call the AuthService login method
-    this.authService.login(this.username, this.password).subscribe(
-      (response) => {
-        // Handle successful login response
-        console.log('Login successful', response);
-
-        // Navigate to the dashboard or home page
-        this.router.navigate(['/dashboard']); // Adjust the path as needed
-      },
-      (error) => {
-        // Handle login failure
-        console.error('Login failed', error);
-        this.errorMessage = 'Incorrect username or password'; // Display error message
-      }
-    );
+  navigateToLogin() {
+    this.router.navigate(['/landing']);
   }
-}
 
-
-
-
-
-
-
-
-
-
+  /*onSubmit() {
+    this.http.post('/api/auth/login', { username: this.username, password: this.password })
+      .subscribe(response => {
+        // Handle successful login
+        this.router.navigate(['/landing']);
+      }, error => {
+        // Handle login error
+        console.error('Login failed', error);
+      });*/
+  }
 

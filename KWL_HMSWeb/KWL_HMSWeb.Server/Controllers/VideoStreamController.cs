@@ -7,7 +7,7 @@ using KWL_HMSWeb.Services;
 
 namespace KWL_HMSWeb.Controllers
 {
-    [Route("api/videostream")]
+    [Route("api/[controller]")]
     [ApiController]
     public class VideoStreamController : ControllerBase
     {

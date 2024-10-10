@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KWL_HMSWeb.Server.Models;
+using Microsoft.Extensions.Logging;
+using System.Text;
 
 namespace KWL_HMSWeb.Server.Controllers
 {
@@ -14,8 +15,8 @@ namespace KWL_HMSWeb.Server.Controllers
     [ApiController]
     public class FeedbackController : ControllerBase
     {
-        private readonly ILogger<FeedbackController> _logger;
         private readonly DatabaseContext _context;
+        private readonly ILogger<FeedbackController> _logger;
 
         public FeedbackController(DatabaseContext context, ILogger<FeedbackController> logger)
         {
@@ -23,14 +24,97 @@ namespace KWL_HMSWeb.Server.Controllers
             _logger = logger;
         }
 
-        // Provide feedback on video
-        // POST: api/feedback/submit
+        // GET: api/Feedback
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Feedback>>> GetFeedback()
+        {
+            return await _context.Feedback.ToListAsync();
+        }
+
+        // GET: api/Feedback/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Feedback>> GetFeedback(int id)
+        {
+            var feedback = await _context.Feedback.FindAsync(id);
+
+            if (feedback == null)
+            {
+                return NotFound();
+            }
+
+            return feedback;
+        }
+
+        // PUT: api/Feedback/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutFeedback(int id, Feedback feedback)
+        {
+            if (id != feedback.feedback_id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(feedback).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!FeedbackExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/Feedback
+        [HttpPost]
+        public async Task<ActionResult<Feedback>> PostFeedback(Feedback feedback)
+        {
+            _context.Feedback.Add(feedback);
+            await _context.SaveChangesAsync();
+
+            // Log success
+            _logger.LogInformation("Feedback successfully added with ID: {FeedbackId}", feedback.feedback_id);
+
+            return CreatedAtAction("GetFeedback", new { id = feedback.feedback_id }, feedback);
+        }
+
+        // DELETE: api/Feedback/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteFeedback(int id)
+        {
+            var feedback = await _context.Feedback.FindAsync(id);
+            if (feedback == null)
+            {
+                return NotFound();
+            }
+
+            _context.Feedback.Remove(feedback);
+            await _context.SaveChangesAsync();
+
+            // Log success
+            _logger.LogInformation("Feedback successfully deleted with ID: {FeedbackId}", id);
+
+            return NoContent();
+        }
+
+        // POST: api/Feedback/submit
         [HttpPost("submit")]
-        public async Task<IActionResult> ProvideFeedback([FromBody] Feedback feedback)
+        public async Task<ActionResult> SubmitFeedback([FromBody] Feedback feedback)
         {
             if (feedback == null)
             {
-                return BadRequest("Feedback data is required.");
+                _logger.LogError("Feedback submission failed: Feedback is null.");
+                return BadRequest("Feedback cannot be null.");
             }
 
             try
@@ -38,173 +122,100 @@ namespace KWL_HMSWeb.Server.Controllers
                 _context.Feedback.Add(feedback);
                 await _context.SaveChangesAsync();
 
-                _logger.LogInformation("Feedback provided successfully.");
-                return Ok("Feedback submitted successfully.");
+                // Log success
+                _logger.LogInformation("Feedback successfully submitted with ID: {FeedbackId}", feedback.feedback_id);
+
+                return Ok(new { Message = "Feedback submitted successfully.", FeedbackId = feedback.feedback_id });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to provide feedback.");
-                return StatusCode(500, "Internal server error");
+                // Log failure
+                _logger.LogError(ex, "Feedback submission failed.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while submitting feedback.");
             }
         }
 
-        // Get all feedbacks
-        [HttpGet("all")]
-        public async Task<ActionResult<IEnumerable<Feedback>>> GetFeedback()
+        // GET: api/Feedback/view/{submissionId}
+        [HttpGet("view/{submissionId}")]
+        public async Task<ActionResult<IEnumerable<Feedback>>> ViewFeedback(int submissionId)
         {
             try
             {
-                var feedbacks = await _context.Feedback.ToListAsync();
-
-                if (feedbacks == null || !feedbacks.Any())
-                {
-                    return NotFound(new { message = "No feedback found." });
-                }
-
-                return Ok(new
-                {
-                    message = "Feedback retrieved successfully.",
-                    data = feedbacks
-                });
-            }
-            catch (Exception ex)
-            {
-                // Log the exception (consider using a logging framework)
-                return StatusCode(500, new { message = "An error occurred while retrieving feedback.", error = ex.Message });
-            }
-        }
-
-        // View feedback on your submissions
-        // GET: api/feedback/submissions/{userId}
-        [HttpGet("submission/{userId}")]
-        public async Task<IActionResult> ViewFeedback(int userId)
-        {
-            try
-            {
-                var feedbacks = await _context.Feedback
-                    .Where(f => f.Submission.user_id == userId)
+                var feedbackList = await _context.Feedback
+                    .Where(f => f.submission_id == submissionId)
                     .ToListAsync();
 
-                if (feedbacks == null || feedbacks.Count == 0)
+                if (feedbackList == null || !feedbackList.Any())
                 {
-                    _logger.LogWarning($"No feedback found for user ID: {userId}");
-                    return NotFound("No feedback found.");
+                    _logger.LogWarning("No feedback found for submission ID: {SubmissionId}", submissionId);
+                    return NotFound(new { Message = "No feedback found for this submission." });
                 }
-
-                _logger.LogInformation($"Feedback retrieved for user ID: {userId}");
-                return Ok(feedbacks);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to retrieve feedback.");
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
-        // Download marks
-        // GET: api/feedback/download-marks/{userId}
-        [HttpGet("download-marks/{userId}")]
-        public async Task<IActionResult> DownloadMarks(int userId)
-        {
-            try
-            {
-                var marksData = await _context.Feedback
-                    .Where(f => f.Submission.user_id == userId)
-                    .Select(f => new { f.mark_received })
-                    .ToListAsync();
-
-                if (marksData == null || marksData.Count == 0)
-                {
-                    _logger.LogWarning($"No marks found for user ID: {userId}");
-                    return NotFound("No marks found.");
-                }
-
-                // Prepare your file (e.g., CSV)
-                var csv = "MarkReceived\n" + string.Join("\n", marksData.Select(m => m.mark_received));
-
-                // Convert to byte array
-                var byteArray = System.Text.Encoding.UTF8.GetBytes(csv);
-                var stream = new MemoryStream(byteArray);
-
-                _logger.LogInformation($"Marks downloaded successfully for user ID: {userId}");
-                return File(stream, "text/csv", "marks.csv");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to download marks.");
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
-        // Update feedback on video
-        // PUT: api/feedback/update/{feedbackId}
-        [HttpPut("update/{feedbackId}")]
-        public async Task<IActionResult> UpdateFeedback(int feedbackId, [FromBody] Feedback updatedFeedback)
-        {
-            if (updatedFeedback == null || string.IsNullOrEmpty(updatedFeedback.feedback) || updatedFeedback.mark_received == null)
-                return BadRequest("Invalid feedback input.");
-
-            try
-            {
-                var existingFeedback = await _context.Feedback.FindAsync(feedbackId);
-
-                if (existingFeedback == null)
-                    return NotFound("Feedback not found.");
-
-                // Update the feedback fields
-                existingFeedback.feedback = updatedFeedback.feedback;
-                existingFeedback.mark_received = updatedFeedback.mark_received;
-
-                _context.Feedback.Update(existingFeedback);
-                await _context.SaveChangesAsync();
 
                 // Log success
-                Log("Feedback successfully updated for feedback ID: " + feedbackId);
+                _logger.LogInformation("Feedback retrieved for submission ID: {SubmissionId}", submissionId);
 
-                return Ok("Feedback updated successfully.");
+                return Ok(feedbackList);
             }
             catch (Exception ex)
             {
-                // Log failure with exception details
-                Log("Failed to update feedback for feedback ID: " + feedbackId + ". Error: " + ex);
-                return StatusCode(500, "An error occurred while updating feedback.");
+                // Log failure
+                _logger.LogError(ex, "Error retrieving feedback for submission ID: {SubmissionId}", submissionId);
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving feedback.");
             }
         }
 
-        // DELETE: api/feedback/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFeedback(int id)
+        // GET: api/Feedback/download-marks/{submissionId}
+        [HttpGet("download-marks/{submissionId}")]
+        public async Task<IActionResult> DownloadMarks(int submissionId)
         {
             try
             {
-                var feedback = await _context.Feedback.FindAsync(id);
-                if (feedback == null)
+                // Retrieve the marks data for the given submission ID
+                var feedbackList = await _context.Feedback
+                    .Where(f => f.submission_id == submissionId)
+                    .ToListAsync();
+
+                if (feedbackList == null || !feedbackList.Any())
                 {
-                    return NotFound(new { message = "Feedback not found." });
+                    _logger.LogWarning("No feedback found for submission ID: {SubmissionId}", submissionId);
+                    return NotFound(new { Message = "No feedback found for this submission." });
                 }
 
-                _context.Feedback.Remove(feedback);
-                await _context.SaveChangesAsync();
+                // Prepare the data into a CSV format
+                var csvData = new StringBuilder();
+                csvData.AppendLine("Feedback ID, Submission ID, User ID, Feedback, Mark Received");
 
-                return Ok(new { message = "Feedback deleted successfully." });
+                foreach (var feedback in feedbackList)
+                {
+                    csvData.AppendLine($"{feedback.feedback_id}, {feedback.submission_id}, {feedback.user_id}, \"{feedback.feedback}\", {feedback.mark_received}");
+                }
+
+                // Convert CSV data to byte array
+                var bytes = Encoding.UTF8.GetBytes(csvData.ToString());
+
+                // Log success
+                _logger.LogInformation("Marks file successfully prepared for submission ID: {SubmissionId}", submissionId);
+
+                // Set headers to force file download
+                var fileContentResult = new FileContentResult(bytes, "text/csv")
+                {
+                    FileDownloadName = $"Marks_Submission_{submissionId}.csv"
+                };
+
+                return fileContentResult;
             }
             catch (Exception ex)
             {
-                // Log the exception (consider using a logging framework)
-                return StatusCode(500, new { message = "An error occurred while deleting feedback.", error = ex.Message });
+                // Log failure
+                _logger.LogError(ex, "Error occurred while downloading marks for submission ID: {SubmissionId}", submissionId);
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while downloading marks.");
             }
         }
 
-        private void Log(string message)
+
+        private bool FeedbackExists(int id)
         {
-            // Implement your logging functionality here (e.g., write to a file or database)
-            Console.WriteLine(message);
+            return _context.Feedback.Any(e => e.feedback_id == id);
         }
     }
 }
-
-
-
-
-
-
