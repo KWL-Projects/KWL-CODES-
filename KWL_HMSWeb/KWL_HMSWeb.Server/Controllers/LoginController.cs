@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using KWL_HMSWeb.Server.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using KWL_HMSWeb.Server.Models;
+using System.Text;
 using BCrypt.Net;
-using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authorization;
 
 namespace KWL_HMSWeb.Server.Controllers
 {
     [Route("api/login")]
     [ApiController]
+    
     public class LoginController : ControllerBase
     {
         private readonly DatabaseContext _context;
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration _configuration; // For reading configurations like JWT secret
 
         public LoginController(DatabaseContext context, IConfiguration configuration)
         {
@@ -30,142 +30,38 @@ namespace KWL_HMSWeb.Server.Controllers
             _configuration = configuration;
         }
 
-        // Secure Login Method
-        [HttpPost("authenticate")]
-        //[AllowAnonymous] // This allows access to the login endpoint
-        public async Task<IActionResult> Authenticate([FromBody] Login login)
+        // GET: api/Login
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Login>>> GetLogin()
         {
-            try
-            {
-                // Log the username being authenticated
-                Log($"Attempting login for username: {login.username}", true);
-
-                // Fetch user by username
-                var user = await _context.Login.SingleOrDefaultAsync(u => u.username == login.username);
-                if (user == null)
-                {
-                    Log("Login failed: User not found", false);
-                    return Unauthorized(new { message = "Invalid username or password" });
-                }
-
-                // Log the stored password (for debugging)
-                Log($"Stored hashed password: {user.password}", true);
-
-                // Verify password with BCrypt
-                Log("Verifying password", true);
-                if (!VerifyPassword(login.password, user.password))
-                {
-                    Log($"Login failed: Incorrect password for user {login.username}", false);
-                    return Unauthorized(new { message = "Invalid username or password" });
-                }
-
-                Log("Password verification successful", true);
-
-                // Retrieve user details
-                var userDetail = await _context.Users.SingleOrDefaultAsync(u => u.login_id == user.login_id);
-                if (userDetail == null)
-                {
-                    Log("Login failed: User details not found", false);
-                    return Unauthorized(new { message = "Invalid username or password" });
-                }
-
-                // Log the user type for debugging
-                Log($"User type: {userDetail.user_type}", true);
-
-                // Try to generate JWT token
-                string token = null;
-                try
-                {
-                    token = GenerateJwtToken(user, userDetail.user_type);
-                }
-                catch (Exception ex)
-                {
-                    Log($"Token generation failed: {ex.Message}", false);
-                    // Log the token generation failure, but do not stop the successful login message
-                }
-
-                // Log login success even if token fails
-                Log("Login successful", true);
-
-                // Return a combined response: login success, and error if token generation failed
-                return Ok(new
-                {
-                    message = "Login successful",
-                    token = token, // Can be null if token generation failed
-                    tokenError = token == null ? "Token generation failed" : null // Include token error only if token is null
-                });
-            }
-            catch (Exception ex)
-            {
-                // Log the full exception stack trace
-                Log($"Login failed: {ex.ToString()}", false);
-                return StatusCode(500, new { message = $"Internal server error: {ex.Message}", details = ex.ToString() });
-            }
+            return await _context.Login.ToListAsync();
         }
 
-        // GET: api/Login/all
-        [HttpGet("all")]
-        public async Task<ActionResult<IEnumerable<Login>>> GetAllLogins()
-        {
-            var logins = await _context.Login.ToListAsync();
-
-            if (logins == null || !logins.Any())
-            {
-                return NotFound("No logins found.");
-            }
-
-            return Ok(logins); // Return the list of logins
-        }
-
-        // GET: api/Login/view/5
-        [HttpGet("view/{id}")]
-        public async Task<ActionResult<object>> GetLogin(int id)
+        // GET: api/Login/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Login>> GetLogin(int id)
         {
             var login = await _context.Login.FindAsync(id);
 
             if (login == null)
             {
-                return NotFound("Login not found.");
+                return NotFound();
             }
 
-            var response = new
-            {
-                Message = "Login retrieved successfully.",
-                Data = login
-            };
-
-            return Ok(response); // Return success message and the login object
+            return login;
         }
 
-        // PUT: api/Login/update/5
-        [HttpPut("update/{id}")]
+        // PUT: api/Login/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
         public async Task<IActionResult> PutLogin(int id, Login login)
         {
             if (id != login.login_id)
             {
-                return BadRequest(new { message = "ID mismatch: provided ID does not match the login ID.", success = false });
+                return BadRequest();
             }
 
-            // Fetch the existing login from the database
-            var existingLogin = await _context.Login.FindAsync(id);
-            if (existingLogin == null)
-            {
-                return NotFound(new { message = "Login not found for the provided ID.", success = false });
-            }
-
-            // Update the username if it has changed
-            if (existingLogin.username != login.username)
-            {
-                existingLogin.username = login.username;
-            }
-
-            // Hash the password if it has changed
-            if (!string.IsNullOrEmpty(login.password) && !VerifyPassword(login.password, existingLogin.password))
-            {
-                existingLogin.password = HashPassword(login.password);
-            }
-
-            _context.Entry(existingLogin).State = EntityState.Modified;
+            _context.Entry(login).State = EntityState.Modified;
 
             try
             {
@@ -175,171 +71,165 @@ namespace KWL_HMSWeb.Server.Controllers
             {
                 if (!LoginExists(id))
                 {
-                    return NotFound(new { message = "Login not found for the provided ID during save.", success = false });
+                    return NotFound();
                 }
                 else
                 {
-                    return StatusCode(500, new { message = "An error occurred while updating the login details.", success = false });
+                    throw;
                 }
             }
 
-            // Return success message along with updated login details
-            return Ok(new
-            {
-                message = "Login updated successfully.",
-                success = true,
-                updatedLogin = new
-                {
-                    login_id = existingLogin.login_id,
-                    username = existingLogin.username
-                }
-            });
+            return NoContent();
         }
 
-        // DELETE: api/Login/delete/5
-        [HttpDelete("delete/{id}")]
+        // POST: api/Login
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        
+
+        [HttpPost("authenticate")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Authenticate([FromBody] Login loginRequest)
+        {
+            // Fetch user by username
+            var login = await _context.Login.FirstOrDefaultAsync(u => u.username == loginRequest.username);
+
+            if (login == null || !BCrypt.Net.BCrypt.Verify(loginRequest.password, login.password))
+            {
+                // Log the failed attempt
+                LogFailure(loginRequest.username);
+                return Unauthorized(new { message = "Invalid username or password" });
+            }
+
+            var userDetail = await GetUserDetails(login.login_id);
+
+            if(userDetail == null)
+            {
+                LogFailure(loginRequest.username);
+                return Unauthorized(new { message = "User not registered" });
+            }
+
+            // Generate JWT token
+            var token = GenerateJwtToken(login, userDetail);
+
+            // Log the successful login
+            LogSuccess(loginRequest.username);
+
+            return Ok(new { message = "Login successful", token, userDetail });
+        }
+
+        /*private async Task<object?> GetUserDetails(int loginId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.login_id == loginId);
+            if (user != null)
+            {
+                return new { Details = user };
+            }
+            return null;
+        }*/
+
+        private async Task<object?> GetUserDetails(int loginId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.login_id == loginId);
+            if (user != null)
+            {
+                // Fetch the role of the user
+                string role = user.user_type; // Assuming user_type indicates the role
+
+                // Depending on your business logic, you could fetch more specific roles
+                // Example: if user is an admin, fetch the admin role, etc.
+                // Here, we're directly returning the user role.
+                return new
+                {
+                    Details = user,
+                    Role = role // Include user role in the details
+                };
+            }
+            return null;
+        }
+
+        private string GenerateJwtToken(Login login, object userDetail)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, login.username),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, login.login_id.ToString()),
+            };
+
+            // Add user role to claims
+            var user = (dynamic)userDetail; // Cast to dynamic to access Role
+            claims.Add(new Claim(ClaimTypes.Role, user.Role)); // Assuming user.Role holds the role
+
+            var jwtSecret = Environment.GetEnvironmentVariable("KWLCodes_JWT_SECRET");
+            var jwtIssuer = Environment.GetEnvironmentVariable("KWLCodes_JWT_ISSUER");
+            var jwtAudience = Environment.GetEnvironmentVariable("KWLCodes_JWT_AUDIENCE");
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: jwtIssuer,
+                audience: jwtAudience,
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private void LogSuccess(string username)
+        {
+            // Log the successful login attempt (Implement your logging logic here)
+            Console.WriteLine($"User {username} successfully logged in at {DateTime.UtcNow}");
+        }
+
+        private void LogFailure(string username)
+        {
+            // Log the failed login attempt (Implement your logging logic here)
+            Console.WriteLine($"Failed login attempt for user {username} at {DateTime.UtcNow}");
+        }
+
+        /*[HttpPost]
+        public async Task<ActionResult<Login>> PostLogin(Login login)
+        {
+            _context.Login.Add(login);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetLogin", new { id = login.login_id }, login);
+        }*/
+
+        [HttpPost("register")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Login>> Register(Login login)
+        {
+            // Encrypt password before saving
+            login.password = BCrypt.Net.BCrypt.HashPassword(login.password);
+
+            _context.Login.Add(login);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetLogin", new { id = login.login_id }, login);
+        }
+
+        // DELETE: api/Login/5
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLogin(int id)
         {
             var login = await _context.Login.FindAsync(id);
             if (login == null)
             {
-                return NotFound("Login not found.");
+                return NotFound();
             }
 
             _context.Login.Remove(login);
             await _context.SaveChangesAsync();
 
-            return Ok("Login deleted successfully.");
-        }
-
-        // BCrypt Password Hashing Helper Method
-        private string HashPassword(string password)
-        {
-            return BCrypt.Net.BCrypt.HashPassword(password);
-        }
-
-        // BCrypt Password Verification Helper Method
-        private bool VerifyPassword(string enteredPassword, string storedHashedPassword)
-        {
-            return BCrypt.Net.BCrypt.Verify(enteredPassword, storedHashedPassword);
-        }
-
-        // JWT Token Generation using IConfiguration (instead of Environment.GetEnvironmentVariable)
-        private string GenerateJwtToken(Login user, string userType)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            // Retrieve JWT settings from IConfiguration
-            var jwtSecret = _configuration["KWLCodes_JWT_SECRET"];
-            var jwtIssuer = _configuration["KWLCodes_JWT_ISSUER"];
-            var jwtAudience = _configuration["KWLCodes_JWT_AUDIENCE"];
-
-            if (string.IsNullOrEmpty(jwtSecret) || string.IsNullOrEmpty(jwtIssuer) || string.IsNullOrEmpty(jwtAudience))
-            {
-                Log("JWT configuration is missing", false);
-                return null; // Return null if JWT config is missing
-            }
-
-            var key = Encoding.UTF8.GetBytes(jwtSecret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-            new Claim(ClaimTypes.NameIdentifier, user.login_id.ToString()),
-            new Claim(ClaimTypes.Name, user.username),
-            new Claim(ClaimTypes.Role, userType) // Include user type
-                }),
-                Expires = DateTime.UtcNow.AddHours(1),
-                Issuer = jwtIssuer,
-                Audience = jwtAudience,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-
-        // Logging Helper Method
-        private void Log(string message, bool success)
-        {
-            Console.WriteLine($"[{DateTime.Now}] {(success ? "SUCCESS" : "FAILURE")}: {message}");
+            return NoContent();
         }
 
         private bool LoginExists(int id)
         {
             return _context.Login.Any(e => e.login_id == id);
         }
-
-        // Register Method
-        /*[HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] Login login)
-        {
-            try
-            {
-                // Check if username already exists
-                if (await _context.Login.AnyAsync(u => u.username == login.username))
-                {
-                    return BadRequest(new { message = "Username already exists" });
-                }
-
-                // Log the received registration details (excluding login_id)
-                Log($"Received registration: Username - {login.username}", true);
-
-                // Ensure login_id is not set (let the database auto-generate it)
-                login.login_id = 0; // Or, remove this line entirely if unnecessary
-
-                // Hash the password
-                login.password = HashPassword(login.password);
-
-                // Add login object to the database
-                _context.Login.Add(login);
-                await _context.SaveChangesAsync();
-
-                // After saving login, retrieve the login_id (auto-generated by the DB)
-                var savedLogin = await _context.Login.SingleOrDefaultAsync(u => u.username == login.username);
-
-                // You can assign a default user role here, or pass the role via the request body
-                // Example: Assign the user role dynamically or use a default (e.g., "student")
-                string userType = "student"; // Default role
-
-                // Create a new User object and save it to associate with the login
-                var newUser = new User
-                {
-                    login_id = savedLogin.login_id,
-                    user_firstname = "DefaultFirstName", // Replace or pass these fields dynamically
-                    user_surname = "DefaultLastName",
-                    user_type = userType
-                };
-
-                _context.Users.Add(newUser);
-                await _context.SaveChangesAsync();
-
-                Log("User registered successfully", true);
-
-                // Generate a JWT token after registration
-                var token = GenerateJwtToken(savedLogin, userType);
-                if (token == null)
-                {
-                    // If token generation fails, log and return a partial success response
-                    Log("Token generation failed", false);
-                    return Ok(new
-                    {
-                        message = "Registration successful, but token generation failed",
-                        login_id = savedLogin.login_id,
-                        error = "Token generation failed"
-                    });
-                }
-
-                Log("Registration and token generation successful", true);
-
-                return CreatedAtAction(nameof(GetLogin), new { id = savedLogin.login_id }, new { message = "Registration successful", token });
-            }
-            catch (Exception ex)
-            {
-                // Log the full exception
-                Log($"Registration failed: {ex.ToString()}", false);
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }*/
     }
 }

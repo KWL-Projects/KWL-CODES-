@@ -1,17 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization; // Add this for System.Text.Json.JsonIgnore
 
 namespace KWL_HMSWeb.Server.Models
 {
     public class User
     {
-        [Key] // Primary key
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int user_id { get; set; } // Primary key
+        public int user_id { get; set; }
 
-        [ForeignKey("Login")] // Foreign key to Login table
-        public int login_id { get; set; } // Foreign key
+        [Required]
+        public int login_id { get; set; }
 
         [Required]
         [MaxLength(50)]
@@ -22,10 +21,23 @@ namespace KWL_HMSWeb.Server.Models
         public string user_surname { get; set; } = string.Empty;
 
         [Required]
+        [MaxLength(20)]
         public string user_type { get; set; } = string.Empty;
 
-        // Foreign key relationship
-        public Login Login { get; set; } // Navigation property for foreign key
+        // Navigation property for the related Login
+        [ForeignKey("login_id")]
+        public Login Login { get; set; } = null!;
+
+        public Admin Admin { get; set; } = null!;
+
+        public Student Student { get; set; } = null!;
+
+        public Lecturer Lecturer {  get; set; } = null!;
+
+        public Enrollment Enrollment { get; set; } = null!;
+        public Assignment Assignment { get; set; } = null!;
+        public Submission Submission { get; set; } = null!;
+        public Feedback Feedback { get; set; } = null!;
     }
 }
 
