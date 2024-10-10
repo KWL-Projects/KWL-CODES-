@@ -12,8 +12,6 @@ import { CreateAssignmentComponent } from './components/create-assignment/create
 import { ListAssignmentVideosComponent } from './components/list-assignment-videos/list-assignment-videos.component';
 import { ProvideFeedbackComponent } from './components/provide-feedback/provide-feedback.component';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,

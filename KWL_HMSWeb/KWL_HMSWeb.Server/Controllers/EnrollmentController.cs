@@ -9,49 +9,49 @@ using KWL_HMSWeb.Server.Models;
 
 namespace KWL_HMSWeb.Server.Controllers
 {
-    [Route("api/subject")]
+    [Route("api/enrollment")]
     [ApiController]
-    public class SubjectController : ControllerBase
+    public class EnrollmentController : ControllerBase
     {
         private readonly DatabaseContext _context;
 
-        public SubjectController(DatabaseContext context)
+        public EnrollmentController(DatabaseContext context)
         {
             _context = context;
         }
 
-        // GET: api/Subject
+        // GET: api/Enrollment
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Subject>>> GetSubject()
+        public async Task<ActionResult<IEnumerable<Enrollment>>> GetEnrollment()
         {
-            return await _context.Subject.ToListAsync();
+            return await _context.Enrollment.ToListAsync();
         }
 
-        // GET: api/Subject/5
+        // GET: api/Enrollment/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Subject>> GetSubject(int id)
+        public async Task<ActionResult<Enrollment>> GetEnrollment(int id)
         {
-            var subject = await _context.Subject.FindAsync(id);
+            var enrollment = await _context.Enrollment.FindAsync(id);
 
-            if (subject == null)
+            if (enrollment == null)
             {
                 return NotFound();
             }
 
-            return subject;
+            return enrollment;
         }
 
-        // PUT: api/Subject/5
+        // PUT: api/Enrollment/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSubject(int id, Subject subject)
+        public async Task<IActionResult> PutEnrollment(int id, Enrollment enrollment)
         {
-            if (id != subject.subject_id)
+            if (id != enrollment.user_id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(subject).State = EntityState.Modified;
+            _context.Entry(enrollment).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace KWL_HMSWeb.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SubjectExists(id))
+                if (!EnrollmentExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace KWL_HMSWeb.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Subject
+        // POST: api/Enrollment
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Subject>> PostSubject(Subject subject)
+        public async Task<ActionResult<Enrollment>> PostEnrollment(Enrollment enrollment)
         {
-            _context.Subject.Add(subject);
+            _context.Enrollment.Add(enrollment);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSubject", new { id = subject.subject_id }, subject);
+            return CreatedAtAction("GetEnrollment", new { id = enrollment.user_id }, enrollment);
         }
 
-        // DELETE: api/Subject/5
+        // DELETE: api/Enrollment/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSubject(int id)
+        public async Task<IActionResult> DeleteEnrollment(int id)
         {
-            var subject = await _context.Subject.FindAsync(id);
-            if (subject == null)
+            var enrollment = await _context.Enrollment.FindAsync(id);
+            if (enrollment == null)
             {
                 return NotFound();
             }
 
-            _context.Subject.Remove(subject);
+            _context.Enrollment.Remove(enrollment);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool SubjectExists(int id)
+        private bool EnrollmentExists(int id)
         {
-            return _context.Subject.Any(e => e.subject_id == id);
+            return _context.Enrollment.Any(e => e.user_id == id);
         }
     }
 }

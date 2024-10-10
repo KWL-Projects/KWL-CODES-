@@ -1,26 +1,31 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization; // Add this for System.Text.Json.JsonIgnore
 
 namespace KWL_HMSWeb.Server.Models
 {
     public class Feedback
     {
-        [Key] // Primary key
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int feedback_id { get; set; } // Primary key
-
-        [ForeignKey("Submission")] // Foreign key to Submission table
-        public int submission_id { get; set; } // Foreign key
+        public int feedback_id { get; set; }
 
         [Required]
+        public int submission_id { get; set; }
+
+        [Required]
+        public int user_id { get; set; }
+
+        [MaxLength(50)]
         public string feedback { get; set; } = string.Empty;
 
-        public decimal mark_received { get; set; }
+        public int mark_received { get; set; }
 
-        // Foreign key relationship
-        [JsonIgnore]
-        public Submission? Submission { get; set; } // Navigation property for foreign key
+        // Navigation properties
+        [ForeignKey("submission_id")]
+        public Submission Submission { get; set; } = null!;
+
+        [ForeignKey("user_id")]
+        public User User { get; set; } = null!;
     }
 }
 
