@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="KWLCodes_HMSProject.Maui.Pages.LandingPage">
+             x:Class="KWLCodes_HMSProject.Maui.Pages.LandingPage"
+             BackgroundColor="White">
 
     <VerticalStackLayout Padding="40" Spacing="30"
-                         VerticalOptions="Center"
+                         VerticalOptions="Start"
                          HorizontalOptions="Center">
 
-        <Label Text="Welcome to HMS Project"
+        <Image Source="logo_nwu.png"
+               HorizontalOptions="Center"
+               WidthRequest="300"
+               HeightRequest="300" />
+        <!-- Logo at the top -->
+
+        <Label Text="Human Movement Sciences by KWL"
                FontSize="32"
                FontAttributes="Bold"
-               TextColor="#2A2A2A"
+               TextColor="#4b004b"
                HorizontalOptions="Center" />
 
         <Button x:Name="LoginButton"
                 Text="Login"
-                BackgroundColor="#4CAF50"
+                BackgroundColor="#800080"
                 TextColor="White"
                 FontAttributes="Bold"
                 CornerRadius="15"
@@ -23,10 +30,15 @@
                 Clicked="OnLoginClicked"
                 HorizontalOptions="FillAndExpand" />
 
+        <Label Text="Human Movement Sciences"
+               FontSize="18"
+               TextColor="#4b004b"
+               HorizontalOptions="Center" />
+
         <Button x:Name="ViewAssignmentsButton"
                 Text="View Assignments"
                 IsVisible="False"
-                BackgroundColor="#2196F3"
+                BackgroundColor="#800080"
                 TextColor="White"
                 FontAttributes="Bold"
                 CornerRadius="15"
@@ -37,7 +49,7 @@
         <Button x:Name="LogoutButton"
                 Text="Logout"
                 IsVisible="False"
-                BackgroundColor="#F44336"
+                BackgroundColor="#800080"
                 TextColor="White"
                 FontAttributes="Bold"
                 CornerRadius="15"

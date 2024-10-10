@@ -2,7 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KWLCodes_HMSProject.Maui.Pages.SignUp"
-             Title="Sign Up">
+             Title="Sign Up"
+             BackgroundColor="White">
+
     <VerticalStackLayout Padding="40" Spacing="30"
                          VerticalOptions="Center"
                          HorizontalOptions="Center">
@@ -10,12 +12,12 @@
         <Label Text="Create an Account"
                FontSize="24"
                FontAttributes="Bold"
-               TextColor="#2A2A2A"
+               TextColor="#4b004b"
                HorizontalOptions="Center" />
 
         <Label Text="Username" 
                FontSize="16"
-               TextColor="#2A2A2A"
+               TextColor="#4b004b"
                HorizontalOptions="Center" />
         <Entry x:Name="UsernameEntry"
                Placeholder="Enter your username"
@@ -24,7 +26,7 @@
 
         <Label Text="Password"
                FontSize="16"
-               TextColor="#2A2A2A"
+               TextColor="#4b004b"
                Margin="0,10,0,0"
                HorizontalOptions="Center" />
         <Entry x:Name="PasswordEntry"
@@ -35,7 +37,7 @@
 
         <Button x:Name="SignUpButton"
                 Text="Sign Up"
-                BackgroundColor="#FF9800"
+                BackgroundColor="#800080"
                 TextColor="White"
                 FontAttributes="Bold"
                 CornerRadius="15"
