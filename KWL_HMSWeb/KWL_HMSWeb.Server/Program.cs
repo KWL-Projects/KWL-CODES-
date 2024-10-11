@@ -4,11 +4,14 @@ using Azure.Identity;
 using KWL_HMSWeb.Services;
 using System.Text.Json.Serialization;
 using Azure.Storage.Blobs;
-using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,15 +23,26 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.MaxDepth = 64;
     });
 
-// Configure CORS policy to allow your web client to communicate with the API.
+// CORS configuration
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowWebClient", policy =>
-    policy.WithOrigins("http://localhost:4200", "https://localhost:7074") // Allow both client and server URLs
-          .AllowAnyHeader()
-          .AllowAnyMethod()
-          .AllowCredentials());
+        policy.WithOrigins("http://localhost:4200") 
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials());
 });
+
+/*builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});*/
 
 // Configure DatabaseContext with SQL Server.
 builder.Services.AddDbContext<DatabaseContext>(options =>
@@ -44,6 +58,10 @@ builder.Configuration.AddEnvironmentVariables();
 var jwtSecret = builder.Configuration["KWLCodes_JWT_SECRET"];
 var jwtIssuer = builder.Configuration["KWLCodes_JWT_ISSUER"];
 var jwtAudience = builder.Configuration["KWLCodes_JWT_AUDIENCE"];
+
+/*var jwtSecret = Environment.GetEnvironmentVariable("KWLCodes_JWT_SECRET");
+var jwtIssuer = Environment.GetEnvironmentVariable("KWLCodes_JWT_ISSUER");
+var jwtAudience = Environment.GetEnvironmentVariable("KWLCodes_JWT_AUDIENCE");*/
 
 // Configure JWT Authentication.
 /*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -118,6 +136,7 @@ else if (Uri.TryCreate(builder.Configuration["Endpoints:DefaultConnection"], Uri
 }
 
 builder.Services.AddAzureAppConfiguration();
+
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IServices, VideoService>();
 builder.Services.AddSingleton<BlobStorageService>();
@@ -149,11 +168,15 @@ app.UseRouting();
 // Use configured CORS policy.
 app.UseCors("AllowWebClient");
 
+//app.UseCors("AllowAll");
+
 app.UseHttpsRedirection();
 
 // Ensure to call UseAuthentication before UseAuthorization.
 app.UseAuthentication();
 app.UseAuthorization();
+
+//app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
 app.MapControllers();
 app.Run();

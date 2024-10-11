@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment'; // Correct import path
+import { AuthService } from '../../auth.service'; // Adjust the import path if necessary
+import { Router } from '@angular/router'; // Import Router
 
 @Component({
   selector: 'app-login',
@@ -11,38 +10,36 @@ import { environment } from '../../../environments/environment'; // Correct impo
 export class LoginComponent {
   username: string = '';
   password: string = '';
-  errorMessage: string = ''; // For displaying error messages
+  errorMessage: string | null = null; // Store error message if login fails
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { } // Inject Router
 
   onSubmit() {
-    const loginData = { username: this.username, password: this.password };
+    // Reset the error message on new submission
+    this.errorMessage = null;
 
-    // Make the login request to the API
-    this.http.post(`${environment.apiUrl}login/authenticate`, loginData)
-      .subscribe(
-        (response: any) => {
-          const token = response.token;
-          localStorage.setItem('jwtToken', token);
-          this.router.navigate(['/user-administration']);
-        },
-        (error) => {
-          this.errorMessage = 'Login failed: Invalid username or password';
-          console.error('Login failed', error);
-        }
-      );
-  }
+    // Call the AuthService login method
+    this.authService.login(this.username, this.password).subscribe(
+      (response) => {
+        // Handle successful login response
+        console.log('Login successful', response);
 
-  // New method to navigate to login
-  navigateToLogin() {
-    this.router.navigate(['/login']);
-  }
-
-  private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('jwtToken');
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        // Navigate to the dashboard or home page
+        this.router.navigate(['/dashboard']); // Adjust the path as needed
+      },
+      (error) => {
+        // Handle login failure
+        console.error('Login failed', error);
+        this.errorMessage = 'Incorrect username or password'; // Display error message
+      }
+    );
   }
 }
+
+
+
+
+
 
 
 
