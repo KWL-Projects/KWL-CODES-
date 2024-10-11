@@ -15,6 +15,8 @@ using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// testing 
+
 // Add services to the container.
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
