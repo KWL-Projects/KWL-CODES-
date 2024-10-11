@@ -12,7 +12,7 @@
     <td>{{ user.user_first_name }}</td>
     <td>{{ user.user_surname }}</td>
     <td>{{ user.user_type }}</td>
-    <td>
+    <td class="action-buttons">
       <button (click)="selectUser(user)">Update</button>
       <button (click)="deleteUser(user.login_id)">Delete</button>
     </td>
@@ -58,3 +58,5 @@
     <button type="submit">Add User</button>
   </form>
 </div>
+
+<button class="back-button" (click)="goBack()">Back</button>

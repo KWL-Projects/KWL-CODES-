@@ -20,6 +20,17 @@ namespace KWL_HMSWeb.Server.Controllers
             _context = context;
         }
 
+        // POST: api/Subject
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Subject>> PostSubject(Subject subject)
+        {
+            _context.Subject.Add(subject);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetSubject", new { id = subject.subject_id }, subject);
+        }
+
         // GET: api/Subject
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Subject>>> GetSubject()
@@ -70,17 +81,6 @@ namespace KWL_HMSWeb.Server.Controllers
             }
 
             return NoContent();
-        }
-
-        // POST: api/Subject
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Subject>> PostSubject(Subject subject)
-        {
-            _context.Subject.Add(subject);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetSubject", new { id = subject.subject_id }, subject);
         }
 
         // DELETE: api/Subject/5

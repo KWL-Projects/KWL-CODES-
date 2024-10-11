@@ -22,14 +22,12 @@ namespace KWLCodes_HMSProject.Maui.Pages
 
                 if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
                 {
-                    // Automatically log the user in
                     LoginButton.IsVisible = false;
                     ViewAssignmentsButton.IsVisible = true;
                     LogoutButton.IsVisible = true;
                 }
                 else
                 {
-                    // Show login button if credentials are not found
                     LoginButton.IsVisible = true;
                     ViewAssignmentsButton.IsVisible = false;
                     LogoutButton.IsVisible = false;
@@ -62,12 +60,10 @@ namespace KWLCodes_HMSProject.Maui.Pages
             var button = (Button)sender;
             await AnimateButton(button);
 
-            // Clear login state
             Preferences.Set("IsLoggedIn", false);
             SecureStorage.Remove("username");
             SecureStorage.Remove("password");
 
-            // Update UI
             CheckLoginState();
         }
 

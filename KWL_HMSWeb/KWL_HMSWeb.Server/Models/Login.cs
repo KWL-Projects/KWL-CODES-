@@ -6,9 +6,9 @@ namespace KWL_HMSWeb.Server.Models
 {
     public class Login
     {
-        [Key]
+        [Key] // Primary key
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int login_id { get; set; }
+        public int login_id { get; set; } // Primary key
 
         [Required]
         [MaxLength(50)]
