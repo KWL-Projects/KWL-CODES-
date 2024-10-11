@@ -1,14 +1,87 @@
-﻿:host {
-    max-width: 1280px;
-    padding: 2rem;
-    text-align: center;
+:host {
+  max-width: 1280px;
+  padding: 2rem;
+  text-align: center;
+  background-color: #f0f0f0; /* Light grey background for better contrast */
+  font-family: 'Arial', sans-serif;
+}
+.logo {
+  display: block;
+  margin: auto;
+  width: 250px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+.overview {
+  background-color: #f3e5f5; /* Light purple color */
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+  .overview h2 {
+    color: #333;
+  }
+
+  .overview p {
+    color: #555;
+  }
+
+
+
+.landing-container {
+  background-color: #ffffff; /* White background for the container */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 3rem; /* Increased padding for a bigger container */
+  margin: 2rem auto;
+  max-width: 800px; /* Increased max-width for a bigger container */
+}
+
+h1 {
+  color: #800080; /* Dark purple color for the heading */
+  margin-bottom: 1.5rem;
+}
+
+button {
+  background-color: #800080; /* Dark purple background for the button */
+  color: #ffffff; /* White text color */
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+  button:hover {
+    background-color: #4b004b; /* Darker purple on hover */
+  }
+
+p {
+  color: #333333; /* Dark grey color for the paragraph */
+  margin-top: 1.5rem;
 }
 
 th, td {
-    padding-left: 1rem;
-    padding-right: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 table {
-    margin: 0 auto;
+  margin: 0 auto;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  background-color: #800080; /* Dark purple background for table headers */
+  color: #ffffff; /* White text color for table headers */
+  padding: 1rem;
+}
+
+td {
+  background-color: #f2e6f2; /* Light purple background for table cells */
+  color: #333333; /* Dark grey text color for table cells */
+  padding: 1rem;
+  border: 1px solid #cccccc; /* Light grey border for table cells */
 }
