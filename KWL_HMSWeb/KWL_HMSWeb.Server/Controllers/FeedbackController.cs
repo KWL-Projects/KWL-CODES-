@@ -172,7 +172,7 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // DELETE: api/feedback/5
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteFeedback(int id)
         {
             try

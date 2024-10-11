@@ -66,7 +66,7 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // GET: api/submission/view/{userId}
-        [HttpGet("view/{userId}")]
+        [HttpGet("viewOwn/{userId}")]
         public async Task<ActionResult<IEnumerable<Submission>>> BrowseOwnSubmissions(int userId)
         {
             try
@@ -92,7 +92,7 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // GET: api/submission/{id}
-        [HttpGet("{id}")]
+        [HttpGet("view/{id}")]
         public async Task<ActionResult<Submission>> GetSubmission(int id)
         {
             try

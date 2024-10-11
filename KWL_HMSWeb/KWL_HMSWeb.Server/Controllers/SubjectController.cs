@@ -22,7 +22,7 @@ namespace KWL_HMSWeb.Server.Controllers
 
         // POST: api/Subject
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<ActionResult<Subject>> PostSubject(Subject subject)
         {
             _context.Subject.Add(subject);
@@ -32,14 +32,14 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // GET: api/Subject
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<Subject>>> GetSubject()
         {
             return await _context.Subject.ToListAsync();
         }
 
         // GET: api/Subject/5
-        [HttpGet("{id}")]
+        [HttpGet("view/{id}")]
         public async Task<ActionResult<Subject>> GetSubject(int id)
         {
             var subject = await _context.Subject.FindAsync(id);
@@ -54,7 +54,7 @@ namespace KWL_HMSWeb.Server.Controllers
 
         // PUT: api/Subject/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> PutSubject(int id, Subject subject)
         {
             if (id != subject.subject_id)
@@ -84,7 +84,7 @@ namespace KWL_HMSWeb.Server.Controllers
         }
 
         // DELETE: api/Subject/5
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteSubject(int id)
         {
             var subject = await _context.Subject.FindAsync(id);
