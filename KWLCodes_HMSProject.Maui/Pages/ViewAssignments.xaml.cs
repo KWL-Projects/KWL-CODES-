@@ -13,7 +13,7 @@ namespace KWLCodes_HMSProject.Maui.Pages
 
         private void LoadAssignments()
         {
-            // Load your assignments into AssignmentsListView here
+            // Load Assiggnments Here
         }
 
         private async void OnUploadVideoClicked(object sender, EventArgs e)
