@@ -1,17 +1,22 @@
+//Updated Upload Video
 using Microsoft.Maui.Media;
 using Microsoft.Maui.Storage;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 using FFMpegCore;
+using KWLCodes_HMSProject.Maui.Services; // Add this using directive
 
 namespace KWLCodes_HMSProject.Maui.Pages
 {
     public partial class UploadVideo : ContentPage
     {
-        public UploadVideo()
+        private readonly FilesService _filesService; // Declare FilesService
+
+        public UploadVideo(FilesService filesService) // Inject FilesService
         {
             InitializeComponent();
+            _filesService = filesService;
         }
 
         private async void OnSelectVideoClicked(object sender, EventArgs e)
@@ -36,7 +41,7 @@ namespace KWLCodes_HMSProject.Maui.Pages
                         StatusLabel.Text = $"Success: Video selected from {filePath}";
                         LogEntry("Success", $"Video selected: {filePath}");
 
-                        await CompressVideo(filePath);
+                        await CompressVideo(filePath); // Call CompressVideo
                     }
                     else
                     {
@@ -102,6 +107,22 @@ namespace KWLCodes_HMSProject.Maui.Pages
 
                 StatusLabel.Text = $"Success: Video compressed and saved to {outputFilePath}";
                 LogEntry("Success", $"Video compressed: {outputFilePath}");
+
+                // Upload the compressed video
+                using (var fileStream = File.OpenRead(outputFilePath))
+                {
+                    var fileUrl = await _filesService.UploadFileAsync(fileStream, Path.GetFileName(outputFilePath));
+                    if (fileUrl != null)
+                    {
+                        StatusLabel.Text += $"\nVideo uploaded successfully: {fileUrl}";
+                        LogEntry("Success", $"Video uploaded: {fileUrl}");
+                    }
+                    else
+                    {
+                        StatusLabel.Text += "\nFailure: Video upload failed.";
+                        LogEntry("Failure", "Video upload failed.");
+                    }
+                }
             }
             catch (Exception ex)
             {

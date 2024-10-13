@@ -1,14 +1,22 @@
 using System;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
+using Microsoft.Extensions.Logging; // Ensure this is included
+using KWLCodes_HMSProject.Maui.Services; // Reference your FilesService
+using System.Net.Http; // Reference for HttpClient
 
 namespace KWLCodes_HMSProject.Maui.Pages
 {
     public partial class Login : ContentPage
     {
-        public Login()
+        private readonly HttpClient _httpClient;
+        private readonly ILogger<FilesService> _logger;
+
+        public Login(HttpClient httpClient, ILogger<FilesService> logger)
         {
             InitializeComponent();
+            _httpClient = httpClient;
+            _logger = logger;
         }
 
         private async void OnLoginClicked(object sender, EventArgs e)
@@ -33,7 +41,12 @@ namespace KWLCodes_HMSProject.Maui.Pages
             if (username == storedUsername && password == storedPassword)
             {
                 Preferences.Set("IsLoggedIn", true);
-                await Navigation.PushAsync(new LandingPage());
+
+                // Create FilesService instance
+                var filesService = new FilesService(_httpClient, _logger);
+
+                // Pass the FilesService to LandingPage
+                await Navigation.PushAsync(new LandingPage(filesService));
             }
             else
             {
@@ -45,7 +58,12 @@ namespace KWLCodes_HMSProject.Maui.Pages
         {
             var button = (Button)sender;
             await AnimateButton(button);
-            await Navigation.PushAsync(new LandingPage());
+
+            // Create FilesService instance
+            var filesService = new FilesService(_httpClient, _logger);
+
+            // Pass the FilesService to LandingPage
+            await Navigation.PushAsync(new LandingPage(filesService));
         }
 
         private async void OnSignUpClicked(object sender, EventArgs e)

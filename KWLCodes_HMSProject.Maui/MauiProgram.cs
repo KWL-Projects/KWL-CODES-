@@ -44,10 +44,18 @@ namespace KWLCodes_HMSProject.Maui
             // Register HttpClient and UserService
             builder.Services.AddHttpClient<UserService>(client =>
             {
-                client.BaseAddress = new Uri("https://your-api-url.com/"); // Set your API base URL
+                client.BaseAddress = new Uri("https://localhost:7074"); // Set your API base URL
             });
 
+            // Set your API base URL: https://your-api-url.com/
 
+
+            // Register services
+            builder.Services.AddSingleton<HttpClient>(); // Register HttpClient
+            builder.Services.AddLogging(); // Register logging
+
+            // Register other services if needed
+            builder.Services.AddTransient<FilesService>();
 
             builder.Services.AddSingleton<FilesService>();
             builder.Services.AddSingleton<LoginService>();
