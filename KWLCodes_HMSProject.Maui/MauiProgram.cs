@@ -44,7 +44,7 @@ namespace KWLCodes_HMSProject.Maui
 
             builder.Services.AddHttpClient<UserService>(client =>
             {
-                client.BaseAddress = new Uri("https://your-api-url.com/"); // Set your API base URL
+                client.BaseAddress = new Uri("https://localhost:7074"); // Set your API base URL
             });
 
             // Register services as singletons

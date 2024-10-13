@@ -2,11 +2,44 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KWLCodes_HMSProject.Maui.Pages.ViewVideoFeedback"
-             Title="ViewVideoFeedback">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+             Title="Video Feedback"
+             BackgroundColor="White">
+
+    <VerticalStackLayout Padding="20" Spacing="20">
+        <Label Text="Video Feedback" 
+               FontSize="24" 
+               FontAttributes="Bold"
+               TextColor="#4b004b"
+               HorizontalOptions="Center" 
+               Margin="0,20,0,20" />
+
+        <CollectionView x:Name="FeedbackCollectionView"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BorderColor="#cccccc" Padding="10" Margin="5">
+                        <StackLayout>
+                            <Label Text="{Binding feedback}" 
+                                   FontSize="16" 
+                                   TextColor="Black" />
+                            <Label Text="{Binding mark_received, StringFormat='Mark: {0}'}" 
+                                   FontSize="14" 
+                                   TextColor="Gray" />
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Text="Download Feedback"
+                BackgroundColor="#800080"
+                TextColor="White"
+                FontAttributes="Bold"
+                CornerRadius="15"
+                Padding="10"
+                Clicked="OnDownloadFeedbackClicked"
+                HorizontalOptions="FillAndExpand"
+                Margin="0,10"/>
     </VerticalStackLayout>
 </ContentPage>
