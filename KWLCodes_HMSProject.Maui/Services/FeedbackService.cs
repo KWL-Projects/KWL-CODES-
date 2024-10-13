@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-//using KWL_HMSWeb.Shared.Models; // Adjust this namespace to where your Feedback model is defined
+using KWL_HMSWeb.Server.Models;// Adjust this namespace to where your Feedback model is defined
 
-namespace KWL_HMSWeb.Mobile.Services
+namespace KWLCodes_HMSProject.Maui.Services
 {
     public class FeedbackService
     {
@@ -17,7 +17,7 @@ namespace KWL_HMSWeb.Mobile.Services
         }
 
         // Provide feedback on video
-        public async Task<string> ProvideFeedbackAsync(FeedbackService feedback)
+        public async Task<string> ProvideFeedbackAsync(Feedback feedback)
         {
             var response = await _httpClient.PostAsJsonAsync("api/feedback/submit", feedback);
             response.EnsureSuccessStatusCode(); // Throws if the status code is not a success code
@@ -25,27 +25,27 @@ namespace KWL_HMSWeb.Mobile.Services
         }
 
         // Get all feedbacks
-        public async Task<IEnumerable<FeedbackService>> GetFeedbackAsync()
+        public async Task<IEnumerable<Feedback>> GetFeedbackAsync()
         {
             var response = await _httpClient.GetAsync("api/feedback/all");
             response.EnsureSuccessStatusCode();
 
-            var feedbacks = await response.Content.ReadFromJsonAsync<IEnumerable<FeedbackService>>();
+            var feedbacks = await response.Content.ReadFromJsonAsync<IEnumerable<Feedback>>();
             return feedbacks;
         }
 
         // View feedback on submissions for a specific user
-        public async Task<IEnumerable<FeedbackService>> ViewFeedbackAsync(int userId)
+        public async Task<IEnumerable<Feedback>> ViewFeedbackAsync(int userId)
         {
             var response = await _httpClient.GetAsync($"api/feedback/submission/{userId}");
             response.EnsureSuccessStatusCode();
 
-            var feedbacks = await response.Content.ReadFromJsonAsync<IEnumerable<FeedbackService>>();
+            var feedbacks = await response.Content.ReadFromJsonAsync<IEnumerable<Feedback>>();
             return feedbacks;
         }
 
         // Update feedback
-        public async Task<string> UpdateFeedbackAsync(int feedbackId, FeedbackService updatedFeedback)
+        public async Task<string> UpdateFeedbackAsync(int feedbackId, Feedback updatedFeedback)
         {
             var response = await _httpClient.PutAsJsonAsync($"api/feedback/update/{feedbackId}", updatedFeedback);
             response.EnsureSuccessStatusCode();
@@ -69,3 +69,4 @@ namespace KWL_HMSWeb.Mobile.Services
         }
     }
 }
+

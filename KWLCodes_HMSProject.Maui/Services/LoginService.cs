@@ -1,54 +1,75 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
 //using KWL_HMSWeb.Server.Models; // Update this namespace according to your project structure
 using Newtonsoft.Json; // Install-Package Newtonsoft.Json
 
-public class LoginService
+namespace KWLCodes_HMSProject.Maui.Services
 {
-    private readonly HttpClient _httpClient;
-
-    public LoginService(HttpClient httpClient)
+    public class LoginService
     {
-        _httpClient = httpClient;
-    }
+        private readonly HttpClient _httpClient;
 
-    // Login method
-    public async Task<LoginResponse> AuthenticateAsync(LoginService login)
-    {
-        try
+        public LoginService()
         {
-            var response = await _httpClient.PostAsJsonAsync("api/login/authenticate", login);
+            // Initialize HttpClient (you can use dependency injection or instantiate it here)
+            _httpClient = new HttpClient
+            {
+                // Set the base address of your API
+                BaseAddress = new Uri("https://your-api-url.com/api/login/")
+            };
+        }
+
+        // Login request model
+        public class LoginRequest
+        {
+            public string username { get; set; }
+            public string password { get; set; }
+        }
+
+        // Login response model
+        public class LoginResponse
+        {
+            public string message { get; set; }
+            public string token { get; set; }
+            public string tokenError { get; set; }
+        }
+
+        // Method to send login request to API
+        public async Task<LoginResponse> AuthenticateAsync(string username, string password)
+        {
+            // Create the login request object
+            var loginRequest = new LoginRequest
+            {
+                username = username,
+                password = password
+            };
+
+            // Convert the request object to JSON
+            var jsonContent = new StringContent(JsonConvert.SerializeObject(loginRequest), Encoding.UTF8, "application/json");
+
+            // Send the POST request to the API
+            HttpResponseMessage response = await _httpClient.PostAsync("authenticate", jsonContent);
+
             if (response.IsSuccessStatusCode)
             {
-                var jsonResponse = await response.Content.ReadAsStringAsync();
-                var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(jsonResponse);
-                return loginResponse; // Successful login response
+                // Read the response and deserialize it into the LoginResponse model
+                var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+                // Return the deserialized response
+                return loginResponse;
             }
             else
             {
-                var errorResponse = await response.Content.ReadAsStringAsync();
-                var error = JsonConvert.DeserializeObject<ErrorResponse>(errorResponse);
-                throw new Exception(error.Message); // Throw an error with the server's response
+                // Handle the error (e.g., return an error response)
+                return new LoginResponse
+                {
+                    message = "Login failed",
+                    token = null,
+                    tokenError = "Invalid username or password"
+                };
             }
         }
-        catch (Exception ex)
-        {
-            // Handle exceptions (network issues, etc.)
-            throw new Exception("An error occurred while authenticating. " + ex.Message);
-        }
     }
-}
-
-// Response models
-public class LoginResponse
-{
-    public string Message { get; set; }
-    public string Token { get; set; }
-    public string TokenError { get; set; } // Optional
-}
-
-public class ErrorResponse
-{
-    public string Message { get; set; }
 }
