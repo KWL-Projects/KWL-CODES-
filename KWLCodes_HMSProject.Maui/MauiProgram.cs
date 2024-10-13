@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http; // Required for HttpClient
 using KWLCodes_HMSProject.Maui.Services;
+using KWLCodes_HMSProject.Maui.Models;
 
 namespace KWLCodes_HMSProject.Maui
 {

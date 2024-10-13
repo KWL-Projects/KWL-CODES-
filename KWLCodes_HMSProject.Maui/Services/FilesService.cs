@@ -38,7 +38,7 @@ namespace KWLCodes_HMSProject.Maui.Services
                     if (response.IsSuccessStatusCode)
                     {
                         // Read the response content if the upload was successful
-                        var result = await response.Content.ReadAsAsync<dynamic>(); // Adjust this to your expected response type
+                        var result = await response.Content.ReadFromJsonAsync<dynamic>(); // Use ReadFromJsonAsync
                         return result.FileUrl; // Return the file URL
                     }
                     else
@@ -64,7 +64,7 @@ namespace KWLCodes_HMSProject.Maui.Services
                 var response = await _httpClient.GetAsync("api/files/files");
                 response.EnsureSuccessStatusCode(); // Throw if not a success code.
 
-                var fileNames = await response.Content.ReadAsAsync<List<string>>(); // Adjust this to your expected response type
+                var fileNames = await response.Content.ReadFromJsonAsync<List<string>>(); // Use ReadFromJsonAsync
                 return fileNames; // Return the list of file names
             }
             catch (Exception ex)
