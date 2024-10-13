@@ -16,9 +16,18 @@
                HorizontalOptions="Center" 
                Margin="0,20,0,20" />
 
+        <Label x:Name="NoAssignmentsLabel"
+               Text="No assignments available."
+               IsVisible="False"
+               FontSize="18"
+               TextColor="Gray"
+               HorizontalOptions="Center" />
+
         <ListView x:Name="AssignmentsListView"
+                  SelectionMode="Single"
                   HorizontalOptions="FillAndExpand"
-                  VerticalOptions="FillAndExpand">
+                  VerticalOptions="FillAndExpand"
+                  ItemSelected="OnAssignmentSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextCell Text="{Binding Title}" Detail="{Binding Description}" />
