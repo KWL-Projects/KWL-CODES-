@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http; // Required for HttpClient
 using KWLCodes_HMSProject.Maui.Services;
 using KWLCodes_HMSProject.Maui.Models;
+using KWLCodes_HMSProject.Maui.Pages;
 
 namespace KWLCodes_HMSProject.Maui
 {
@@ -40,13 +41,20 @@ namespace KWLCodes_HMSProject.Maui
             {
                 client.BaseAddress = new Uri("https://localhost:7074"); // Set your API base URL
             });
+            // Register HttpClient and UserService
+            builder.Services.AddHttpClient<UserService>(client =>
+            {
+                client.BaseAddress = new Uri("https://your-api-url.com/"); // Set your API base URL
+            });
 
 
-            
+
             builder.Services.AddSingleton<FilesService>();
             builder.Services.AddSingleton<LoginService>();
             builder.Services.AddSingleton<AssignmentService>();
             builder.Services.AddSingleton<FeedbackService>();
+            builder.Services.AddSingleton<UserService>();
+            
 
 #if DEBUG
             builder.Logging.AddDebug();

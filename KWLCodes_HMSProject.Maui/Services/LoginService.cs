@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
-using KWLCodes_HMSProject.Maui.Models; // Adjust the namespace to your project structure
+using KWLCodes_HMSProject.Maui.Models; // Adjust the namespace for project structure
 
 namespace KWLCodes_HMSProject.Maui.Services
 {
