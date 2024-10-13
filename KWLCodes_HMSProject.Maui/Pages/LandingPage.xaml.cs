@@ -1,14 +1,18 @@
 using System;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
+using KWLCodes_HMSProject.Maui.Services; // Add this to reference FilesService
 
 namespace KWLCodes_HMSProject.Maui.Pages
 {
     public partial class LandingPage : ContentPage
     {
-        public LandingPage()
+        private readonly FilesService _filesService; // Declare FilesService
+
+        public LandingPage(FilesService filesService) // Inject FilesService
         {
             InitializeComponent();
+            _filesService = filesService; // Assign the FilesService
             CheckLoginState();
         }
 
@@ -52,7 +56,9 @@ namespace KWLCodes_HMSProject.Maui.Pages
         {
             var button = (Button)sender;
             await AnimateButton(button);
-            await Navigation.PushAsync(new ViewAssignments());
+
+            // Pass FilesService to ViewAssignments
+            await Navigation.PushAsync(new ViewAssignments(_filesService));
         }
 
         private async void OnLogoutClicked(object sender, EventArgs e)
