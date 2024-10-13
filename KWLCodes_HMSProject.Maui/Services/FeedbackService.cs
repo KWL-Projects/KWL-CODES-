@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using KWL_HMSWeb.Server.Models;// Adjust this namespace to where your Feedback model is defined
+using KWLCodes_HMSProject.Maui.Models; // Adjust this to match your actual namespace
 
 namespace KWLCodes_HMSProject.Maui.Services
 {
@@ -19,54 +19,101 @@ namespace KWLCodes_HMSProject.Maui.Services
         // Provide feedback on video
         public async Task<string> ProvideFeedbackAsync(Feedback feedback)
         {
-            var response = await _httpClient.PostAsJsonAsync("api/feedback/submit", feedback);
-            response.EnsureSuccessStatusCode(); // Throws if the status code is not a success code
-            return await response.Content.ReadAsStringAsync();
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("api/feedback/submit", feedback);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log error (use an ILogger if you have one available)
+                Console.WriteLine($"Error providing feedback: {ex.Message}");
+                return null;
+            }
         }
 
         // Get all feedbacks
         public async Task<IEnumerable<Feedback>> GetFeedbackAsync()
         {
-            var response = await _httpClient.GetAsync("api/feedback/all");
-            response.EnsureSuccessStatusCode();
-
-            var feedbacks = await response.Content.ReadFromJsonAsync<IEnumerable<Feedback>>();
-            return feedbacks;
+            try
+            {
+                var feedbacks = await _httpClient.GetFromJsonAsync<IEnumerable<Feedback>>("api/feedback/all");
+                return feedbacks ?? new List<Feedback>();
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                Console.WriteLine($"Error retrieving feedback: {ex.Message}");
+                return new List<Feedback>();
+            }
         }
 
         // View feedback on submissions for a specific user
         public async Task<IEnumerable<Feedback>> ViewFeedbackAsync(int userId)
         {
-            var response = await _httpClient.GetAsync($"api/feedback/submission/{userId}");
-            response.EnsureSuccessStatusCode();
-
-            var feedbacks = await response.Content.ReadFromJsonAsync<IEnumerable<Feedback>>();
-            return feedbacks;
+            try
+            {
+                var feedbacks = await _httpClient.GetFromJsonAsync<IEnumerable<Feedback>>($"api/feedback/submission/{userId}");
+                return feedbacks ?? new List<Feedback>();
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                Console.WriteLine($"Error viewing feedback for user {userId}: {ex.Message}");
+                return new List<Feedback>();
+            }
         }
 
         // Update feedback
         public async Task<string> UpdateFeedbackAsync(int feedbackId, Feedback updatedFeedback)
         {
-            var response = await _httpClient.PutAsJsonAsync($"api/feedback/update/{feedbackId}", updatedFeedback);
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync($"api/feedback/update/{feedbackId}", updatedFeedback);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                Console.WriteLine($"Error updating feedback {feedbackId}: {ex.Message}");
+                return null;
+            }
         }
 
         // Delete feedback
         public async Task<string> DeleteFeedbackAsync(int id)
         {
-            var response = await _httpClient.DeleteAsync($"api/feedback/delete/{id}");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            try
+            {
+                var response = await _httpClient.DeleteAsync($"api/feedback/delete/{id}");
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                Console.WriteLine($"Error deleting feedback {id}: {ex.Message}");
+                return null;
+            }
         }
 
         // Download marks for a user
         public async Task<byte[]> DownloadMarksAsync(int userId)
         {
-            var response = await _httpClient.GetAsync($"api/feedback/download-marks/{userId}");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsByteArrayAsync();
+            try
+            {
+                var response = await _httpClient.GetAsync($"api/feedback/download-marks/{userId}");
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsByteArrayAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                Console.WriteLine($"Error downloading marks for user {userId}: {ex.Message}");
+                return null;
+            }
         }
     }
 }
-
