@@ -1,14 +1,19 @@
 using System;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
+using KWLCodes_HMSProject.Maui.Models; // Ensure this namespace includes your LoginRequest and LoginResponse models
+using KWLCodes_HMSProject.Maui.Services; // Ensure you include the namespace for your LoginService
 
 namespace KWLCodes_HMSProject.Maui.Pages
 {
     public partial class Login : ContentPage
     {
-        public Login()
+        private readonly LoginService _loginService;
+
+        public Login(LoginService loginService) // Constructor with LoginService parameter
         {
             InitializeComponent();
+            _loginService = loginService; // Store the service
         }
 
         private async void OnLoginClicked(object sender, EventArgs e)
@@ -25,19 +30,25 @@ namespace KWLCodes_HMSProject.Maui.Pages
                 return;
             }
 
-            // Retrieve stored credentials
-            string storedUsername = await SecureStorage.GetAsync("username");
-            string storedPassword = await SecureStorage.GetAsync("password");
+            // Create a LoginRequest object
+            var loginRequest = new LoginRequest
+            {
+                Username = username,
+                Password = password
+            };
 
-            // Validate credentials
-            if (username == storedUsername && password == storedPassword)
+            // Authenticate using the LoginService
+            var loginResponse = await _loginService.AuthenticateAsync(loginRequest);
+
+            if (loginResponse.Token != null) // Check if the login was successful
             {
                 Preferences.Set("IsLoggedIn", true);
-                await Navigation.PushAsync(new LandingPage());
+                Preferences.Set("Token", loginResponse.Token); // Store the token if necessary
+                await Navigation.PushAsync(new LandingPage(_loginService)); // Navigate to landing page
             }
             else
             {
-                await DisplayAlert("Error", "Invalid username or password", "OK");
+                await DisplayAlert("Error", loginResponse.TokenError ?? "Invalid username or password", "OK");
             }
         }
 
@@ -45,7 +56,7 @@ namespace KWLCodes_HMSProject.Maui.Pages
         {
             var button = (Button)sender;
             await AnimateButton(button);
-            await Navigation.PushAsync(new LandingPage());
+            await Navigation.PushAsync(new LandingPage(_loginService)); // Pass the LoginService
         }
 
         private async void OnSignUpClicked(object sender, EventArgs e)

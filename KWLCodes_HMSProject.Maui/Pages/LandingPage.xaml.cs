@@ -1,14 +1,18 @@
 using System;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
+using KWLCodes_HMSProject.Maui.Services;
 
 namespace KWLCodes_HMSProject.Maui.Pages
 {
     public partial class LandingPage : ContentPage
     {
-        public LandingPage()
+        private readonly LoginService _loginService;
+
+        public LandingPage(LoginService loginService) // Accept LoginService in the constructor
         {
             InitializeComponent();
+            _loginService = loginService; // Store the injected service
             CheckLoginState();
         }
 
@@ -45,7 +49,7 @@ namespace KWLCodes_HMSProject.Maui.Pages
         {
             var button = (Button)sender;
             await AnimateButton(button);
-            await Navigation.PushAsync(new Login());
+            await Navigation.PushAsync(new Login(_loginService)); // Pass the LoginService to Login
         }
 
         private async void OnViewAssignmentsClicked(object sender, EventArgs e)
