@@ -5,45 +5,92 @@
              Title="Sign Up"
              BackgroundColor="White">
 
-    <VerticalStackLayout Padding="40" Spacing="30"
-                         VerticalOptions="Center"
-                         HorizontalOptions="Center">
+    <ScrollView>
+        <VerticalStackLayout Padding="40" Spacing="30"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="Center">
 
-        <Label Text="Create an Account"
-               FontSize="24"
-               FontAttributes="Bold"
-               TextColor="#4b004b"
-               HorizontalOptions="Center" />
+            <Label Text="Create an Account"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="#4b004b"
+                   HorizontalOptions="Center" />
 
-        <Label Text="Username" 
-               FontSize="16"
-               TextColor="#4b004b"
-               HorizontalOptions="Center" />
-        <Entry x:Name="UsernameEntry"
-               Placeholder="Enter your username"
-               Keyboard="Default"
-               HorizontalOptions="FillAndExpand" />
+            <Label Text="Username" 
+                   FontSize="16"
+                   TextColor="#4b004b"
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Center" />
+            <Entry x:Name="UsernameEntry"
+                   Placeholder="Enter your username"
+                   Keyboard="Default"
+                   HorizontalOptions="CenterAndExpand" 
+                   VerticalOptions="Center" />
 
-        <Label Text="Password"
-               FontSize="16"
-               TextColor="#4b004b"
-               Margin="0,10,0,0"
-               HorizontalOptions="Center" />
-        <Entry x:Name="PasswordEntry"
-               Placeholder="Enter your password"
-               IsPassword="True"
-               Keyboard="Default"
-               HorizontalOptions="FillAndExpand" />
+            <Label Text="Password"
+                   FontSize="16"
+                   TextColor="#4b004b"
+                   Margin="0,10,0,0"
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Center" />
+            <Entry x:Name="PasswordEntry"
+                   Placeholder="Enter your password"
+                   IsPassword="True"
+                   Keyboard="Default"
+                   HorizontalOptions="CenterAndExpand" 
+                   VerticalOptions="Center" />
 
-        <Button x:Name="SignUpButton"
-                Text="Sign Up"
-                BackgroundColor="#800080"
-                TextColor="White"
-                FontAttributes="Bold"
-                CornerRadius="15"
-                Padding="10"
-                Clicked="OnSignUpClicked"
-                HorizontalOptions="FillAndExpand" />
+            <Label Text="First Name"
+                   FontSize="16"
+                   TextColor="#4b004b"
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Center" />
+            <Entry x:Name="FirstNameEntry"
+                   Placeholder="Enter your first name"
+                   Keyboard="Default"
+                   HorizontalOptions="CenterAndExpand" 
+                   VerticalOptions="Center" />
 
-    </VerticalStackLayout>
+            <Label Text="Surname"
+                   FontSize="16"
+                   TextColor="#4b004b"
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Center" />
+            <Entry x:Name="SurnameEntry"
+                   Placeholder="Enter your surname"
+                   Keyboard="Default"
+                   HorizontalOptions="CenterAndExpand" 
+                   VerticalOptions="Center" />
+
+            <Label Text="User Type"
+                   FontSize="16"
+                   TextColor="#4b004b"
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Center" />
+            <Picker x:Name="UserTypePicker"
+                    Title="Select User Type"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="Center">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Admin</x:String>
+                        <x:String>Lecturer</x:String>
+                        <x:String>Student</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <Button x:Name="SignUpButton"
+                    Text="Sign Up"
+                    BackgroundColor="#800080"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    CornerRadius="15"
+                    Padding="10"
+                    Clicked="OnSignUpClicked"
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

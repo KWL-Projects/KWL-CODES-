@@ -56,6 +56,7 @@ namespace KWLCodes_HMSProject.Maui
 
             // Register the App class with LoginService
             builder.Services.AddSingleton<App>();
+            builder.Services.AddSingleton<UserService>();
 
 #if DEBUG
             builder.Logging.AddDebug();
