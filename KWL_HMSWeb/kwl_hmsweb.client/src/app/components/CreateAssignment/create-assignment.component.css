@@ -1,0 +1,121 @@
+.create-assignment {
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  margin: auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 1500px;
+}
+
+h1 {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  color: #555;
+  margin-bottom: 40px;
+}
+
+.error-message {
+  background-color: #f8d7da; /* Light red background */
+  color: #721c24; /* Dark red text */
+  border: 1px solid #f5c6cb; /* Light red border */
+  padding: 10px; /* Space inside the message box */
+  margin: 10px; /* Space outside the message box */
+  border-radius: 5px; /* Slightly rounded corners */
+  text-align: center; /* Center the text */
+  font-family: Arial, sans-serif; /* Ensure font consistency */
+  font-size: 14px; /* Font size */
+}
+
+.success-message {
+  background-color: #a4ff95; /* Light red background */
+  color: #FF5733; /* Dark red text */
+  border: 1px solid #f5c6cb; /* Light red border */
+  padding: 10px; /* Space inside the message box */
+  margin: 10px; /* Space outside the message box */
+  border-radius: 5px; /* Slightly rounded corners */
+  text-align: center; /* Center the text */
+  font-family: Arial, sans-serif; /* Ensure font consistency */
+  font-size: 14px; /* Font size */
+}
+
+form {
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  margin: auto; /* Center horizontally */
+}
+
+div {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+input[type="text"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+button[type="submit"],
+button[type="button"] {
+  padding: 10px 15px;
+  font-size: 16px;
+  color: #333333;
+  background-color: #f3e5f5; /* Dark purple background for the button */
+  border: 1.5px solid #8e309c;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+button[type="button"] {
+  background-color: #f3e5f5; /* Dark purple background for the button */
+  margin-left: 10px;
+}
+
+button:hover {
+  opacity: 0.9;
+  background-color: #8e309c; /* Darker purple on hover */
+  color: white;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .create-assignment {
+    padding: 15px;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+}

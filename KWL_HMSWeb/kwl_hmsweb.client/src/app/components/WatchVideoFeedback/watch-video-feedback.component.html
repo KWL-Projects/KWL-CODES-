@@ -1,0 +1,30 @@
+<div class="watch-video-feedback">
+  <h1>Watch Video & Provide Feedback</h1>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <div *ngIf="submission">
+    <h2>Video Submission for Assignment {{ submission.assignment_id }}</h2>
+    <video width="640" height="480" controls>
+      <source [src]="submission.video_path" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
+    <h3>Provide Feedback</h3>
+    <label for="mark">Mark:</label>
+    <input type="number" [(ngModel)]="mark" id="mark" min="0" max="100" />
+
+    <label for="comment">Comment:</label>
+    <textarea [(ngModel)]="comment" id="comment" rows="4"></textarea>
+
+    <button (click)="submitFeedback()">Submit Feedback</button>
+  </div>
+
+  <button (click)="goBack()">Back to List of Assignment Videos</button>
+</div>
+
+
+
+
+
+

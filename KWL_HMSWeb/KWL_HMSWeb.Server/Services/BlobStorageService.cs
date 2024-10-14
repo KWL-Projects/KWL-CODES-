@@ -7,11 +7,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using KWL_HMSWeb.Controllers;
 using Azure.Storage.Blobs.Models;
-using KWL_HMSWeb.Services;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace KWL_HMSWeb.Services
 {
@@ -19,8 +15,9 @@ namespace KWL_HMSWeb.Services
     {
         private readonly BlobContainerClient _blobContainerClient;
         private readonly ILogger<BlobStorageService> _logger;
+        private readonly DatabaseContext _context; // Add DatabaseContext for accessing the database
 
-        public BlobStorageService(IConfiguration configuration, ILogger<BlobStorageService> logger)
+        public BlobStorageService(IConfiguration configuration, ILogger<BlobStorageService> logger, DatabaseContext context)
         {
             _logger = logger;
 
@@ -28,6 +25,7 @@ namespace KWL_HMSWeb.Services
             var containerName = configuration["AzureBlobStorage:ContainerName"];
 
             _blobContainerClient = new BlobContainerClient(connectionString, containerName);
+            _context = context; // Initialize DatabaseContext
         }
 
         // Method to upload a file to Azure Blob Storage
@@ -95,26 +93,89 @@ namespace KWL_HMSWeb.Services
                 throw;
             }
         }
-    }
-    public class VideoService : IServices
-    {
-        private readonly DatabaseContext _context;
 
-        public VideoService(DatabaseContext context)
+        // New method to get video paths by assignment ID
+        public async Task<List<string>> GetVideosByAssignmentIdAsync(int assignmentId)
         {
-            _context = context;
+            try
+            {
+                // Retrieve all video paths associated with the provided assignment ID from the database
+                var videoPaths = await _context.Submission
+                    .Where(s => s.assignment_id == assignmentId) // Ensure this matches your Submission model's field for assignment ID
+                    .Select(s => s.video_path)
+                    .ToListAsync();
+
+                if (videoPaths == null || videoPaths.Count == 0)
+                {
+                    _logger.LogWarning($"No videos found for assignment ID '{assignmentId}'.");
+                }
+                else
+                {
+                    _logger.LogInformation($"Successfully retrieved {videoPaths.Count} videos for assignment ID '{assignmentId}'.");
+                }
+
+                return videoPaths; // Return the list of video paths
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error retrieving videos for assignment ID '{assignmentId}'.");
+                throw; // Rethrow the exception to handle it in the controller
+            }
         }
 
-        public async Task<string> GetVideoFilePathAsync(int videoId)
+        // New method to get the video path by submission ID
+        public async Task<string> GetVideoPathBySubmissionIdAsync(int submissionId)
         {
-            var video = await _context.Submission
-                                      .Where(v => v.submission_id == videoId)
-                                      .Select(v => v.video_path)
-                                      .FirstOrDefaultAsync();
+            try
+            {
+                // Retrieve the video path associated with the provided submission ID from the database
+                var videoPath = await _context.Submission
+                    .Where(s => s.submission_id == submissionId) // Ensure this matches your Submission model's field for submission ID
+                    .Select(s => s.video_path)
+                    .FirstOrDefaultAsync();
 
-            return video;
+                if (string.IsNullOrEmpty(videoPath))
+                {
+                    _logger.LogWarning($"No video found for submission ID '{submissionId}'.");
+                }
+                else
+                {
+                    _logger.LogInformation($"Successfully retrieved video path for submission ID '{submissionId}'.");
+                }
+
+                return videoPath; // Return the video path
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error retrieving video path for submission ID '{submissionId}'.");
+                throw; // Rethrow the exception to handle it in the controller
+            }
         }
+
+
+        public class VideoService : IServices
+        {
+            private readonly DatabaseContext _context;
+
+            public VideoService(DatabaseContext context)
+            {
+                _context = context;
+            }
+
+            public async Task<string> GetVideoFilePathAsync(int videoId)
+            {
+                var video = await _context.Submission
+                                          .Where(v => v.submission_id == videoId)
+                                          .Select(v => v.video_path)
+                                          .FirstOrDefaultAsync();
+                return video;
+            }
+        }
+
     }
 }
+
+
+
 
 

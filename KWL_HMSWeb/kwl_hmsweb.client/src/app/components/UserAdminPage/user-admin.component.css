@@ -1,0 +1,206 @@
+.user-admin {
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  margin: auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 1500px;
+}
+
+  .user-admin h1 {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #555;
+    margin-bottom: 40px;
+  }
+
+.error-message {
+  background-color: #f8d7da; /* Light red background */
+  color: #721c24; /* Dark red text */
+  border: 1px solid #f5c6cb; /* Light red border */
+  padding: 10px; /* Space inside the message box */
+  margin: 10px; /* Space outside the message box */
+  border-radius: 5px; /* Slightly rounded corners */
+  text-align: center; /* Center the text */
+  font-family: Arial, sans-serif; /* Ensure font consistency */
+  font-size: 15px; /* Font size */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #fff; /* Dark purple background for the button */
+  border: 1px solid #8e309c; /* Set the border color and style */
+}
+
+thead {
+  background-color: #8e309c;
+  color: white;
+}
+
+table th, table td {
+  padding: 12px;
+  text-align: left;
+}
+
+table th {
+  border: 1px solid #fff;
+}
+
+table td {
+  color: #555;
+  background-color: #fff; /* light purple background for the button */
+  border: 1px solid #8e309c; /* Set the border color and style */
+}
+
+tr.selected {
+  background-color: #f3e5f5;
+}
+
+tr:hover {
+  background-color: #f3e5f5;
+}
+
+table td button {
+  padding: 6px 12px;
+  margin-right: 5px;
+  background-color: #f3e5f5; /* Dark purple background for the button */
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+  border: none;
+  color: #555;
+  cursor: pointer;
+  border-radius: 3px;
+  border: 1.5px solid #8e309c;
+  font-weight: bold;
+}
+
+  table td button:hover {
+    background-color: #8e309c; /* Darker purple on hover */
+    color: white;
+    font-weight: bold;
+  }
+
+  table td button:last-child {
+    background-color: #f3e5f5; /* Dark purple background for the button */
+  }
+
+    table td button:last-child:hover {
+      background-color: #8e309c; /* Darker purple on hover */
+      color: white;
+      font-weight: bold;
+    }
+
+.center-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Create/Edit user form styles */
+.create-user-form, .edit-user-form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  width: 25%;
+}
+
+  .create-user-form h2, .edit-user-form h2 {
+    margin-top: 0;
+    color: #555;
+  }
+
+  .create-user-form label, .edit-user-form label {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+  }
+
+  .create-user-form input, .edit-user-form input,
+  .create-user-form select, .edit-user-form select {
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+
+button {
+  padding: 15px 40px;
+  background-color: #f3e5f5; /* Dark purple background for the button */
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+  color: #555;
+  border: 1.5px solid #8e309c;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px; /* Space between buttons */
+  font-weight: bold;
+  font-size: 15px;
+  text-align: center;
+  transition: background-color 0.3s;
+  display: block;
+  margin: 0 auto; /* This centers the button horizontally */
+  margin-top: 40px;
+}
+
+  button:hover {
+    background-color: #8e309c; /* Darker purple on hover */
+    color: white;
+    font-weight: bold;
+  }
+
+  button[type="button"].cancel-button {
+    background-color: #f3e5f5;
+  }
+
+    button[type="button"].cancel-button:hover {
+      background-color: #8e309c; /* Darker purple on hover */
+      color: white;
+      font-weight: bold;
+    }
+
+/* Button group styles */
+.button-group {
+  display: flex;
+  gap: 10px;
+}
+
+/* Deletion confirmation dialog */
+.confirmation-dialog {
+  background-color: #f3e5f5;
+  border: 1px solid #8e309c;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border-radius: 4px;
+  text-align: center;
+  border: 1.5px solid #8e309c;
+}
+
+  .confirmation-dialog button {
+    margin: 10px 5px;
+  }
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .create-user-form, .edit-user-form, table {
+    width: 100%;
+  }
+
+    table th, table td {
+      padding: 8px;
+    }
+
+  button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 0;
+  }
+}

@@ -1,0 +1,106 @@
+:host {
+  max-width: 1280px;
+  padding: 2rem;
+  text-align: center;
+  background-color: #fff;
+  font-family: 'Arial', sans-serif;
+}
+
+.home {
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  margin: auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 1500px;
+}
+
+.logo {
+  display: block;
+  margin: auto;
+  width: 250px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.overview {
+  background-color: #f3e5f5; /* Light purple color */
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 40px;
+  font-size: 18px;
+  max-width: 900px; /* Control the max width of the overview section */
+  margin-left: auto; /* Center the overview section */
+  margin-right: auto; /* Center the overview section */
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
+}
+
+  .overview h2 {
+    color: #555;
+  }
+
+  .overview p {
+    color: #555;
+  }
+
+.landing {
+  background-color: #ffffff; /* White background for the container */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 3rem; /* Increased padding for a bigger container */
+  margin: 2rem auto;
+  max-width: 800px; /* Increased max-width for a bigger container */
+}
+
+h1 {
+  color: #8e309c; /* Dark purple color for the heading */
+  margin-bottom: 1.5rem;
+}
+
+button {
+  background-color: #f3e5f5; /* Dark purple background for the button */
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+  border: 1.5px solid #8e309c;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  color: #555;
+  font-weight: bold;
+}
+
+  button:hover {
+    background-color: #8e309c; /* Darker purple on hover */
+    color: white;
+    font-weight: bold;
+  }
+
+p {
+  color: #333333; /* Dark grey color for the paragraph */
+  margin-top: 1.5rem;
+}
+
+th, td {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+table {
+  margin: 0 auto;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  background-color: #800080; /* Dark purple background for table headers */
+  color: #ffffff; /* White text color for table headers */
+  padding: 1rem;
+}
+
+td {
+  background-color: #f2e6f2; /* Light purple background for table cells */
+  color: #333333; /* Dark grey text color for table cells */
+  padding: 1rem;
+  border: 1px solid #cccccc; /* Light grey border for table cells */
+}
