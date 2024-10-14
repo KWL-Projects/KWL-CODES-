@@ -1,0 +1,30 @@
+<div class="list-assignments">
+  <h1>List of Assignments</h1>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Assignment ID</th>
+        <th>Assignment Name</th>
+        <th>Description</th>
+        <th>Due Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let assignment of assignments">
+        <td>{{ assignment.assignment_id }}</td>
+        <td>{{ assignment.assignment_name }}</td>
+        <td>{{ assignment.assignment_description }}</td>
+        <td>{{ assignment.due_date | date }}</td>
+        <td>
+          <button (click)="viewAssignment(assignment.assignment_id)">View</button>
+          <button (click)="deleteAssignment(assignment.assignment_id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

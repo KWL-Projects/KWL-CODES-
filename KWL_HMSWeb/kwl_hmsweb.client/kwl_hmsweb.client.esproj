@@ -10,4 +10,13 @@
   <ItemGroup>
     <None Include=".bin\node.cmd" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\app\components\HomePage\" />
+    <Folder Include="src\app\components\LoginPage\" />
+    <Folder Include="src\app\components\LandingPage\" />
+    <Folder Include="src\app\components\ListAssignmentVideos\" />
+    <Folder Include="src\app\components\ListAssignments\" />
+    <Folder Include="src\app\components\CreateAssignment\" />
+    <Folder Include="src\app\components\WatchVideoFeedback\" />
+  </ItemGroup>
 </Project>

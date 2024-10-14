@@ -1,0 +1,55 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.landing {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 600px; /* Increased width */
+  margin: auto; /* Center horizontally */
+}
+
+h1 {
+  color: #555;
+  margin-bottom: 10px;
+}
+
+p {
+  color: black;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 18px;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+button {
+  width: 80%;
+  padding: 20px;
+  background-color: #f3e5f5; /* Dark purple background for the button */
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+  color: #555;
+  border: 1.5px solid #8e309c;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 30px; /* Space between buttons */
+  font-size: 18px;
+  font-weight: bold;
+}
+
+  button:hover {
+    background-color: #8e309c; /* Darker purple on hover */
+    color: white;
+    font-weight: bold;
+  }
