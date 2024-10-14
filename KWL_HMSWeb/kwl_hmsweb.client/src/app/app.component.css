@@ -1,87 +1,145 @@
-:host {
-  max-width: 1280px;
-  padding: 2rem;
-  text-align: center;
-  background-color: #f0f0f0; /* Light grey background for better contrast */
-  font-family: 'Arial', sans-serif;
+/* General page styling */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif; /* Set global font to Arial */
+  line-height: 1.6;
 }
-.logo {
-  display: block;
-  margin: auto;
-  width: 250px; /* Adjust the width as needed */
-  height: auto; /* Maintain aspect ratio */
-}
-.overview {
-  background-color: #f3e5f5; /* Light purple color */
+
+/* Header styling */
+header {
+  background-color: #FFFFFF; /* White background */
+  color: white; /* White text */
   padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Spread items out, logo on the left, text in the center */
+  position: relative; /* Allows absolute positioning */
+  box-shadow: 0 4px 2px -2px gray; /* Subtle shadow for depth */
+  font-family: Arial, sans-serif; /* Ensure header uses Arial font */
 }
 
-  .overview h2 {
-    color: #333;
+  header img.logo {
+    display: block;
+    width: 280px; /* Adjust logo size */
+    height: auto;
+    margin-right: 20px;
+    /* No border-radius, keeping it square */
   }
 
-  .overview p {
-    color: #555;
+  header h1 {
+    color: #8e309c;
+    font-size: 45px;
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Center the header text */
+    text-align: center;
   }
 
-
-
-.landing-container {
-  background-color: #ffffff; /* White background for the container */
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 3rem; /* Increased padding for a bigger container */
-  margin: 2rem auto;
-  max-width: 800px; /* Increased max-width for a bigger container */
+/* Navigation styling */
+nav ul {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0;
+  margin: 0;
+  background-color: #f3e5f5; /* Dark background for the nav */
+  display: flex;
+  justify-content: center; /* Center the navigation links */
+  flex-wrap: wrap; /* Wraps the items to the next line if needed */
 }
 
-h1 {
-  color: #800080; /* Dark purple color for the heading */
-  margin-bottom: 1.5rem;
-}
-
-button {
-  background-color: #800080; /* Dark purple background for the button */
-  color: #ffffff; /* White text color */
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-  button:hover {
-    background-color: #4b004b; /* Darker purple on hover */
+  nav ul li {
+    margin: 0 15px; /* Spacing between navigation items */
   }
 
-p {
-  color: #333333; /* Dark grey color for the paragraph */
-  margin-top: 1.5rem;
+    nav ul li a {
+      text-decoration: none;
+      color: grey;
+      padding: 14px 20px;
+      display: block;
+      font-family: Arial, sans-serif; /* Ensure header uses Arial font */
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+      nav ul li a:hover {
+        background-color: #8e309c; /* Darker background on hover */
+        color: white;
+      }
+
+/* Ensure the router outlet has enough space under the fixed footer */
+router-outlet {
+  display: block;
+  margin-bottom: 60px; /* Adjust margin to prevent overlap with footer */
 }
 
-th, td {
-  padding-left: 1rem;
-  padding-right: 1rem;
+/* Error message styling */
+.login-message {
+  background-color: #f8d7da; /* Light red background */
+  color: #721c24; /* Dark red text */
+  border: 1px solid #f5c6cb; /* Light red border */
+  padding: 15px; /* Space inside the message box */
+  margin: 20px; /* Space outside the message box */
+  border-radius: 5px; /* Slightly rounded corners */
+  text-align: center; /* Center the text */
+  font-family: Arial, sans-serif; /* Ensure font consistency */
+  font-size: 16px; /* Font size */
 }
 
-table {
-  margin: 0 auto;
-  border-collapse: collapse;
+/* Optional: Fade in effect for the error message */
+.login-message {
+  animation: fadeIn 0.5s ease-in; /* Animation for fade-in effect */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* Footer styling */
+footer {
+  background-color: #f3e5f5; /* Dark background for footer */
+  font-size: 17px;
+  color: #800080; /* White text */
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
   width: 100%;
+  z-index: 1000; /* Ensure footer stays on top */
 }
 
-th {
-  background-color: #800080; /* Dark purple background for table headers */
-  color: #ffffff; /* White text color for table headers */
-  padding: 1rem;
-}
+  footer p {
+    margin: 0;
+  }
 
-td {
-  background-color: #f2e6f2; /* Light purple background for table cells */
-  color: #333333; /* Dark grey text color for table cells */
-  padding: 1rem;
-  border: 1px solid #cccccc; /* Light grey border for table cells */
+/* Media query for mobile responsiveness */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+    header img.logo {
+      margin: 0 0 10px 0; /* Adjust margin for smaller screens */
+    }
+
+    header h1 {
+      left: 0;
+      transform: none;
+      position: relative;
+    }
+
+  nav ul {
+    flex-direction: column; /* Stack navigation items vertically */
+  }
+
+    nav ul li {
+      margin: 10px 0; /* Add margin between vertically stacked items */
+    }
 }

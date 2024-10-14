@@ -1,0 +1,29 @@
+<div class="list-assignment-videos">
+  <h1>Videos for Assignment {{ assignmentId }}</h1>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Submission ID</th>
+        <th>User</th>
+        <th>Submission Date</th>
+        <th>Video</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let submission of submissions">
+        <td>{{ submission.submission_id }}</td>
+        <td>{{ submission.user_id }}</td>
+        <td>{{ submission.submission_date | date: 'short' }}</td>
+        <td><a (click)="watchVideo(submission.video_path)">Watch Video</a></td>
+        <td><button (click)="watchVideo(submission.video_path)">Stream/Download</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button (click)="goBack()">Back to Assignments</button>
+</div>
+

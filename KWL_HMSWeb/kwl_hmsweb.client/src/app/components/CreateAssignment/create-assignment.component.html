@@ -1,0 +1,38 @@
+<div class="create-assignment">
+  <h1>Create New Assignment</h1>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <form (ngSubmit)="createAssignment()">
+    <div>
+      <label for="assignmentName">Assignment Name:</label>
+      <input type="text" id="assignmentName" [(ngModel)]="assignment.assignment_name" name="assignmentName" required />
+    </div>
+
+    <div>
+      <label for="assignmentDescription">Description:</label>
+      <textarea id="assignmentDescription" [(ngModel)]="assignment.assignment_description" name="assignmentDescription" required></textarea>
+    </div>
+
+    <div>
+      <label for="dueDate">Due Date:</label>
+      <input type="date" id="dueDate" [(ngModel)]="assignment.due_date" name="dueDate" required />
+    </div>
+
+    <div>
+      <label for="subject">Subject Name:</label>
+      <select id="subject" [(ngModel)]="assignment.subject_id" name="subject" required>
+        <option *ngFor="let subject of subjects" [value]="subject.subject_id">{{ subject.subject_name }}</option>
+      </select>
+    </div>
+
+    <div class="buttons">
+      <button type="submit">Create Assignment</button>
+      <button type="button" (click)="navigateToListAssignments()">Cancel</button>
+    </div>
+  </form>
+</div>
+
+
+

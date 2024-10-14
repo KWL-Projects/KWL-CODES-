@@ -1,0 +1,119 @@
+<div class="user-admin">
+  <h1>User Administration</h1>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>Username</th>
+        <th>First Name</th>
+        <th>Surname</th>
+        <th>User Type</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users" (click)="onSelectUser(user.user_id)" [class.selected]="user.user_id === selectedUserId">
+        <td>{{ user.user_id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.user_firstname }}</td>
+        <td>{{ user.user_surname }}</td>
+        <td>{{ user.user_type }}</td>
+        <td>
+          <button (click)="editUser()">Edit</button>
+          <button (click)="confirmDeleteUser(user.user_id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Button to trigger Create New User form -->
+  <div *ngIf="!creatingUser">
+    <button (click)="toggleCreateUser()">Create New User</button>
+  </div>
+
+  <div class="center-form">
+    <!-- Create New User Form -->
+    <div *ngIf="creatingUser" class="create-user-form">
+      <h2>Create New User</h2>
+      <form (ngSubmit)="createUser()">
+        <label>
+          Username:
+          <input [(ngModel)]="newUser.username" name="username" required />
+        </label>
+        <label>
+          Password:
+          <input type="password" [(ngModel)]="newUser.password" name="password" required />
+        </label>
+        <label>
+          First Name:
+          <input [(ngModel)]="newUser.user_firstname" name="user_firstname" required />
+        </label>
+        <label>
+          Surname:
+          <input [(ngModel)]="newUser.user_surname" name="user_surname" required />
+        </label>
+        <label>
+          User Type:
+          <select [(ngModel)]="newUser.user_type" name="user_type" required>
+            <option value="Admin">Admin</option>
+            <option value="Lecturer">Lecturer</option>
+            <option value="Student">Student</option>
+          </select>
+        </label>
+
+        <!-- Buttons aligned next to each other -->
+        <div class="button-group">
+          <button type="submit">Create User</button>
+          <button type="button" (click)="toggleCreateUser()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="center-form">
+    <div *ngIf="selectedUser" class="edit-user-form">
+      <h2>Edit User</h2>
+      <form (ngSubmit)="onSubmit()">
+        <label>
+          Username:
+          <input [(ngModel)]="selectedUser.username" name="username" required />
+        </label>
+        <label>
+          First Name:
+          <input [(ngModel)]="selectedUser.user_firstname" name="user_firstname" required />
+        </label>
+        <label>
+          Surname:
+          <input [(ngModel)]="selectedUser.user_surname" name="user_surname" required />
+        </label>
+        <label>
+          User Type:
+          <select [(ngModel)]="selectedUser.user_type" name="user_type" required>
+            <option value="Admin">Admin</option>
+            <option value="Lecturer">Lecturer</option>
+            <option value="Student">Student</option>
+          </select>
+        </label>
+        <button type="submit">Save Changes</button>
+        <button type="button" (click)="selectedUserId = null">Cancel</button>
+      </form>
+    </div>
+
+    <!-- Confirmation Dialog for Deletion -->
+    <div *ngIf="confirmDelete" class="confirmation-dialog">
+      <p>Are you sure you want to delete this user?</p>
+      <button (click)="deleteUser()">Yes</button>
+      <button (click)="cancelDelete()">No</button>
+    </div>
+  </div>
+  </div>
+  
+
+
+  
+
+
+

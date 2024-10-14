@@ -74,9 +74,42 @@ namespace KWL_HMSWeb.Server.Controllers
             }
         }
 
+        // Get feedback by submission ID
+        // GET: api/feedback/submission/{submissionId}
+        [HttpGet("submission/{submissionId}")]
+        public async Task<IActionResult> GetFeedbackBySubmissionId(int submissionId)
+        {
+            try
+            {
+                // Fetch feedback associated with the provided submission ID
+                var feedbacks = await _context.Feedback
+                    .Where(f => f.submission_id == submissionId)
+                    .ToListAsync();
+
+                if (feedbacks == null || feedbacks.Count == 0)
+                {
+                    _logger.LogWarning($"No feedback found for submission ID: {submissionId}");
+                    return NotFound(new { message = "No feedback found for the specified submission." });
+                }
+
+                _logger.LogInformation($"Feedback retrieved for submission ID: {submissionId}");
+                return Ok(new
+                {
+                    message = "Feedback retrieved successfully.",
+                    data = feedbacks
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to retrieve feedback for submission ID: {submissionId}", submissionId);
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+
         // View feedback on your submissions
         // GET: api/feedback/submissions/{userId}
-        [HttpGet("submission/{userId}")]
+        [HttpGet("ownSubmission/{userId}")]
         public async Task<IActionResult> ViewFeedback(int userId)
         {
             try
@@ -138,15 +171,15 @@ namespace KWL_HMSWeb.Server.Controllers
 
         // Update feedback on video
         // PUT: api/feedback/update/{feedbackId}
-        [HttpPut("update/{feedbackId}")]
-        public async Task<IActionResult> UpdateFeedback(int feedbackId, [FromBody] Feedback updatedFeedback)
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateFeedback(int id, [FromBody] Feedback updatedFeedback)
         {
             if (updatedFeedback == null || string.IsNullOrEmpty(updatedFeedback.feedback) || updatedFeedback.mark_received == null)
                 return BadRequest("Invalid feedback input.");
 
             try
             {
-                var existingFeedback = await _context.Feedback.FindAsync(feedbackId);
+                var existingFeedback = await _context.Feedback.FindAsync(id);
 
                 if (existingFeedback == null)
                     return NotFound("Feedback not found.");
@@ -159,14 +192,14 @@ namespace KWL_HMSWeb.Server.Controllers
                 await _context.SaveChangesAsync();
 
                 // Log success
-                Log("Feedback successfully updated for feedback ID: " + feedbackId);
+                Log("Feedback successfully updated for feedback ID: " + id);
 
                 return Ok("Feedback updated successfully.");
             }
             catch (Exception ex)
             {
                 // Log failure with exception details
-                Log("Failed to update feedback for feedback ID: " + feedbackId + ". Error: " + ex);
+                Log("Failed to update feedback for feedback ID: " + id + ". Error: " + ex);
                 return StatusCode(500, "An error occurred while updating feedback.");
             }
         }

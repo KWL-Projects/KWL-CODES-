@@ -1,0 +1,81 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 350px;
+  text-align: center;
+  justify-content: center;
+  margin: auto;
+}
+
+.login h1 {
+  color: #555;
+  margin-bottom: 30px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+  text-align: left;
+  font-size: 18px; /* Font size */
+}
+
+/* Style the input fields */
+.login input {
+  width: 100%; /* Full width */
+  padding: 10px; /* Padding inside the input */
+  margin: 10px 0; /* Margin between inputs */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 4px; /* Slightly rounded corners */
+  box-sizing: border-box; /* Include padding and border in the element's total width */
+  margin-bottom: 20px;
+}
+
+/* Style the error message */
+.error-message {
+  background-color: #f8d7da; /* Light red background */
+  color: #721c24; /* Dark red text */
+  border: 1px solid #f5c6cb; /* Light red border */
+  padding: 10px; /* Space inside the message box */
+  margin: 10px; /* Space outside the message box */
+  border-radius: 5px; /* Slightly rounded corners */
+  text-align: center; /* Center the text */
+  font-family: Arial, sans-serif; /* Ensure font consistency */
+  font-size: 14px; /* Font size */
+}
+
+button {
+  width: 50%;
+  padding: 10px;
+  background-color: #f3e5f5; /* Dark purple background for the button */
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+  border: 1.5px solid #8e309c;
+  color: #555;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px; /* Larger font for the button */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+  margin-top: 10px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+  button:hover {
+    background-color: #8e309c; /* Darker purple on hover */
+    color: white;
+    font-weight: bold;
+  }

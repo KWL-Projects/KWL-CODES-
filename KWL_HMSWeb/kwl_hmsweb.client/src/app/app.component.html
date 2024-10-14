@@ -1,14 +1,32 @@
-<div class="landing-container">
+<header>
   <img src="assets/th.jpeg" alt="Logo" class="logo">
   <h1>Human Movement Sciences by KWL</h1>
+  <!-- You can add more elements like logo, navigation, or search bar if needed -->
+</header>
 
-  <div *ngIf="isMainPage" class="overview">
-    <h2>Overview</h2>
-    <p>The School of Human Movement Sciences has a vision to be a school of excellence in the development and training of students in the areas of human movement science, biokinetics, recreation, sports science and coaching science, enabling them to be practitioners, leaders and innovators in these applied fields for the people of South Africa and Africa.</p>
-    <p>The mission of the School of Human Movement Sciences is to produce well-rounded experts in the fields of human movement, sport, health and recreation that will be able to fulfil the needs of these fields within the country and its people.</p>
-  </div>
+<nav>
+  <ul>
+    <li><a routerLink="/home">Overview</a></li>
+    <li><a routerLink="/login">Login</a></li>
+    <li><a routerLink="/landing">Landing</a></li>
+    <li><a routerLink="/user-admin">User Administration</a></li>
+    <li><a routerLink="/list-assignments">Assignments</a></li>
+    <li><a routerLink="/create-assignment">Create Assignment</a></li>
+    <li><a routerLink="/list-assignment-videos">Assignment Videos</a></li>
+    <li><a routerLink="/watch-video-feedback">Watch Video & Feedback</a></li>
+  </ul>
+</nav>
 
-  <button *ngIf="isMainPage" (click)="navigateToLogin()">Login</button>
-  <router-outlet></router-outlet>
-  <p>Human Movement Sciences</p>
-</div>
+<!-- Message displayed when trying to access protected routes without being logged in -->
+<!--<div *ngIf="showLoginMessage" class="login-message">
+  <p>You need to log in to access this page.</p>
+</div>-->
+
+<router-outlet></router-outlet>
+
+<footer>
+  <p>&copy; 2024 Human Movement Sciences. All rights reserved.</p>
+  <!-- Add links to privacy policy, terms of service, or social media icons if needed -->
+</footer>
+
+

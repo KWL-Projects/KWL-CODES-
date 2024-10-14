@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Mvc; // For creating API Controllers
 using Microsoft.Extensions.Logging; // For logging information, warnings, and errors
 using System;
 using System.Threading.Tasks;
+using System.IO; // For working with file paths and streams
 
 [ApiController]
-[Route("api/files")] // Base route for this controller is 'api/upload'
+[Route("api/video")] // Base route for this controller is 'api/upload'
 public class FilesController : ControllerBase
 {
     private readonly BlobStorageService _blobStorageService; // Service to interact with Azure Blob Storage
@@ -49,7 +50,7 @@ public class FilesController : ControllerBase
     }
 
     // HTTP GET method to get a list of all file names - api/files/files
-    [HttpGet("files")]
+    [HttpGet("all")]
     public async Task<IActionResult> GetFileList()
     {
         try
@@ -65,7 +66,34 @@ public class FilesController : ControllerBase
         }
     }
 
-    // HTTP GET method for downloading a file by its name - api/files/download/{fileName}
+    // HTTP GET method to get all videos by assignment ID - api/video/assignment/{assignmentId}
+    [HttpGet("assignment/{assignmentId}")]
+    public async Task<IActionResult> GetVideosByAssignmentId(int assignmentId)
+    {
+        try
+        {
+            _logger.LogInformation($"Retrieving videos for assignment ID '{assignmentId}'.");
+
+            // Retrieve the list of video paths associated with the provided assignment ID
+            var videoPaths = await _blobStorageService.GetVideosByAssignmentIdAsync(assignmentId);
+
+            if (videoPaths == null || videoPaths.Count == 0)
+            {
+                _logger.LogWarning($"No videos found for assignment ID '{assignmentId}'."); // Log a warning if no videos are found
+                return NotFound("No videos found for the specified assignment ID."); // Return a 404 Not Found response
+            }
+
+            _logger.LogInformation($"Successfully retrieved videos for assignment ID '{assignmentId}'."); // Log successful retrieval
+            return Ok(videoPaths); // Return the list of video paths
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error retrieving videos for assignment ID '{assignmentId}'."); // Log the error if an exception occurs
+            return StatusCode(500, "Internal server error."); // Return a 500 Internal Server Error response
+        }
+    }
+
+    // HTTP GET method for downloading a file by its name - api/video/download/{fileName}
     [HttpGet("download/{fileName}")]
     public async Task<IActionResult> DownloadFile(string fileName)
     {
@@ -88,7 +116,6 @@ public class FilesController : ControllerBase
             _logger.LogInformation($"File '{fileName}' downloaded successfully."); // Log successful download
 
             // Set the Content-Disposition header to suggest a filename
-
             Response.Headers.Add("Content-Disposition", $"attachment; filename=\"{fileName}\"");
             Response.ContentType = contentType; // e.g., video/mp4
 
@@ -100,6 +127,54 @@ public class FilesController : ControllerBase
             return StatusCode(500, "Internal server error."); // Return a 500 Internal Server Error response
         }
     }
+
+    // HTTP GET method for downloading a video by submission ID - api/video/download/submission/{submissionId}
+    [HttpGet("download-stream/{submissionId}")]
+    public async Task<IActionResult> DownloadVideoBySubmissionId(int submissionId)
+    {
+        try
+        {
+            _logger.LogInformation($"Download initiated for video with submission ID '{submissionId}'.");
+
+            // Retrieve the video path associated with the submission ID using the BlobStorageService
+            var videoPath = await _blobStorageService.GetVideoPathBySubmissionIdAsync(submissionId);
+
+            if (string.IsNullOrEmpty(videoPath))
+            {
+                _logger.LogWarning($"Video for submission ID '{submissionId}' not found."); // Log a warning if the video is not found
+                return NotFound("Video not found."); // Return a 404 Not Found response
+            }
+
+            // Extract the file name from the video path
+            var fileName = Path.GetFileName(videoPath);
+
+            // Attempt to download the video using the BlobStorageService
+            var fileStream = await _blobStorageService.DownloadFileAsync(fileName);
+
+            if (fileStream == null)
+            {
+                _logger.LogWarning($"File '{fileName}' not found."); // Log a warning if the file is not found
+                return NotFound("File not found."); // Return a 404 Not Found response
+            }
+
+            // Determine the MIME type based on the file extension
+            var contentType = GetContentType(fileName);
+
+            _logger.LogInformation($"Video '{fileName}' downloaded successfully."); // Log successful download
+
+            // Set the Content-Disposition header to suggest a filename
+            Response.Headers.Add("Content-Disposition", $"attachment; filename=\"{fileName}\"");
+            Response.ContentType = contentType; // e.g., video/mp4
+
+            return File(fileStream, contentType); // Return the video file as a downloadable stream
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error downloading video for submission ID '{submissionId}'."); // Log the error if an exception occurs
+            return StatusCode(500, "Internal server error."); // Return a 500 Internal Server Error response
+        }
+    }
+
 
     // Helper method to determine the content type based on the file extension
     private string GetContentType(string fileName)
