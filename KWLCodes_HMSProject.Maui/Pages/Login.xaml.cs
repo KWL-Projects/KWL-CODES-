@@ -9,11 +9,17 @@ namespace KWLCodes_HMSProject.Maui.Pages
     public partial class Login : ContentPage
     {
         private readonly LoginService _loginService;
+        private readonly AssignmentService _assignmentService; // New service
+        private readonly FilesService _filesService; // New service
+        private readonly FeedbackService _feedbackService; // New service
 
-        public Login(LoginService loginService) // Constructor with LoginService parameter
+        public Login(LoginService loginService, AssignmentService assignmentService, FilesService filesService, FeedbackService feedbackService) // Updated constructor
         {
             InitializeComponent();
             _loginService = loginService; // Store the service
+            _assignmentService = assignmentService; // Store the service
+            _filesService = filesService; // Store the service
+            _feedbackService = feedbackService; // Store the service
         }
 
         private async void OnLoginClicked(object sender, EventArgs e)
@@ -44,7 +50,9 @@ namespace KWLCodes_HMSProject.Maui.Pages
             {
                 Preferences.Set("IsLoggedIn", true);
                 Preferences.Set("Token", loginResponse.Token); // Store the token if necessary
-                await Navigation.PushAsync(new LandingPage(_loginService)); // Navigate to landing page
+
+                // Navigate to landing page with all necessary services
+                await Navigation.PushAsync(new LandingPage(_loginService, _assignmentService, _filesService, _feedbackService));
             }
             else
             {
@@ -56,7 +64,7 @@ namespace KWLCodes_HMSProject.Maui.Pages
         {
             var button = (Button)sender;
             await AnimateButton(button);
-            await Navigation.PushAsync(new LandingPage(_loginService)); // Pass the LoginService
+            await Navigation.PushAsync(new LandingPage(_loginService, _assignmentService, _filesService, _feedbackService)); // Pass all services
         }
 
         private async void OnSignUpClicked(object sender, EventArgs e)
