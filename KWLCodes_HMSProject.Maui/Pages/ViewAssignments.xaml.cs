@@ -26,6 +26,18 @@ namespace KWLCodes_HMSProject.Maui.Pages
         {
             var assignments = await _assignmentService.GetAllAssignmentsAsync(); // Fetch assignments
             AssignmentsListView.ItemsSource = assignments; // Bind assignments to the ListView
+
+            // Show or hide the "No assignments available" label
+            NoAssignmentsLabel.IsVisible = assignments.Count == 0;
+        }
+
+        private async void OnAssignmentSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is Assignment selectedAssignment) // Ensure the selected item is of type Assignment
+            {
+                await DisplayAlert("Assignment Selected", $"You selected: {selectedAssignment.assignment_name}", "OK");
+                AssignmentsListView.SelectedItem = null; // Deselect the item
+            }
         }
 
         private async void OnUploadVideoClicked(object sender, EventArgs e)
@@ -46,8 +58,8 @@ namespace KWLCodes_HMSProject.Maui.Pages
             var selectedAssignment = AssignmentsListView.SelectedItem as Assignment; // Ensure Assignment model is used
             if (selectedAssignment != null)
             {
-                int assignmentId = selectedAssignment.assignment_id; // Assuming this is how you get the submission ID
-                await Navigation.PushAsync(new ViewVideoFeedback(assignmentId, _feedbackService)); // Pass submissionId and FeedbackService
+                int assignmentId = selectedAssignment.assignment_id; // Get the assignment ID
+                await Navigation.PushAsync(new ViewVideoFeedback(assignmentId, _feedbackService)); // Pass assignmentId and FeedbackService
             }
             else
             {

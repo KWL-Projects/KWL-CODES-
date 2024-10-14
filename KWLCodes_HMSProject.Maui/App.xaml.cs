@@ -6,11 +6,12 @@ namespace KWLCodes_HMSProject.Maui
 {
     public partial class App : Application
     {
-        public App(LoginService loginService) // Accept LoginService in the constructor
+        public App(LoginService loginService, AssignmentService assignmentService, FilesService filesService, FeedbackService feedbackService) // Updated constructor
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new LandingPage(loginService)); // Pass the LoginService
+            // Pass all necessary services to LandingPage
+            MainPage = new NavigationPage(new LandingPage(loginService, assignmentService, filesService, feedbackService));
         }
     }
 }
