@@ -12,11 +12,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetEnv;
+using KWL_HMSWeb.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
-
-// testing 
-//Waldo Test
 
 // Add services to the container.
 builder.Services.AddControllers()
@@ -30,31 +29,24 @@ builder.Services.AddControllers()
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowWebClient", policy =>
-        policy.WithOrigins("http://localhost:4200") 
+        policy.WithOrigins("http://localhost:4200", "https://kwlcodes-ave7bddvd0bvg4f2.southafricanorth-01.azurewebsites.net") // Both URLs
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials());
 });
 
-/*builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-        });
-});*/
+// Add BlobStorageService for dependency injection
+builder.Services.AddScoped<BlobStorageService>();
 
-// Configure DatabaseContext with SQL Server.
+// Configure DatabaseContext with SQL Server
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<NotificationService>();
+
+
 // Load environment variables from the .env file
 Env.Load("info.env");
-
-// Set up configuration to include environment variables
 builder.Configuration.AddEnvironmentVariables();
 
 // Retrieve JWT settings from configuration
@@ -62,27 +54,7 @@ var jwtSecret = builder.Configuration["KWLCodes_JWT_SECRET"];
 var jwtIssuer = builder.Configuration["KWLCodes_JWT_ISSUER"];
 var jwtAudience = builder.Configuration["KWLCodes_JWT_AUDIENCE"];
 
-/*var jwtSecret = Environment.GetEnvironmentVariable("KWLCodes_JWT_SECRET");
-var jwtIssuer = Environment.GetEnvironmentVariable("KWLCodes_JWT_ISSUER");
-var jwtAudience = Environment.GetEnvironmentVariable("KWLCodes_JWT_AUDIENCE");*/
-
-// Configure JWT Authentication.
-/*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtIssuer,
-            ValidAudience = jwtAudience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
-        };
-    });*/
-
-// Configure JWT Authentication with custom response on failure.
+// Configure JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -107,13 +79,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// Create DefaultAzureCredential instance for Azure services.
-var credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
-{
-    ExcludeVisualStudioCredential = true
-});
-
-// Configure Azure App Configuration.
+// Configure Azure App Configuration
 var azAppConfigConnection = builder.Configuration["DefaultConnection"];
 if (!string.IsNullOrEmpty(azAppConfigConnection))
 {
@@ -130,7 +96,7 @@ else if (Uri.TryCreate(builder.Configuration["Endpoints:DefaultConnection"], Uri
 {
     builder.Configuration.AddAzureAppConfiguration(options =>
     {
-        options.Connect(endpoint, credential)
+        options.Connect(endpoint, new DefaultAzureCredential())
             .ConfigureRefresh(refresh =>
             {
                 refresh.Register("TestApp:Settings:Sentinel", refreshAll: true);
@@ -139,15 +105,14 @@ else if (Uri.TryCreate(builder.Configuration["Endpoints:DefaultConnection"], Uri
 }
 
 builder.Services.AddAzureAppConfiguration();
-
 builder.Services.AddHttpClient();
-builder.Services.AddScoped<IServices, VideoService>();
-builder.Services.AddSingleton<BlobStorageService>();
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen();
 
-// Build the app.
+// Register NotificationService if you have one
+builder.Services.AddScoped<NotificationService>(); // Ensure this service exists for handling notifications
+
+// Build the app
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -156,32 +121,33 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
     });
 }
-
-// Use Developer Exception Page in Development mode.
-if (app.Environment.IsDevelopment())
+else
 {
-    app.UseDeveloperExceptionPage();
+    app.UseExceptionHandler("/Home/Error");
 }
 
-app.UseRouting();
-
-// Use configured CORS policy.
+// CORS policy
 app.UseCors("AllowWebClient");
 
-//app.UseCors("AllowAll");
+app.Use(async (context, next) =>
+{
+    // Log the requested URL
+    Console.WriteLine($"Request Path: {context.Request.Path}");
+    await next();
+});
 
+// Redirect HTTP requests to HTTPS
 app.UseHttpsRedirection();
 
-// Ensure to call UseAuthentication before UseAuthorization.
+// Ensure to call UseAuthentication before UseAuthorization
 app.UseAuthentication();
 app.UseAuthorization();
 
-//app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-
+// Map controllers to routes
 app.MapControllers();
+
+// Run the application
 app.Run();
-
-
