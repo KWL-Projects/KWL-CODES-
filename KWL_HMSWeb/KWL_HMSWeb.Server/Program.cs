@@ -116,9 +116,20 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
     });
 }
+else
+{
+    app.UseExceptionHandler("/Home/Error");
+}
 
 // CORS policy
 app.UseCors("AllowWebClient");
+
+app.Use(async (context, next) =>
+{
+    // Log the requested URL
+    Console.WriteLine($"Request Path: {context.Request.Path}");
+    await next();
+});
 
 // Redirect HTTP requests to HTTPS
 app.UseHttpsRedirection();

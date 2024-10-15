@@ -31,6 +31,15 @@
       }
     }
   },
+  "Production": {
+    "commandName": "Project",
+    "launchBrowser": false,
+    "environmentVariables": {
+      "ASPNETCORE_ENVIRONMENT": "Production",
+      "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+    },
+    "applicationUrl": "https://kwlcodes-ave7bddvd0bvg4f2.southafricanorth-01.azurewebsites.net/" // Adjust to your actual production URL
+  },
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,

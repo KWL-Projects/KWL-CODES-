@@ -77,7 +77,7 @@ export class WatchVideoFeedback implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/list-assignment-videos', this.submission?.assignment_id]); // Navigate back to the assignment videos page
+    this.router.navigate(['/list-assignment-videos']); // Navigate back to the assignment videos page
   }
 }
 
