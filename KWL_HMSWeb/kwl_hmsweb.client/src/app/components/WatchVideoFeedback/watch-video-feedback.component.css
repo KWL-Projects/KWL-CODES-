@@ -1,65 +1,99 @@
-body {
+.watch-video-feedback {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 0; /* Removed padding to avoid shifting */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-form {
-  background: #fff;
+  background-color: #fff;
+  margin: auto;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  margin: auto; /* Center horizontally */
+  width: 1500px;
 }
 
-h2 {
+  .watch-video-feedback h1 {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #555;
+    margin-bottom: 40px;
+  }
+
+.error-message {
+  background-color: #f8d7da; /* Light red background */
+  color: #721c24; /* Dark red text */
+  border: 1px solid #f5c6cb; /* Light red border */
+  padding: 10px; /* Space inside the message box */
+  margin: 10px; /* Space outside the message box */
+  border-radius: 5px; /* Slightly rounded corners */
+  text-align: center; /* Center the text */
+  font-family: Arial, sans-serif; /* Ensure font consistency */
+  font-size: 14px; /* Font size */
+}
+
+.watch-video-feedback h2 {
   text-align: center;
-  color: #333;
-  margin-bottom: 20px;
+  font-family: Arial, sans-serif;
+  color: #555;
+  margin-bottom: 40px;
+}
+
+.watch-video-feedback video {
+  display: block;
+  margin: 0 auto 20px auto;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+}
+
+.watch-video-feedback h3 {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  color: #555;
+  margin-bottom: 40px;
 }
 
 label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   color: #555;
 }
 
-input[type="text"],
 input[type="number"],
 textarea {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
+  padding: 8px;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
 }
 
 button {
-  width: 100%;
-  padding: 10px;
-  background-color: #800080; /* Purple color */
-  color: white;
-  border: none;
+  display: block;
+  background-color: #f3e5f5; /* Dark purple background for the button */
+  color: #333333;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: 1.5px solid #8e309c;
   border-radius: 4px;
   cursor: pointer;
-  margin-bottom: 10px; /* Space between buttons */
+  margin-top: 10px;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
 }
 
   button:hover {
-    background-color: #4b004b; /* Darker purple on hover */
+    background-color: #8e309c; /* Darker purple on hover */
+    color: white;
+    font-weight: bold;
   }
 
-.back-button {
-  width: 150px; /* Adjusted width as per requirement */
-  margin: 10px auto; /* Center the button */
+  button:focus {
+    outline: none;
+  }
+
+.watch-video-feedback button:last-child {
+  background-color: #f3e5f5; /* Dark purple background for the button */
+  margin-top: 20px;
 }
 
-  .back-button:hover {
-    background-color: #4b004b; /* Darker purple on hover */
+  .watch-video-feedback button:last-child:hover {
+    background-color: #8e309c; /* Darker purple on hover */
   }

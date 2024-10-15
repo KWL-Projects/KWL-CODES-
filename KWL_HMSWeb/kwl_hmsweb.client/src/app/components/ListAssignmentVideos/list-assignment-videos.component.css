@@ -1,31 +1,146 @@
-.video-list {
+.list-assignment-videos {
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  margin: auto;
   padding: 20px;
-  background-color: #ffffff;
   border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 1500px;
 }
 
-.video-list-item {
-  margin-bottom: 15px;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
-}
-
-.video-actions {
-  display: flex;
-  justify-content: space-between;
-}
-
-.video-button {
-  padding: 8px 12px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-  .video-button:hover {
-    background-color: #0056b3;
+  .list-assignment-videos h1 {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #555;
+    margin-bottom: 40px;
   }
+
+.error-message {
+  background-color: #f8d7da; /* Light red background */
+  color: #721c24; /* Dark red text */
+  border: 1px solid #f5c6cb; /* Light red border */
+  padding: 10px; /* Space inside the message box */
+  margin: 10px; /* Space outside the message box */
+  border-radius: 5px; /* Slightly rounded corners */
+  text-align: center; /* Center the text */
+  font-family: Arial, sans-serif; /* Ensure font consistency */
+  font-size: 14px; /* Font size */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #fff; /* Dark purple background for the button */
+  border: 1px solid #8e309c; /* Set the border color and style */
+  font-family: Arial, sans-serif;
+}
+
+  table thead {
+    background-color: #8e309c;
+    color: white;
+    font-family: Arial, sans-serif;
+  }
+
+  table th, table td {
+    padding: 12px;
+    text-align: left;
+  }
+
+  table th {
+    border: 1px solid #fff;
+  }
+
+  table td {
+    color: #555;
+    background-color: #fff; /* light purple background for the button */
+    border: 1px solid #8e309c; /* Set the border color and style */
+  }
+
+tr:hover {
+  background-color: #f3e5f5;
+}
+
+td a:hover {
+  text-decoration: underline;
+}
+
+
+  table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+button {
+  background-color: #f3e5f5; /* Dark purple background for the button */
+  color: #333333;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+  border: 1.5px solid #8e309c;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1em;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+  button:hover {
+    background-color: #8e309c; /* Darker purple on hover */
+    color: white;
+    font-weight: bold;
+  }
+
+  button:active {
+    background-color: #3e8e41;
+  }
+
+.list-assignment-videos button {
+  margin-top: 40px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 600px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+    width: 100%;
+  }
+
+  th {
+    display: none;
+  }
+
+  td {
+    display: block;
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+
+    td:before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0;
+      width: 50%;
+      padding-left: 15px;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    td a, td button {
+      display: block;
+      margin-bottom: 10px;
+    }
+}
