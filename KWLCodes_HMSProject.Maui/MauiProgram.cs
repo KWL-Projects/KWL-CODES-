@@ -4,6 +4,7 @@ using System.Net.Http; // Required for HttpClient
 using KWLCodes_HMSProject.Maui.Services;
 using KWLCodes_HMSProject.Maui.Models;
 using KWLCodes_HMSProject.Maui.Pages;
+using Serilog; // Import Serilog namespace
 
 namespace KWLCodes_HMSProject.Maui
 {
@@ -11,6 +12,19 @@ namespace KWLCodes_HMSProject.Maui
     {
         public static MauiApp CreateMauiApp()
         {
+            // Configure Serilog with more detailed settings
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug() // Set minimum log level
+                .WriteTo.File(
+                    "log/log-.txt", // Log file path
+                    rollingInterval: RollingInterval.Day, // Create a new log file each day
+                    retainedFileCountLimit: 7, // Retain up to 7 log files
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}", // Custom output format
+                    fileSizeLimitBytes: 10 * 1024 * 1024, // 10MB file size limit before rolling
+                    rollOnFileSizeLimit: true // Enable rolling on file size limit
+                )
+                .CreateLogger();
+
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>() // Using the App class
@@ -61,6 +75,9 @@ namespace KWLCodes_HMSProject.Maui
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+
+            // Add Serilog to the logging system
+            builder.Logging.AddSerilog();
 
             return builder.Build();
         }
