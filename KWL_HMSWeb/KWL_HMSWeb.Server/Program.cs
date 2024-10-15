@@ -109,8 +109,6 @@ builder.Services.AddHttpClient();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Register NotificationService if you have one
-builder.Services.AddScoped<NotificationService>(); // Ensure this service exists for handling notifications
 
 // Build the app
 var app = builder.Build();
