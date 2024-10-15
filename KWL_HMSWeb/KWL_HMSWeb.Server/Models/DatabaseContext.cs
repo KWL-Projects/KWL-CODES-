@@ -17,5 +17,8 @@ namespace KWL_HMSWeb.Server.Models
         public DbSet<Assignment> Assignment { get; set; } = null!;
         public DbSet<Submission> Submission { get; set; } = null!;
         public DbSet<Feedback> Feedback { get; set; } = null!;
+        public DbSet<Notification> Notifications { get; set; } = null!;
+
+
     }
 }

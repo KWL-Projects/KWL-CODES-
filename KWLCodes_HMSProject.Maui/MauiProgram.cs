@@ -6,6 +6,7 @@ using KWLCodes_HMSProject.Maui.Models;
 using KWLCodes_HMSProject.Maui.Pages;
 using Serilog; // Import Serilog namespace
 
+
 namespace KWLCodes_HMSProject.Maui
 {
     public static class MauiProgram

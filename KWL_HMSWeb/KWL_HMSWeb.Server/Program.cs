@@ -12,6 +12,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetEnv;
+using KWL_HMSWeb.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +41,9 @@ builder.Services.AddScoped<BlobStorageService>();
 // Configure DatabaseContext with SQL Server
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<NotificationService>();
+
 
 // Load environment variables from the .env file
 Env.Load("info.env");
@@ -104,6 +109,9 @@ builder.Services.AddHttpClient();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Register NotificationService if you have one
+builder.Services.AddScoped<NotificationService>(); // Ensure this service exists for handling notifications
+
 // Build the app
 var app = builder.Build();
 
@@ -113,7 +121,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
     });
 }
 else
@@ -143,5 +151,3 @@ app.MapControllers();
 
 // Run the application
 app.Run();
-
-
