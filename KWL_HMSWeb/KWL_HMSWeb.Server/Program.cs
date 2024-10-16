@@ -34,22 +34,22 @@ builder.Services.AddControllers()
 });*/
 
 // Add CORS services
-/*builder.Services.AddCors(options =>
+builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
         builder => builder
             .AllowAnyOrigin()  // Allow requests from any origin
             .AllowAnyMethod()  // Allow any HTTP method (GET, POST, PUT, etc.)
             .AllowAnyHeader()); // Allow any header
-});*/
+});
 
-builder.Services.AddCors(options =>
+/*builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",
         builder => builder.WithOrigins("https://localhost:4200") // Adjust this if needed
                           .AllowAnyHeader()
                           .AllowAnyMethod());
-});
+});*/
 
 // Add BlobStorageService for dependency injection
 builder.Services.AddScoped<BlobStorageService>();
@@ -140,10 +140,10 @@ else
 }
 
 // CORS policy
-app.UseCors("AllowAngular");
+//app.UseCors("AllowAngular");
 
 // Use CORS middleware
-//app.UseCors("AllowAll");
+app.UseCors("AllowAll");
 
 /*app.Use(async (context, next) =>
 {
