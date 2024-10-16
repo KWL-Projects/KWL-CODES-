@@ -24,13 +24,31 @@ builder.Services.AddControllers()
     });
 
 // CORS configuration
-builder.Services.AddCors(options =>
+/*builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowWebClient", policy =>
-        policy.WithOrigins("http://localhost:4200", "https://kwlcodes-ave7bddvd0bvg4f2.southafricanorth-01.azurewebsites.net") // Both URLs
+        policy.WithOrigins("http://localhost:4200", "https://kwlcodesserver.azurewebsites.net") // Both URLs
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials());
+});*/
+
+// Add CORS services
+/*builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder
+            .AllowAnyOrigin()  // Allow requests from any origin
+            .AllowAnyMethod()  // Allow any HTTP method (GET, POST, PUT, etc.)
+            .AllowAnyHeader()); // Allow any header
+});*/
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular",
+        builder => builder.WithOrigins("https://localhost:4200") // Adjust this if needed
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
 });
 
 // Add BlobStorageService for dependency injection
@@ -122,14 +140,17 @@ else
 }
 
 // CORS policy
-app.UseCors("AllowWebClient");
+app.UseCors("AllowAngular");
 
-app.Use(async (context, next) =>
+// Use CORS middleware
+//app.UseCors("AllowAll");
+
+/*app.Use(async (context, next) =>
 {
     // Log the requested URL
     Console.WriteLine($"Request Path: {context.Request.Path}");
     await next();
-});
+});*/
 
 // Redirect HTTP requests to HTTPS
 app.UseHttpsRedirection();

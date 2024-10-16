@@ -39,32 +39,26 @@
     <div *ngIf="creatingUser" class="create-user-form">
       <h2>Create New User</h2>
       <form (ngSubmit)="createUser()">
-        <label>
-          Username:
-          <input [(ngModel)]="newUser.username" name="username" required />
-        </label>
-        <label>
-          Password:
-          <input type="password" [(ngModel)]="newUser.password" name="password" required />
-        </label>
-        <label>
-          First Name:
-          <input [(ngModel)]="newUser.user_firstname" name="user_firstname" required />
-        </label>
-        <label>
-          Surname:
-          <input [(ngModel)]="newUser.user_surname" name="user_surname" required />
-        </label>
-        <label>
-          User Type:
-          <select [(ngModel)]="newUser.user_type" name="user_type" required>
-            <option value="Admin">Admin</option>
-            <option value="Lecturer">Lecturer</option>
-            <option value="Student">Student</option>
-          </select>
-        </label>
+        <label for="username">Username:</label>
+        <input id="username" [(ngModel)]="newUser.username" name="username" required />
 
-        <!-- Buttons aligned next to each other -->
+        <label for="password">Password:</label>
+        <input id="password" type="password" [(ngModel)]="newUser.password" name="password" required />
+
+        <label for="firstname">First Name:</label>
+        <input id="firstname" [(ngModel)]="newUser.user_firstname" name="user_firstname" required />
+
+        <label for="surname">Surname:</label>
+        <input id="surname" [(ngModel)]="newUser.user_surname" name="user_surname" required />
+
+        <label for="user_type">User Type:</label>
+        <select id="user_type" [(ngModel)]="newUser.user_type" name="user_type" required>
+          <option value="Admin">Admin</option>
+          <option value="Lecturer">Lecturer</option>
+          <option value="Student">Student</option>
+        </select>
+
+        <!-- Form Buttons -->
         <div class="button-group">
           <button type="submit">Create User</button>
           <button type="button" (click)="toggleCreateUser()">Cancel</button>
