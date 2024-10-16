@@ -14,6 +14,8 @@ namespace KWLCodes_HMSProject.Maui.Services
         public LoginService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            // Set the base address here
+            _httpClient.BaseAddress = new Uri("http://10.0.2.2:7074/"); // Change this to your API URL
         }
 
         // Method to send login request to API
@@ -22,7 +24,7 @@ namespace KWLCodes_HMSProject.Maui.Services
             try
             {
                 // Send the POST request to the API
-                HttpResponseMessage response = await _httpClient.PostAsJsonAsync("authenticate", loginRequest);
+                HttpResponseMessage response = await _httpClient.PostAsJsonAsync("api/login/authenticate", loginRequest);
 
                 if (response.IsSuccessStatusCode)
                 {
