@@ -39,8 +39,8 @@ namespace KWLCodes_HMSProject.Maui.Pages
             // Create a LoginRequest object
             var loginRequest = new LoginRequest
             {
-                Username = username,
-                Password = password
+                username = username,
+                password = password
             };
 
             // Authenticate using the LoginService
