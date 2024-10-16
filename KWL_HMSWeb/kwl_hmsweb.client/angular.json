@@ -71,6 +71,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "src/proxy.conf.json" // Added the proxyConfig option here
+          },
           "configurations": {
             "production": {
               "buildTarget": "kwl_hmsweb.client:build:production"
@@ -79,10 +82,7 @@
               "buildTarget": "kwl_hmsweb.client:build:development"
             }
           },
-          "defaultConfiguration": "development",
-          "options": {
-            "proxyConfig": "src/proxy.conf.js"
-          }
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
@@ -115,4 +115,5 @@
     "analytics": "1cf83279-8459-4dec-b515-9397fc909ba0"
   }
 }
+
 

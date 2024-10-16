@@ -12,8 +12,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetEnv;
-using KWL_HMSWeb.Services;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,16 +23,32 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.MaxDepth = 64;
     });
 
-// Configure CORS policy to allow all origins, methods, and headers
-builder.Services.AddCors(options =>
+// CORS configuration
+/*builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowWebClient", policy =>
+        policy.WithOrigins("http://localhost:4200", "https://kwlcodesserver.azurewebsites.net") // Both URLs
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials());
+});*/
+
+// Add CORS services
+/*builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-        });
+        builder => builder
+            .AllowAnyOrigin()  // Allow requests from any origin
+            .AllowAnyMethod()  // Allow any HTTP method (GET, POST, PUT, etc.)
+            .AllowAnyHeader()); // Allow any header
+});*/
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular",
+        builder => builder.WithOrigins("https://localhost:4200") // Adjust this if needed
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
 });
 
 // Add BlobStorageService for dependency injection
@@ -43,9 +57,6 @@ builder.Services.AddScoped<BlobStorageService>();
 // Configure DatabaseContext with SQL Server
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddScoped<NotificationService>();
-
 
 // Load environment variables from the .env file
 Env.Load("info.env");
@@ -111,7 +122,6 @@ builder.Services.AddHttpClient();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 // Build the app
 var app = builder.Build();
 
@@ -121,7 +131,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
     });
 }
 else
@@ -129,15 +139,18 @@ else
     app.UseExceptionHandler("/Home/Error");
 }
 
-// Use the correct CORS policy "AllowAll"
-app.UseCors("AllowAll");
+// CORS policy
+app.UseCors("AllowAngular");
 
-app.Use(async (context, next) =>
+// Use CORS middleware
+//app.UseCors("AllowAll");
+
+/*app.Use(async (context, next) =>
 {
     // Log the requested URL
     Console.WriteLine($"Request Path: {context.Request.Path}");
     await next();
-});
+});*/
 
 // Redirect HTTP requests to HTTPS
 app.UseHttpsRedirection();
@@ -151,3 +164,5 @@ app.MapControllers();
 
 // Run the application
 app.Run();
+
+

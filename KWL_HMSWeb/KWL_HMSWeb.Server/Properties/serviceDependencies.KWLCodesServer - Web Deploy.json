@@ -5,11 +5,11 @@
       "type": "apis.azure"
     },
     "mssql1": {
-      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/KWLCodes/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsDefaultConnection_6C3A8A0731",
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/KWLCodesServer/providers/Microsoft.ServiceLinker/linkers/DefaultConnection_9799B257FA",
       "secretStore": "AzureAppSettings",
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/zaazrcmpg323kwlsql/databases/KWL Codes Database",
       "type": "mssql.azure",
-      "connectionId": "ConnectionStrings:DefaultConnection",
+      "connectionId": "DefaultConnection",
       "dynamicId": null
     }
   }

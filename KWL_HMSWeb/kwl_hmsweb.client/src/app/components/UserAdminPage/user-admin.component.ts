@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service'; // Adjust path as necessary
-import { User } from '../../models/user.model'; // Adjust path as necessary
 
 @Component({
   selector: 'app-user-admin',
@@ -9,14 +8,23 @@ import { User } from '../../models/user.model'; // Adjust path as necessary
   styleUrls: ['./user-admin.component.css'] // Add your styles here
 })
 export class UserAdminPage implements OnInit {
-  users: User[] = []; // Array to hold users
+  users: any[] = []; // Array to hold users (type is 'any' to avoid using model)
   selectedUserId: number | null = null; // To hold selected user ID for edit/delete
-  selectedUser: User | null = null;
+  selectedUser: any | null = null; // Holds the selected user
   errorMessage: string | null = null;
   confirmDelete: boolean = false; // To hold the confirmation state
 
   creatingUser: boolean = false;
-  newUser: User = { user_id: 0, login_id: 0, username: '', password: '', user_firstname: '', user_surname: '', user_type: 'Student' }; // Default user structure, adjust as needed
+  // Define new user structure inline instead of using a model
+  newUser: any = {
+    user_id: 0,
+    login_id: 0,
+    username: '',
+    password: '',
+    user_firstname: '',
+    user_surname: '',
+    user_type: 'Student' // Default to Student
+  };
 
   constructor(private userService: UserService, private router: Router) { }
 
@@ -30,11 +38,12 @@ export class UserAdminPage implements OnInit {
 
   loadUsers(): void {
     this.userService.getAllUsers().subscribe(
-      (data: User[]) => {
-        this.users = data;
+      (data) => {
+        this.users = data; // Now data should be the array of users
+        console.log('Users:', this.users);
       },
       (error) => {
-        this.errorMessage = 'Error loading users: ' + error.message;
+        console.error('Error loading users:', error);
       }
     );
   }
@@ -43,14 +52,22 @@ export class UserAdminPage implements OnInit {
   toggleCreateUser(): void {
     this.creatingUser = !this.creatingUser; // Toggle visibility of the create form
     if (this.creatingUser) {
-      this.newUser = { user_id: 0, login_id: 0, username: '', password: '', user_firstname: '', user_surname: '', user_type: 'Student' }; // Reset form
+      this.newUser = {
+        user_id: 0,
+        login_id: 0,
+        username: '',
+        password: '',
+        user_firstname: '',
+        user_surname: '',
+        user_type: 'Student' // Reset form with default values
+      };
     }
   }
 
   createUser(): void {
     if (this.newUser.username && this.newUser.password && this.newUser.user_type) {
       this.userService.registerUser(this.newUser).subscribe(
-        (response) => {
+        (response: any) => {
           if (response.token) {
             console.log('User registered and JWT token received:', response.token);
             this.loadUsers(); // Reload users after creation
@@ -108,6 +125,7 @@ export class UserAdminPage implements OnInit {
     }
   }
 }
+
 
 
 
