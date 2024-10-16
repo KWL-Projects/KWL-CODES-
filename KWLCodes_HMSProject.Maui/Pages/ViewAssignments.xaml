@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KWLCodes_HMSProject.Maui.Pages.ViewAssignments"
-             Title="Home"
+             Title="Assignments"
              BackgroundColor="White">
 
     <VerticalStackLayout Padding="20" Spacing="20"
@@ -16,12 +16,21 @@
                HorizontalOptions="Center" 
                Margin="0,20,0,20" />
 
+        <Label x:Name="NoAssignmentsLabel"
+               Text="No assignments available."
+               IsVisible="False"
+               FontSize="18"
+               TextColor="Gray"
+               HorizontalOptions="Center" />
+
         <ListView x:Name="AssignmentsListView"
+                  SelectionMode="Single"
                   HorizontalOptions="FillAndExpand"
-                  VerticalOptions="FillAndExpand">
+                  VerticalOptions="FillAndExpand"
+                  ItemSelected="OnAssignmentSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Title}" Detail="{Binding Description}" />
+                    <TextCell Text="{Binding assignment_name}" Detail="{Binding assignment_description}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

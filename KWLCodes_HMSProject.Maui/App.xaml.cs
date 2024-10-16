@@ -1,12 +1,17 @@
-﻿namespace KWLCodes_HMSProject.Maui;
+﻿using Microsoft.Maui.Controls;
+using KWLCodes_HMSProject.Maui.Services;
+using KWLCodes_HMSProject.Maui.Pages;
 
-public partial class App : Application
+namespace KWLCodes_HMSProject.Maui
 {
-    public App()
+    public partial class App : Application
     {
-        InitializeComponent();
+        public App(LoginService loginService, AssignmentService assignmentService, FilesService filesService, FeedbackService feedbackService) // Updated constructor
+        {
+            InitializeComponent();
 
-        MainPage = new NavigationPage(new Pages.LandingPage());
+            // Pass all necessary services to LandingPage
+            MainPage = new NavigationPage(new LandingPage(loginService, assignmentService, filesService, feedbackService));
+        }
     }
 }
-

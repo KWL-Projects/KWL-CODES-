@@ -5,14 +5,14 @@
              BackgroundColor="White">
 
     <VerticalStackLayout Padding="40" Spacing="30"
-                         VerticalOptions="Start"
+                         VerticalOptions="StartAndExpand"
                          HorizontalOptions="Center">
 
-        <Image Source="logo_nwu.png"
+        <Image Source="Resources/Images/logo_nwu.png"
                HorizontalOptions="Center"
                WidthRequest="300"
-               HeightRequest="300" />
-        <!-- Logo at the top -->
+               HeightRequest="300"
+               Aspect="AspectFit" />
 
         <Label Text="Human Movement Sciences by KWL"
                FontSize="32"
@@ -56,6 +56,5 @@
                 Padding="10"
                 Clicked="OnLogoutClicked"
                 HorizontalOptions="FillAndExpand" />
-
     </VerticalStackLayout>
 </ContentPage>
