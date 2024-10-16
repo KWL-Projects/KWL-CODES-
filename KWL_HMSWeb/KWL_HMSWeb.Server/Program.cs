@@ -25,14 +25,16 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.MaxDepth = 64;
     });
 
-// CORS configuration
+// Configure CORS policy to allow all origins, methods, and headers
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowWebClient", policy =>
-        policy.WithOrigins("http://localhost:4200", "https://kwlcodes-ave7bddvd0bvg4f2.southafricanorth-01.azurewebsites.net") // Both URLs
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials());
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
 });
 
 // Add BlobStorageService for dependency injection
@@ -127,8 +129,8 @@ else
     app.UseExceptionHandler("/Home/Error");
 }
 
-// CORS policy
-app.UseCors("AllowWebClient");
+// Use the correct CORS policy "AllowAll"
+app.UseCors("AllowAll");
 
 app.Use(async (context, next) =>
 {

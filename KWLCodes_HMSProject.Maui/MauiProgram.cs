@@ -38,40 +38,48 @@ namespace KWLCodes_HMSProject.Maui
             // Register HttpClient for LoginService
             builder.Services.AddHttpClient<LoginService>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:7074/"); // Set your API base URL
+                client.BaseAddress = new Uri("http://10.0.2.2:7074/"); // Ensure correct port
+            }).ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                return new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true // Bypass SSL validation for dev
+                };
             });
+
 
             // Register HttpClient for other services if needed
             builder.Services.AddHttpClient<FilesService>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:7074"); // Set your API base URL
+                client.BaseAddress = new Uri("http://10.0.2.2:7074/"); // Set your API base URL
             });
 
             builder.Services.AddHttpClient<AssignmentService>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:7074"); // Set your API base URL
+                client.BaseAddress = new Uri("http://10.0.2.2:7074/"); // Set your API base URL
             });
 
             builder.Services.AddHttpClient<FeedbackService>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:7074"); // Set your API base URL
+                client.BaseAddress = new Uri("http://10.0.2.2:7074/"); // Set your API base URL
             });
 
             builder.Services.AddHttpClient<UserService>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:7074"); // Set your API base URL
+                client.BaseAddress = new Uri("http://10.0.2.2:7074/"); // Set your API base URL
             });
 
             // Register services as singletons
-            builder.Services.AddSingleton<FilesService>();
             builder.Services.AddSingleton<LoginService>();
+            builder.Services.AddSingleton<UserService>();
+            builder.Services.AddSingleton<FilesService>();
             builder.Services.AddSingleton<AssignmentService>();
             builder.Services.AddSingleton<FeedbackService>();
-            builder.Services.AddSingleton<UserService>();
+            
 
             // Register the App class with LoginService
             builder.Services.AddSingleton<App>();
-            builder.Services.AddSingleton<UserService>();
+            //builder.Services.AddSingleton<UserService>();
 
 #if DEBUG
             builder.Logging.AddDebug();

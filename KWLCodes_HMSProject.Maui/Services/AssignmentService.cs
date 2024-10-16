@@ -17,6 +17,7 @@ namespace KWLCodes_HMSProject.Maui.Services
         public AssignmentService(HttpClient httpClient, ILogger<AssignmentService> logger)
         {
             _httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri("http://10.0.2.2:7074/"); // Change this to your API URL
             _logger = logger;
         }
 
