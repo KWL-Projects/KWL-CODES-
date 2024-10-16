@@ -13,6 +13,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetEnv;
 
+// Kayla kan die project run
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
