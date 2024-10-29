@@ -33,7 +33,7 @@ namespace KWL_HMSWeb.Server.Controllers
             await _context.SaveChangesAsync();
 
             // Call the NotificationService to send the notification
-            await _notificationService.SendNotificationAsync(notification.DeviceToken, notification.Title, notification.Message);
+            //await _notificationService.SendNotificationAsync(notification.DeviceToken, notification.Title, notification.Message);
 
             return Ok(notification);
         }
